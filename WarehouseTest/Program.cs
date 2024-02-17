@@ -4,10 +4,13 @@ using System.Linq;
 using System.Windows.Forms;
 using WarehouseTest.forms;
 using WarehouseTest.UI;
+using Castle;
+using App.Domin.Core.Contracts.ServiceInterface;
+using WarehouseTest.Services.ItemService;
 
 namespace WarehouseTest
 {
-    static class Program
+    static partial class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -18,6 +21,7 @@ namespace WarehouseTest
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+
         }
 
         static void ConfigureServices()

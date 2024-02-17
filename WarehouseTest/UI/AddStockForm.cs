@@ -16,15 +16,18 @@ namespace WarehouseTest.UI
 {
     public partial class AddStockForm : BaseForm
     {
-        ITableIdService tableIdService;
+        private readonly ITableIdService _tableIdService;
+        private readonly IStockService _stockService;
         StockDataSet stockDataSet;
-        IStockService stockService;
         public AddStockForm()
         {
             InitializeComponent();
-            tableIdService = new TableIdService();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
             stockDataSet = new StockDataSet();
-            stockService = new StockService();
         }
 
         private void AddStockForm_Load(object sender, EventArgs e)
@@ -39,7 +42,7 @@ namespace WarehouseTest.UI
         {
             try
             {
-                stockService.Save(stockNameTx.Text, stockCodeTxt.Text);
+                _stockService.Save(stockNameTx.Text, stockCodeTxt.Text);
                 MessageBox.Show("انبار با موفقیت ذخیره گردید");
             }
             catch (Exception ex)

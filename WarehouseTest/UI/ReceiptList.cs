@@ -16,16 +16,21 @@ namespace WarehouseTest.UI
 {
     public partial class ReceiptList : BaseForm
     {
-        IReceiptService receiptService;
+        private readonly IReceiptService _receiptService;
         ReceiptDataset receiptDataset;
-        StockService stockService;
+        private readonly IStockService _stockService;
         ReceiptTable receiptRows;
         public ReceiptList()
         {
             InitializeComponent();
-            receiptService = new ReceiptService();
-            stockService= new StockService();
-            receiptDataset = receiptService.GetMasterAll();
+
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IReceiptService, ReceiptService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _receiptService = proxyFactory.Resolve<IReceiptService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
+
+            receiptDataset = _receiptService.GetMasterAll();
 
             InitializeItemDataGirdView();
 
@@ -93,16 +98,16 @@ namespace WarehouseTest.UI
         {
             var id =receiptDataset.ReceiptTable[e.RowIndex].Id;
             var stockId = receiptDataset.ReceiptTable[e.RowIndex].StockId;
-            var stock = stockService.GetById(stockId);
+            var stock = _stockService.GetById(stockId);
             var stock_Id = stock.StockTable[0].Id;
-            var res = receiptService.GetByMasterId(id);
+            var res = _receiptService.GetByMasterId(id);
             AddReceiptForm addReceiptForm = new AddReceiptForm(res, stock_Id);
             addReceiptForm.Show();
         }
 
         internal override void refreshBtn_Click(object sender, EventArgs e)
         {
-            receiptDataset = receiptService.GetMasterAll();
+            receiptDataset = _receiptService.GetMasterAll();
             receiptDataGrid.DataSource = receiptDataset.ReceiptTable;
         }
 
@@ -130,7 +135,7 @@ namespace WarehouseTest.UI
                             var id = stockRow.Id;
                             try
                             {
-                                receiptService.DeleteById(id);
+                                _receiptService.DeleteById(id);
                                 MessageBox.Show("آیتم با موفقیت حذف گردید");
                                 RefreshDataGrid();
                             }
@@ -153,7 +158,7 @@ namespace WarehouseTest.UI
                     row.Delete();
                 }
 
-                receiptService.Save(receiptDataset);
+                _receiptService.Save(receiptDataset);
                 MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)
@@ -178,7 +183,7 @@ namespace WarehouseTest.UI
 
         public void RefreshDataGrid()
         {
-            receiptDataset = receiptService.GetMasterAll();
+            receiptDataset = _receiptService.GetMasterAll();
             receiptDataGrid.DataSource = receiptDataset.ReceiptTable;
         }
     }

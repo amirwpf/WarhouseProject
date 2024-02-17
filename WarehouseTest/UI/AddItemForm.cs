@@ -16,15 +16,36 @@ namespace WarehouseTest.forms
 {
     public partial class AddItemForm : BaseForm
     {
-        ITableIdService tableIdService;
-        IItemService itemService;
+        private readonly ITableIdService _tableIdService;
+        private readonly IItemService _itemService;
         ItemTable itemTable;
+
+        private ItemDataSet _itemDataset;
+        private int _id;
         public AddItemForm()
         {
             InitializeComponent();
-            tableIdService = new TableIdService();
-            itemService = new ItemService();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
             itemTable = new ItemTable();
+
+            _itemDataset = new ItemDataSet();
+            _id = 0;
+        }
+
+        public AddItemForm(int id, int code, string name)
+        {
+            InitializeComponent();
+
+            itemTable = new ItemTable();
+
+
+            itemCodeTxt.Text = code.ToString();
+            itemNameTx.Text = name;
+            _id = id;
         }
 
         private void AddItemForm_Load(object sender, EventArgs e)
@@ -39,7 +60,7 @@ namespace WarehouseTest.forms
         {
             try
             {
-                itemService.Save(itemNameTx.Text, itemCodeTxt.Text);
+                _itemService.Save(_id,itemNameTx.Text, itemCodeTxt.Text);
                 MessageBox.Show("کالا با موفقیت ذخیره گردید");
             }
             catch (Exception ex)

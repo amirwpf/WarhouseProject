@@ -17,14 +17,18 @@ namespace WarehouseTest.UI
 {
     public partial class ItemList : BaseForm
     {
-        IItemService itemService;
+        private readonly IItemService _itemService;
         ItemDataSet itemDataSet;
         ItemTable itemTable;
         public ItemList()
         {
             InitializeComponent();
-            itemService = new ItemService();
-            itemDataSet = itemService.GetAll();
+
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+
+            itemDataSet = _itemService.GetAll();
 
             InitializeItemDataGirdView();
         }
@@ -66,7 +70,7 @@ namespace WarehouseTest.UI
 
         internal override void refreshBtn_Click(object sender, EventArgs e)
         {
-            itemDataSet = itemService.GetAll();
+            itemDataSet = _itemService.GetAll();
             itemDataGrid.DataSource = itemDataSet.ItemTable;
         }
 
@@ -94,7 +98,7 @@ namespace WarehouseTest.UI
                             var id = itemRow.Id;
                             try
                             {
-                                itemService.DeleteById(id);
+                                _itemService.DeleteById(id);
                                 MessageBox.Show("آیتم با موفقیت حذف گردید");
                                 RefreshDataGrid();
                             }
@@ -117,7 +121,7 @@ namespace WarehouseTest.UI
                     row.Delete();
                 }
 
-                itemService.Save(itemDataSet);
+                _itemService.Save(itemDataSet);
                 MessageBox.Show("Save Completed !");
             }
             catch (Exception ex)
@@ -129,22 +133,22 @@ namespace WarehouseTest.UI
 
         private void itemDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            //if (e.RowIndex >= 0 && e.RowIndex < itemDataGrid.Rows.Count)
-            //{
-            //    DataRowView selectedRow = (DataRowView)itemDataGrid.Rows[e.RowIndex].DataBoundItem;
+            if (e.RowIndex >= 0 && e.RowIndex < itemDataGrid.Rows.Count)
+            {
+                DataRowView selectedRow = (DataRowView)itemDataGrid.Rows[e.RowIndex].DataBoundItem;
 
 
-            //    if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
-            //    {
+                if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
+                {
 
-            //        var id = (int)selectedRow["Id"];
-            //        var code = (int)selectedRow["Code"];
-            //        var name = (string)selectedRow["Name"];
+                    var id = (int)selectedRow["Id"];
+                    var code = (int)selectedRow["Code"];
+                    var name = (string)selectedRow["Name"];
 
-            //        ItemDetailForm itemDetailForm = new ItemDetailForm(id, code, name);
-            //        itemDetailForm.ShowDialog();
-            //    }
-            //}
+                    AddItemForm addItemForm = new AddItemForm(id, code, name);
+                    addItemForm.ShowDialog();
+                }
+            }
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -162,7 +166,7 @@ namespace WarehouseTest.UI
 
         public void RefreshDataGrid()
         {
-            itemDataSet = itemService.GetAll();
+            itemDataSet = _itemService.GetAll();
             itemDataGrid.DataSource = itemDataSet.ItemTable;
         }
     }

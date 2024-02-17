@@ -14,27 +14,36 @@ using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
 using WarehouseTest.UI.models;
+using static WarehouseTest.Program;
 
 namespace WarehouseTest.UI
 {
     public partial class AddDeliveryForm : BaseForm
     {
-        ITableIdService tableIdService;
+        private readonly IItemService _itemService;
+        private readonly ITableIdService _tableIdService;
+        private readonly IDeliveryService _deliveryService;
+        private readonly IStockService _stockService;
+
         DeliveryDataset deliveryDataset;
-        IDeliveryService deliveryService;
-        IItemService itemService;
+        
         StockTable stockTable;
         ItemTable itemTable;
         DeliveryRow newDeliveryRow;
         int deliveryId;
-        IStockService stockService;
+        
         public AddDeliveryForm()
         {
             InitializeComponent();
-            tableIdService = new TableIdService();
-            itemService = new ItemService();
-            stockService = new StockService();
-            deliveryService = new DeliveryService();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            proxyFactory.Register<IDeliveryService, DeliveryService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
             InitializeStockCombo();
             InitializeItemDataGirdView();
             FormSetUp();
@@ -44,10 +53,17 @@ namespace WarehouseTest.UI
         {
             InitializeComponent();
             deliveryDataset = _deliveryDataset;
-            itemService = new ItemService();
-            deliveryService = new DeliveryService();
-            tableIdService = new TableIdService();
-            stockService = new StockService();
+
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            proxyFactory.Register<IDeliveryService, DeliveryService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
+
             InitializeItemDataGirdView();
             InitializeStockCombo();
 
@@ -67,7 +83,7 @@ namespace WarehouseTest.UI
 
         private void InitializeStockCombo()
         {
-            stockTable = stockService.GetAll().StockTable;
+            stockTable = _stockService.GetAll().StockTable;
             stockCombo.DataSource = stockTable;
             stockCombo.DisplayMember = "Name";
             stockCombo.ValueMember = "Id";
@@ -77,7 +93,7 @@ namespace WarehouseTest.UI
         private void InitializeItemDataGirdView()
         {
 
-            itemTable = itemService.GetAll().ItemTable;
+            itemTable = _itemService.GetAll().ItemTable;
             itemDataGrid.AllowUserToAddRows = false;
             itemDataGrid.AllowUserToDeleteRows = false;
 
@@ -118,7 +134,7 @@ namespace WarehouseTest.UI
             itemDataGrid.Columns["DeliveryId"].Visible = false;
             itemDataGrid.Columns["Id"].Visible = false;
             newDeliveryRow = deliveryDataset.DeliveryTable.GetNewRow();
-            newDeliveryRow.Id = tableIdService.GetId(DbTablesEnum.delivery);
+            newDeliveryRow.Id = _tableIdService.GetId(DbTablesEnum.delivery);
             deliveryId = newDeliveryRow.Id;
             deliveryDataset.DeliveryTable.Add(newDeliveryRow);
         }
@@ -135,7 +151,7 @@ namespace WarehouseTest.UI
             try
             {
                 var selectedItem = stockCombo.SelectedItem;
-                deliveryService.Save(deliveryDataset, selectedItem, deliveryNumberTxt.Text, deliveryDatePicker.Value);
+                _deliveryService.Save(deliveryDataset, selectedItem, deliveryNumberTxt.Text, deliveryDatePicker.Value);
                 MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)
@@ -190,7 +206,7 @@ namespace WarehouseTest.UI
         private void addItemBtn_Click(object sender, EventArgs e)
         {
             var newReceiptItemRow = deliveryDataset.DeliveryItemsTable.GetNewRow();
-            newReceiptItemRow.Id = tableIdService.GetId(DbTablesEnum.deliveryItems);
+            newReceiptItemRow.Id = _tableIdService.GetId(DbTablesEnum.deliveryItems);
             newReceiptItemRow.DeliveryId = deliveryId;
             newReceiptItemRow.Quantity = 0;
             if (itemTable.Rows.Count > 0)
@@ -207,3 +223,82 @@ namespace WarehouseTest.UI
         }
     }
 }
+
+
+/*
+If you want to use Castle.DynamicProxy without Castle.Windsor and manually register and resolve dependencies, you can follow this simplified example:
+
+```csharp
+using Castle.DynamicProxy;
+using System;
+using System.Collections.Generic;
+
+public interface IService
+{
+    void DoSomething();
+}
+
+public class Service : IService
+{
+    public void DoSomething()
+    {
+        Console.WriteLine("Service is doing something.");
+    }
+}
+
+public class ProxyFactory
+{
+    private readonly ProxyGenerator _proxyGenerator = new ProxyGenerator();
+    private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
+
+    public void Register<TInterface, TImplementation>() where TImplementation : TInterface, new()
+    {
+        if (!_registeredInstances.ContainsKey(typeof(TInterface)))
+        {
+            _registeredInstances[typeof(TInterface)] = new TImplementation();
+        }
+    }
+
+    public TInterface Resolve<TInterface>()
+    {
+        if (_registeredInstances.TryGetValue(typeof(TInterface), out var instance))
+        {
+            return (TInterface)instance;
+        }
+
+        var interceptor = new MyInterceptor();
+        return _proxyGenerator.CreateInterfaceProxyWithTarget<TInterface>(Activator.CreateInstance<TInterface>(), interceptor);
+    }
+}
+
+public class MyInterceptor : IInterceptor
+{
+    public void Intercept(IInvocation invocation)
+    {
+        Console.WriteLine($"Intercepting method: {invocation.Method.Name}");
+        invocation.Proceed();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var proxyFactory = new ProxyFactory();
+
+        proxyFactory.Register<IService, Service>();
+
+        var service = proxyFactory.Resolve<IService>();
+
+        service.DoSomething();
+    }
+}
+```
+
+In this example:
+
+- `ProxyFactory` manually registers instances for specific interfaces.
+- If an interface is not registered, it creates a proxy using `CreateInterfaceProxyWithTarget` and a custom interceptor (`MyInterceptor`).
+
+This is a basic example, and for more complex scenarios, you might need to enhance the registration and resolution logic.
+*/

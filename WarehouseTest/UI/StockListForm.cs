@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using App.Domin.Core.Contracts.ServiceInterface;
+using Core.Entites;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,14 +18,16 @@ namespace WarehouseTest.UI
     public partial class StockListForm : BaseForm
     {
         StockDataSet stockDataSet;
-        StockService stockService;
+        private readonly IStockService _stockService;
         StockTable stockTable;
         public StockListForm()
         {
             InitializeComponent();
             stockDataSet = new StockDataSet();
-            stockService = new StockService();
-            stockDataSet = stockService.GetAll();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IStockService, StockService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
+            stockDataSet = _stockService.GetAll();
 
 
 
@@ -69,7 +72,7 @@ namespace WarehouseTest.UI
 
         internal override void refreshBtn_Click(object sender, EventArgs e)
         {
-            stockDataSet = stockService.GetAll();
+            stockDataSet = _stockService.GetAll();
             stockDataGrid.DataSource = stockDataSet.StockTable;
         }
 
@@ -97,7 +100,7 @@ namespace WarehouseTest.UI
                             var id = stockRow.Id;
                             try
                             {
-                                stockService.DeleteById(id);
+                                _stockService.DeleteById(id);
                                 MessageBox.Show("آیتم با موفقیت حذف گردید");
                                 RefreshDataGrid();
                             }
@@ -120,7 +123,7 @@ namespace WarehouseTest.UI
                     row.Delete();
                 }
 
-                stockService.Save(stockDataSet);
+                _stockService.Save(stockDataSet);
                 MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)
@@ -145,7 +148,7 @@ namespace WarehouseTest.UI
 
         public void RefreshDataGrid()
         {
-            stockDataSet = stockService.GetAll();
+            stockDataSet = _stockService.GetAll();
             stockDataGrid.DataSource = stockDataSet.StockTable;
         }
     }

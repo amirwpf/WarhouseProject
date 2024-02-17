@@ -24,8 +24,7 @@ namespace WarehouseTest.Services.ItemService
             tableIdService = new TableIdService.TableIdService();
             itemDataSet = new ItemDataSet();
             newItemRow = itemDataSet.ItemTable.GetNewRow();
-            newItemRow.Id = tableIdService.GetId(DbTablesEnum.item);
-            updateRow = true;
+            //updateRow = true;
         }
 
         public ItemDataSet GetById(int itemId)
@@ -38,18 +37,20 @@ namespace WarehouseTest.Services.ItemService
             return itemServiceDAO.GetAll();
         }
 
-        public void Save(string name , string code)
+        public void Save(int id, string name, string code)
         {
-            var codeInt = ValidateData(name,code);
+            var codeInt = ValidateData(name, code);
 
+            newItemRow.Id = id;
             newItemRow.Name = name;
             newItemRow.Code = codeInt;
-            if(updateRow)
+            if (id == 0)
             {
-                updateRow = false;
-                itemDataSet.ItemTable.Add(newItemRow);
+                newItemRow.Id = tableIdService.GetId(DbTablesEnum.item);
+                //updateRow = false;
             }
-            
+            itemDataSet.ItemTable.Add(newItemRow);
+
             itemServiceDAO.Save(itemDataSet);
         }
 
@@ -101,7 +102,7 @@ namespace WarehouseTest.Services.ItemService
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کد"));
             }
             bool validCode = int.TryParse(code, out int codeInt);
-            if(!validCode || codeInt<=0)
+            if (!validCode || codeInt <= 0)
             {
                 errorsMessageString.Append(ErrorMessage.InValidFieldValue("کد"));
             }

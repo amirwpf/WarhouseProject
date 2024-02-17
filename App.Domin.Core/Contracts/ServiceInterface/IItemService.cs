@@ -11,7 +11,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
         ItemDataSet GetById(int itemId);
         ItemDataSet GetAll();
 
-        void Save(string name, string code);
+        void Save(int id,string name, string code);
 
 
         void Save(ItemDataSet itemDataSet);

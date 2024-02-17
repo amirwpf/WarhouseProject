@@ -39,7 +39,7 @@ namespace WarehouseTest.UI
         {
             try
             {
-                itemService.Save(itemNameTx.Text, itemCodeTxt.Text);
+                //itemService.Save(itemNameTx.Text, itemCodeTxt.Text);
                 MessageBox.Show("Item Added Successfully");
             }
             catch (Exception ex)

@@ -17,16 +17,20 @@ namespace WarehouseTest.UI
 {
     public partial class DeliveryListForm : BaseForm
     {
-        IDeliveryService deliveryService;
+        IDeliveryService _deliveryService;
+        IStockService _stockService;
         DeliveryDataset deliveryDataset;
-        IStockService stockService;
         DeliveryTable deliveryTable;
         public DeliveryListForm()
         {
             InitializeComponent();
-            deliveryService = new DeliveryService();
-            stockService = new StockService();
-            deliveryDataset = deliveryService.GetMasterAll();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IDeliveryService, DeliveryService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
+
+            deliveryDataset = _deliveryService.GetMasterAll();
 
             InitializeItemDataGirdView();
 
@@ -95,16 +99,16 @@ namespace WarehouseTest.UI
         {
             var id = deliveryDataset.DeliveryTable[e.RowIndex].Id;
             var stockId = deliveryDataset.DeliveryTable[e.RowIndex].StockId;
-            var stock = stockService.GetById(stockId);
+            var stock = _stockService.GetById(stockId);
             var stock_Id = stock.StockTable[0].Id;
-            var res = deliveryService.GetByMasterId(id);
+            var res = _deliveryService.GetByMasterId(id);
             AddDeliveryForm addDeliveryForm = new AddDeliveryForm(res, stock_Id);
             addDeliveryForm.Show();
         }
 
         internal override void refreshBtn_Click(object sender, EventArgs e)
         {
-            deliveryDataset = deliveryService.GetMasterAll();
+            deliveryDataset = _deliveryService.GetMasterAll();
             deliveryDataGrid.DataSource = deliveryDataset.DeliveryTable;
         }
 
@@ -132,7 +136,7 @@ namespace WarehouseTest.UI
                             var id = stockRow.Id;
                             try
                             {
-                                deliveryService.DeleteById(id);
+                                _deliveryService.DeleteById(id);
                                 MessageBox.Show("آیتم با موفقیت حذف گردید");
                                 RefreshDataGrid();
                             }
@@ -155,7 +159,7 @@ namespace WarehouseTest.UI
                     row.Delete();
                 }
 
-                deliveryService.Save(deliveryDataset);
+                _deliveryService.Save(deliveryDataset);
                 MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)
@@ -180,7 +184,7 @@ namespace WarehouseTest.UI
 
         public void RefreshDataGrid()
         {
-            deliveryDataset = deliveryService.GetMasterAll();
+            deliveryDataset = _deliveryService.GetMasterAll();
             deliveryDataGrid.DataSource = deliveryDataset.DeliveryTable;
         }
     }

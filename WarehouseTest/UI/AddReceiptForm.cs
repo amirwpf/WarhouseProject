@@ -18,24 +18,29 @@ namespace WarehouseTest
 {
     public partial class AddReceiptForm : BaseForm
     {
-        ITableIdService tableIdService;
+        private readonly ITableIdService _tableIdService;
+        private readonly IReceiptService _receiptService;
+        private readonly IItemService _itemService;
+        private readonly IStockService _stockService;
         ReceiptDataset receiptDataset;
-        IReceiptService receiptService;
-        IItemService itemService;
         StockTable stockTable;
         ItemTable itemTable;
         ReceiptRow newReceiptRow;
         int receiptId;
-        IStockService stockService;
 
         public AddReceiptForm()
         {
             InitializeComponent();
 
-            receiptService = new ReceiptService();
-            tableIdService = new TableIdService();
-            itemService = new ItemService();
-            stockService = new StockService();
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            proxyFactory.Register<IReceiptService, ReceiptService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+            _receiptService = proxyFactory.Resolve<IReceiptService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
 
             InitializeStockCombo();
             InitializeItemDataGirdView();
@@ -46,11 +51,17 @@ namespace WarehouseTest
         {
             InitializeComponent();
             receiptDataset = _receiptDataset;
-            receiptService = new ReceiptService();
-            itemService = new ItemService();
-            receiptService = new ReceiptService();
-            tableIdService = new TableIdService();
-            stockService = new StockService();
+
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            proxyFactory.Register<IReceiptService, ReceiptService>();
+            proxyFactory.Register<IStockService, StockService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+            _receiptService = proxyFactory.Resolve<IReceiptService>();
+            _stockService = proxyFactory.Resolve<IStockService>();
+
             InitializeItemDataGirdView();
             InitializeStockCombo();
 
@@ -80,7 +91,7 @@ namespace WarehouseTest
 
         private void InitializeStockCombo()
         {
-            stockTable = stockService.GetAll().StockTable;
+            stockTable = _stockService.GetAll().StockTable;
             stockCombo.DataSource = stockTable;
             stockCombo.DisplayMember = "Name";
             stockCombo.ValueMember = "Id";
@@ -90,7 +101,7 @@ namespace WarehouseTest
         private void InitializeItemDataGirdView()
         {
 
-            itemTable = itemService.GetAll().ItemTable;
+            itemTable = _itemService.GetAll().ItemTable;
             itemDataGrid.AllowUserToAddRows = false;
             itemDataGrid.AllowUserToDeleteRows = false;
 
@@ -129,7 +140,7 @@ namespace WarehouseTest
             itemDataGrid.Columns["ReceiptId"].Visible = false;
             itemDataGrid.Columns["Id"].Visible = false;
             newReceiptRow = receiptDataset.ReceiptTable.GetNewRow();
-            newReceiptRow.Id = tableIdService.GetId(DbTablesEnum.receipt);
+            newReceiptRow.Id = _tableIdService.GetId(DbTablesEnum.receipt);
             receiptId = newReceiptRow.Id;
             receiptDataset.ReceiptTable.Add(newReceiptRow);
         }
@@ -190,7 +201,7 @@ namespace WarehouseTest
         private void addItemBtn_Click(object sender, EventArgs e)
         {
             var newReceiptItemRow = receiptDataset.ReceiptItemsTable.GetNewRow();
-            newReceiptItemRow.Id = tableIdService.GetId(DbTablesEnum.receiptItem);
+            newReceiptItemRow.Id = _tableIdService.GetId(DbTablesEnum.receiptItem);
             newReceiptItemRow.ReceiptId = receiptId;
             newReceiptItemRow.Quantity = 0;
             if (itemTable.Rows.Count > 0)
@@ -206,7 +217,7 @@ namespace WarehouseTest
             try
             {
                 var selectedItem = stockCombo.SelectedItem;
-                receiptService.Save(receiptDataset, selectedItem, receiptNumberTxt.Text, receiptDatePicker.Value);
+                _receiptService.Save(receiptDataset, selectedItem, receiptNumberTxt.Text, receiptDatePicker.Value);
                 MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)

@@ -12,5 +12,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
         StockDataSet GetAll();
         void Save(string name, string code);
         void Save(StockDataSet stockDataSet);
+
+        void DeleteById(int itemId);
     }
 }
