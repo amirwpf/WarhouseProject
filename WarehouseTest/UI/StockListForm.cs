@@ -67,6 +67,7 @@ namespace WarehouseTest.UI
 
         private void StockListForm_Load(object sender, EventArgs e)
         {
+            saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
@@ -114,25 +115,6 @@ namespace WarehouseTest.UI
             }
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataRow row in stockDataSet.StockTable.Select("", "", DataViewRowState.Deleted))
-                {
-                    row.Delete();
-                }
-
-                _stockService.Save(stockDataSet);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-
         private DialogResult ShowConfirmationMessageBox(string message)
         {
             DialogResult result = MessageBox.Show(
@@ -150,6 +132,26 @@ namespace WarehouseTest.UI
         {
             stockDataSet = _stockService.GetAll();
             stockDataGrid.DataSource = stockDataSet.StockTable;
+        }
+
+        private void stockDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < stockDataGrid.Rows.Count)
+            {
+                DataRowView selectedRow = (DataRowView)stockDataGrid.Rows[e.RowIndex].DataBoundItem;
+
+
+                if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
+                {
+
+                    var id = (int)selectedRow["Id"];
+                    var code = (int)selectedRow["Code"];
+                    var name = (string)selectedRow["Name"];
+
+                    AddStockForm addStockForm = new AddStockForm(id, code, name);
+                    addStockForm.ShowDialog();
+                }
+            }
         }
     }
 }

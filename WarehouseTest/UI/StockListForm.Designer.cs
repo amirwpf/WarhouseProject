@@ -42,6 +42,7 @@
             this.stockDataGrid.RowHeadersWidth = 72;
             this.stockDataGrid.Size = new System.Drawing.Size(594, 318);
             this.stockDataGrid.TabIndex = 4;
+            this.stockDataGrid.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.stockDataGrid_CellMouseDoubleClick);
             // 
             // StockListForm
             // 

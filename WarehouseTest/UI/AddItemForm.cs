@@ -40,7 +40,14 @@ namespace WarehouseTest.forms
         {
             InitializeComponent();
 
-            itemTable = new ItemTable();
+
+            var proxyFactory = new ProxyFactory();
+            proxyFactory.Register<IItemService, ItemService>();
+            proxyFactory.Register<ITableIdService, TableIdService>();
+            _itemService = proxyFactory.Resolve<IItemService>();
+            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+
+           // itemTable = new ItemTable();
 
 
             itemCodeTxt.Text = code.ToString();

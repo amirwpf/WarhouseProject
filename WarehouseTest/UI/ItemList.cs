@@ -35,6 +35,7 @@ namespace WarehouseTest.UI
 
         private void ItemList_Load(object sender, EventArgs e)
         {
+            saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
@@ -112,24 +113,24 @@ namespace WarehouseTest.UI
             }            
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataRow row in itemDataSet.ItemTable.Select("", "", DataViewRowState.Deleted))
-                {
-                    row.Delete();
-                }
+        //internal override void SaveBtn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        foreach (DataRow row in itemDataSet.ItemTable.Select("", "", DataViewRowState.Deleted))
+        //        {
+        //            row.Delete();
+        //        }
 
-                _itemService.Save(itemDataSet);
-                MessageBox.Show("Save Completed !");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+        //        _itemService.Save(itemDataSet);
+        //        MessageBox.Show("Save Completed !");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
 
-        }
+        //}
 
         private void itemDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {

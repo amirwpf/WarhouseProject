@@ -23,7 +23,6 @@ namespace WarehouseTest.Services.ItemService
             itemServiceDAO = new ItemServiceDAO();
             tableIdService = new TableIdService.TableIdService();
             itemDataSet = new ItemDataSet();
-            newItemRow = itemDataSet.ItemTable.GetNewRow();
             //updateRow = true;
         }
 
@@ -41,22 +40,23 @@ namespace WarehouseTest.Services.ItemService
         {
             var codeInt = ValidateData(name, code);
 
-            newItemRow.Id = id;
-            newItemRow.Name = name;
-            newItemRow.Code = codeInt;
+
             if (id == 0)
             {
+                newItemRow = itemDataSet.ItemTable.GetNewRow();
+                newItemRow.Id = id;
+                newItemRow.Name = name;
+                newItemRow.Code = codeInt;
                 newItemRow.Id = tableIdService.GetId(DbTablesEnum.item);
-                //updateRow = false;
+                itemDataSet.ItemTable.Add(newItemRow);
             }
-            itemDataSet.ItemTable.Add(newItemRow);
+            else
+            {
+                itemDataSet = itemServiceDAO.GetById(id);
+                itemDataSet.ItemTable[0].Name = name;
+                itemDataSet.ItemTable[0].Code = codeInt;
+            }
 
-            itemServiceDAO.Save(itemDataSet);
-        }
-
-        public void Save(ItemDataSet itemDataSet)
-        {
-            ValidateDataSet(itemDataSet);
             itemServiceDAO.Save(itemDataSet);
         }
 

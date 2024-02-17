@@ -14,7 +14,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
         void Save(int id,string name, string code);
 
 
-        void Save(ItemDataSet itemDataSet);
+        //void Save(ItemDataSet itemDataSet);
 
 
         void DeleteById(int itemId);
