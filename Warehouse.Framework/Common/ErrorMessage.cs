@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Warehouse.Framework.Common
+{
+    public static class ErrorMessage
+    {
+
+        public static string InValidFieldValue(string fieldName)
+        {
+            return $"- مقدار {fieldName} نامعتبر است \n";
+        }
+
+        public static string ItemCantBeEmpty(string fieldName)
+        {
+            return $"- {fieldName} باید به درستی مقدار دهی شود \n";
+        }
+
+        public static string ItemCantBeDeleted(string fieldName)
+        {
+            return $"- {fieldName} را نمی توان حذف کرد \n";
+        }
+
+    }
+}

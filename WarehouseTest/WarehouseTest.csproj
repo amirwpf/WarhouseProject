@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{077434C5-64F0-46A5-9122-BCB82034CA94}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WarehouseTest</RootNamespace>
+    <AssemblyName>WarehouseTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\AddDeliveryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AddDeliveryForm.Designer.cs">
+      <DependentUpon>AddDeliveryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AddItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AddItemForm.Designer.cs">
+      <DependentUpon>AddItemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AddStockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AddStockForm.Designer.cs">
+      <DependentUpon>AddStockForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AddReceiptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AddReceiptForm.Designer.cs">
+      <DependentUpon>AddReceiptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DeliveryListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DeliveryListForm.Designer.cs">
+      <DependentUpon>DeliveryListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ItemDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemDetailForm.Designer.cs">
+      <DependentUpon>ItemDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ItemList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ItemList.Designer.cs">
+      <DependentUpon>ItemList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\models\AddDeliveryTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\models\AddItemTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\models\AddReceiptTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\models\AddStockTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\models\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\models\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\models\CloseableTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\models\IExtention.cs" />
+    <Compile Include="UI\models\ReceiptListTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ReceiptList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ReceiptList.Designer.cs">
+      <DependentUpon>ReceiptList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\StockListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\StockListForm.Designer.cs">
+      <DependentUpon>StockListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="warehouseDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>warehouseDataSet.xsd</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\AddDeliveryForm.resx">
+      <DependentUpon>AddDeliveryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddItemForm.resx">
+      <DependentUpon>AddItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddReceiptForm.resx">
+      <DependentUpon>AddReceiptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddStockForm.resx">
+      <DependentUpon>AddStockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DeliveryListForm.resx">
+      <DependentUpon>DeliveryListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemDetailForm.resx">
+      <DependentUpon>ItemDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ItemList.resx">
+      <DependentUpon>ItemList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\models\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ReceiptList.resx">
+      <DependentUpon>ReceiptList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\StockListForm.resx">
+      <DependentUpon>StockListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="warehouseDataSet.xsc">
+      <DependentUpon>warehouseDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="warehouseDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>warehouseDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="warehouseDataSet.xss">
+      <DependentUpon>warehouseDataSet.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\App.Bus.Services\App.Bus.Services.csproj">
+      <Project>{77B6529E-E012-4F37-BA65-39B0E6BB8D37}</Project>
+      <Name>App.Bus.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Domin.Core\App.Domin.Core.csproj">
+      <Project>{01683487-8163-4067-853D-5F15ADEDED23}</Project>
+      <Name>App.Domin.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warehouse.Framework\Warehouse.Framework.csproj">
+      <Project>{90F636C7-6DA1-496C-9B56-99DED8BB4BA9}</Project>
+      <Name>Warehouse.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
