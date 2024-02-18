@@ -46,12 +46,12 @@ namespace WarehouseTest.Services.DeliveryService
 
         }
 
-        public void Save(DeliveryDataset deliveryDataset)
-        {
-            errorsMessageString = new StringBuilder();
-            ValidateData(deliveryDataset);
-            deliveryServiceDAO.SaveMasterDetail(deliveryDataset);
-        }
+        //public void Save(DeliveryDataset deliveryDataset)
+        //{
+        //    errorsMessageString = new StringBuilder();
+        //    ValidateData(deliveryDataset);
+        //    deliveryServiceDAO.SaveMasterDetail(deliveryDataset);
+        //}
 
         public void DeleteById(int deliveryId)
         {

@@ -41,6 +41,7 @@
             this.receiptDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDataGrid.Location = new System.Drawing.Point(12, 57);
             this.receiptDataGrid.Name = "receiptDataGrid";
+            this.receiptDataGrid.ReadOnly = true;
             this.receiptDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.receiptDataGrid.RowHeadersWidth = 72;
             this.receiptDataGrid.Size = new System.Drawing.Size(594, 318);
@@ -54,7 +55,6 @@
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.ClientSize = new System.Drawing.Size(618, 387);
             this.Controls.Add(this.receiptDataGrid);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ReceiptList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

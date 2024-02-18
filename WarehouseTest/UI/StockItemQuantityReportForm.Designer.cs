@@ -41,6 +41,7 @@
             this.itemDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemDataGrid.Location = new System.Drawing.Point(12, 57);
             this.itemDataGrid.Name = "itemDataGrid";
+            this.itemDataGrid.ReadOnly = true;
             this.itemDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemDataGrid.RowHeadersWidth = 72;
             this.itemDataGrid.Size = new System.Drawing.Size(594, 318);

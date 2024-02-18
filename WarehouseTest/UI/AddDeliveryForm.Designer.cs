@@ -89,6 +89,7 @@
             this.itemDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemDataGrid.Size = new System.Drawing.Size(595, 206);
             this.itemDataGrid.TabIndex = 22;
+            this.itemDataGrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.itemDataGrid_DataError);
             // 
             // deliveryDateLbl
             // 

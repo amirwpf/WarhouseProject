@@ -66,6 +66,8 @@
             this.itemDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemDataGrid.Size = new System.Drawing.Size(595, 206);
             this.itemDataGrid.TabIndex = 30;
+            this.itemDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.itemDataGrid_CellEndEdit);
+            this.itemDataGrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.itemDataGrid_DataError);
             // 
             // receiptDateLbl
             // 
@@ -144,7 +146,6 @@
             this.Controls.Add(this.receiptNumberTxt);
             this.Controls.Add(this.receiptDatePicker);
             this.Controls.Add(this.stockCombo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddReceiptForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "سند ورود جدید";

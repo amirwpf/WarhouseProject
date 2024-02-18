@@ -41,6 +41,7 @@
             this.stockDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.stockDataGrid.Location = new System.Drawing.Point(12, 57);
             this.stockDataGrid.Name = "stockDataGrid";
+            this.stockDataGrid.ReadOnly = true;
             this.stockDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.stockDataGrid.RowHeadersWidth = 72;
             this.stockDataGrid.Size = new System.Drawing.Size(594, 318);
@@ -53,7 +54,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
             this.Controls.Add(this.stockDataGrid);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "StockListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "انبار";

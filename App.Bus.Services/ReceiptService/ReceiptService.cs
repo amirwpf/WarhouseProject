@@ -47,12 +47,12 @@ namespace WarehouseTest.Services.ReceiptService
 
         }
 
-        public void Save(ReceiptDataset receiptDataset)
-        {
-            errorsMessageString = new StringBuilder();
-            ValidateData(receiptDataset);
-            receiptServiceDAO.SaveMasterDetail(receiptDataset);
-        }
+        //public void Save(ReceiptDataset receiptDataset)
+        //{
+        //    errorsMessageString = new StringBuilder();
+        //    ValidateData(receiptDataset);
+        //    receiptServiceDAO.SaveMasterDetail(receiptDataset);
+        //}
 
         public void DeleteById(int ReceiptId)
         {

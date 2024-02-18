@@ -60,6 +60,7 @@
             this.deliveryDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
             this.deliveryDataGrid.Location = new System.Drawing.Point(12, 57);
             this.deliveryDataGrid.Name = "deliveryDataGrid";
+            this.deliveryDataGrid.ReadOnly = true;
             this.deliveryDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;

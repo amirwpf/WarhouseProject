@@ -221,6 +221,17 @@ namespace WarehouseTest.UI
             itemDataGrid.Enabled = true;
             addItemBtn.Enabled = true;
         }
+
+        private void itemDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.ColumnIndex == 3)//&& e.Context == DataGridViewDataErrorContexts.Formatting)
+            {
+                MessageBox.Show("مقدار تعداد ناصحیح می باشد");
+                e.ThrowException = false;
+                deliveryDataset.DeliveryItemsTable[e.RowIndex].Quantity = 0;
+                e.Cancel = true;
+            }
+        }
     }
 }
 

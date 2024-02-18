@@ -37,6 +37,8 @@
             // 
             // stockNameTx
             // 
+            this.stockNameTx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.stockNameTx.Location = new System.Drawing.Point(55, 84);
             this.stockNameTx.Name = "stockNameTx";
             this.stockNameTx.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -64,6 +66,8 @@
             // 
             // stockCodeTxt
             // 
+            this.stockCodeTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.stockCodeTxt.Location = new System.Drawing.Point(55, 121);
             this.stockCodeTxt.Name = "stockCodeTxt";
             this.stockCodeTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;

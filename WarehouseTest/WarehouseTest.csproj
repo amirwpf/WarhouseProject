@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Interceptor.cs" />
     <Compile Include="ProxyFactory.cs" />
-    <Compile Include="Container.cs" />
     <Compile Include="UI\AddDeliveryForm.cs">
       <SubType>Form</SubType>
     </Compile>

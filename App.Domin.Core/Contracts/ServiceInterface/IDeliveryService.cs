@@ -12,7 +12,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
         DeliveryDataset GetByMasterId(int deliveryId);
         DeliveryDataset GetMasterAll();
         void Save(DeliveryDataset deliveryDataset, object selectedItem, string deliveryNumberText, DateTime deliveryDate);
-        void Save(DeliveryDataset deliveryDataset);
+        //void Save(DeliveryDataset deliveryDataset);
         void DeleteById(int deliveryId);
 
     }

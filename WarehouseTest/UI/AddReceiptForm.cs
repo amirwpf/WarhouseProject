@@ -234,5 +234,20 @@ namespace WarehouseTest
             addItemBtn.Enabled = true;
         }
 
+        private void itemDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var boolRes = int.TryParse(receiptDataset.ReceiptItemsTable[e.RowIndex].Quantity.ToString(), out int res);
+        }
+
+        private void itemDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.ColumnIndex == 3 )//&& e.Context == DataGridViewDataErrorContexts.Formatting)
+            {
+                MessageBox.Show("مقدار تعداد ناصحیح می باشد");
+                e.ThrowException = false;
+                receiptDataset.ReceiptItemsTable[e.RowIndex].Quantity = 0;
+                e.Cancel = true;
+            }
+        }
     }
 }

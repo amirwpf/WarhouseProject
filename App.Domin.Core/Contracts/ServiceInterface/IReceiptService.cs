@@ -14,7 +14,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 
         void Save(ReceiptDataset receiptDataset, object selectedItem, string receiptNumberText, DateTime receiptDate);
 
-        void Save(ReceiptDataset receiptDataset);
+        //void Save(ReceiptDataset receiptDataset);
 
         void DeleteById(int ReceiptId);
         
