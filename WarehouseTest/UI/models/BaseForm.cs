@@ -40,5 +40,48 @@ namespace WarehouseTest.UI.models
         {
 
         }
+
+        private TabControl tabCtrl = new TabControl();
+        private TabPage tabPag = new TabPage();
+
+        public TabPage TabPag
+        {
+            get
+            {
+                return tabPag;
+            }
+            set
+            {
+                tabPag = value;
+            }
+        }
+
+        public TabControl TabCtrl
+        {
+            set
+            {
+                tabCtrl = value;
+            }
+        }
+
+        private void BaseForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.tabPag.Dispose();
+
+            //if (!tabCtrl.HasChildren)
+            //{
+            //    tabCtrl.Visible = false;
+            //}
+        }
+
+        private void BaseForm_Activated(object sender, EventArgs e)
+        {
+            tabCtrl.SelectedTab = tabPag;
+
+            //if (!tabCtrl.Visible)
+            //{
+            //    tabCtrl.Visible = true;
+            //}
+        }
     }
 }

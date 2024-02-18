@@ -35,6 +35,9 @@
             // 
             // receiptDataGrid
             // 
+            this.receiptDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.receiptDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDataGrid.Location = new System.Drawing.Point(12, 57);
             this.receiptDataGrid.Name = "receiptDataGrid";
@@ -54,7 +57,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ReceiptList";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "سند ورود";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ReceiptList_Load);
             this.Controls.SetChildIndex(this.receiptDataGrid, 0);
             this.Controls.SetChildIndex(this.panel1, 0);

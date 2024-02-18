@@ -47,6 +47,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiptService\ReceiptService.cs" />
     <Compile Include="ReceiptService\ReceiptServiceDAO.cs" />
+    <Compile Include="ReportService\ReportService.cs" />
+    <Compile Include="ReportService\StockItemQuantityReportServiceDAO.cs" />
     <Compile Include="StockService\StockService.cs" />
     <Compile Include="StockService\StockServiceDAO.cs" />
     <Compile Include="TableIdService\TableIdService.cs" />

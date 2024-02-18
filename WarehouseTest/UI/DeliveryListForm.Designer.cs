@@ -38,6 +38,9 @@
             // 
             // deliveryDataGrid
             // 
+            this.deliveryDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -79,7 +82,9 @@
             this.ClientSize = new System.Drawing.Size(618, 387);
             this.Controls.Add(this.deliveryDataGrid);
             this.Name = "DeliveryListForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "سند خروج";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.DeliveryListForm_Load);
             this.Controls.SetChildIndex(this.deliveryDataGrid, 0);
             this.Controls.SetChildIndex(this.panel1, 0);

@@ -149,6 +149,7 @@ namespace WarehouseTest.UI
                     var name = (string)selectedRow["Name"];
 
                     AddStockForm addStockForm = new AddStockForm(id, code, name);
+                    addStockForm.WindowState = FormWindowState.Normal;
                     addStockForm.ShowDialog();
                 }
             }

@@ -92,6 +92,7 @@ namespace WarehouseTest.UI
 
         private void DeliveryListForm_Load(object sender, EventArgs e)
         {
+            saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
@@ -103,6 +104,8 @@ namespace WarehouseTest.UI
             var stock_Id = stock.StockTable[0].Id;
             var res = _deliveryService.GetByMasterId(id);
             AddDeliveryForm addDeliveryForm = new AddDeliveryForm(res, stock_Id);
+            addDeliveryForm.WindowState = FormWindowState.Normal;
+            //addDeliveryForm.StartPosition = FormStartPosition.CenterParent;
             addDeliveryForm.Show();
         }
 
@@ -150,24 +153,24 @@ namespace WarehouseTest.UI
             }
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataRow row in deliveryDataset.DeliveryTable.Select("", "", DataViewRowState.Deleted))
-                {
-                    row.Delete();
-                }
+        //internal override void SaveBtn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        foreach (DataRow row in deliveryDataset.DeliveryTable.Select("", "", DataViewRowState.Deleted))
+        //        {
+        //            row.Delete();
+        //        }
 
-                _deliveryService.Save(deliveryDataset);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+        //        _deliveryService.Save(deliveryDataset);
+        //        MessageBox.Show("ذخیره با موفقیت صورت گردید");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
 
-        }
+        //}
 
         private DialogResult ShowConfirmationMessageBox(string message)
         {

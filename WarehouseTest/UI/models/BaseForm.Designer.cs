@@ -52,14 +52,13 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.refreshBtn);
             this.panel1.Controls.Add(this.addBtn);
             this.panel1.Controls.Add(this.deleteBtn);
             this.panel1.Controls.Add(this.saveBtn);
-            this.panel1.Location = new System.Drawing.Point(420, 13);
+            this.panel1.Location = new System.Drawing.Point(55, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(134, 30);
             this.panel1.TabIndex = 2;
@@ -105,11 +104,10 @@
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.SystemColors.Control;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(560, 3);
+            this.button1.Location = new System.Drawing.Point(3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(46, 50);
             this.button1.TabIndex = 3;
@@ -119,12 +117,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(618, 387);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Name = "BaseForm";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.RightToLeftLayout = true;
             this.Text = "BaseForm";
+            this.Activated += new System.EventHandler(this.BaseForm_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BaseForm_FormClosing);
             this.Load += new System.EventHandler(this.BaseForm_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

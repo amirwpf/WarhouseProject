@@ -1,6 +1,6 @@
 ﻿namespace WarehouseTest.UI
 {
-    partial class StockListForm
+    partial class StockItemQuantityReportForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,47 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.stockDataGrid = new System.Windows.Forms.DataGridView();
+            this.itemDataGrid = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.stockDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
-            // stockDataGrid
+            // itemDataGrid
             // 
-            this.stockDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.itemDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.stockDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stockDataGrid.Location = new System.Drawing.Point(12, 57);
-            this.stockDataGrid.Name = "stockDataGrid";
-            this.stockDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.stockDataGrid.RowHeadersWidth = 72;
-            this.stockDataGrid.Size = new System.Drawing.Size(594, 318);
-            this.stockDataGrid.TabIndex = 4;
-            this.stockDataGrid.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.stockDataGrid_CellMouseDoubleClick);
+            this.itemDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemDataGrid.Location = new System.Drawing.Point(12, 57);
+            this.itemDataGrid.Name = "itemDataGrid";
+            this.itemDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.itemDataGrid.RowHeadersWidth = 72;
+            this.itemDataGrid.Size = new System.Drawing.Size(594, 318);
+            this.itemDataGrid.TabIndex = 4;
             // 
-            // StockListForm
+            // StockItemQuantityReportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
-            this.Controls.Add(this.stockDataGrid);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "StockListForm";
+            this.Controls.Add(this.itemDataGrid);
+            this.Name = "StockItemQuantityReportForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "انبار";
+            this.Text = "گزارش تعداد کالای انبار";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.StockListForm_Load);
+            this.Load += new System.EventHandler(this.StockItemQuantityReportForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
-            this.Controls.SetChildIndex(this.stockDataGrid, 0);
+            this.Controls.SetChildIndex(this.itemDataGrid, 0);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.stockDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView stockDataGrid;
+        private System.Windows.Forms.DataGridView itemDataGrid;
     }
 }

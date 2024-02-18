@@ -91,6 +91,7 @@ namespace WarehouseTest.UI
 
         private void ReceiptList_Load(object sender, EventArgs e)
         {
+            saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
@@ -102,6 +103,7 @@ namespace WarehouseTest.UI
             var stock_Id = stock.StockTable[0].Id;
             var res = _receiptService.GetByMasterId(id);
             AddReceiptForm addReceiptForm = new AddReceiptForm(res, stock_Id);
+            addReceiptForm.WindowState = FormWindowState.Normal;
             addReceiptForm.Show();
         }
 
@@ -149,24 +151,24 @@ namespace WarehouseTest.UI
             }
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (DataRow row in receiptDataset.ReceiptTable.Select("", "", DataViewRowState.Deleted))
-                {
-                    row.Delete();
-                }
+        //internal override void SaveBtn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        foreach (DataRow row in receiptDataset.ReceiptTable.Select("", "", DataViewRowState.Deleted))
+        //        {
+        //            row.Delete();
+        //        }
 
-                _receiptService.Save(receiptDataset);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+        //        _receiptService.Save(receiptDataset);
+        //        MessageBox.Show("ذخیره با موفقیت صورت گردید");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
 
-        }
+        //}
 
         private DialogResult ShowConfirmationMessageBox(string message)
         {

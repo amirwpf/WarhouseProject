@@ -1,5 +1,4 @@
-﻿
-namespace Core.Entites
+﻿namespace Core.Entites
 {
     public class ItemDataSet : NonMasterDetailDataset<ItemTable, ItemRow>
     {

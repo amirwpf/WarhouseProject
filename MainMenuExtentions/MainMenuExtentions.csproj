@@ -48,6 +48,7 @@
     <Compile Include="ItemListExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiptListExt.cs" />
+    <Compile Include="StockItemQuantityReportExt.cs" />
     <Compile Include="StockListExt.cs" />
   </ItemGroup>
   <ItemGroup>

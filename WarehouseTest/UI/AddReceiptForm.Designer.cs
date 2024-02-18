@@ -42,11 +42,11 @@
             // 
             // addItemBtn
             // 
-            this.addItemBtn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.addItemBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addItemBtn.AutoSize = true;
             this.addItemBtn.BackColor = System.Drawing.Color.Moccasin;
             this.addItemBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addItemBtn.Location = new System.Drawing.Point(12, 297);
+            this.addItemBtn.Location = new System.Drawing.Point(580, 169);
             this.addItemBtn.Name = "addItemBtn";
             this.addItemBtn.Size = new System.Drawing.Size(26, 27);
             this.addItemBtn.TabIndex = 31;
@@ -56,20 +56,21 @@
             // 
             // itemDataGrid
             // 
-            this.itemDataGrid.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.itemDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.itemDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.itemDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.itemDataGrid.Location = new System.Drawing.Point(12, 174);
+            this.itemDataGrid.Location = new System.Drawing.Point(12, 169);
             this.itemDataGrid.Name = "itemDataGrid";
             this.itemDataGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.itemDataGrid.Size = new System.Drawing.Size(594, 150);
+            this.itemDataGrid.Size = new System.Drawing.Size(595, 206);
             this.itemDataGrid.TabIndex = 30;
             // 
             // receiptDateLbl
             // 
-            this.receiptDateLbl.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.receiptDateLbl.AutoSize = true;
-            this.receiptDateLbl.Location = new System.Drawing.Point(521, 128);
+            this.receiptDateLbl.Location = new System.Drawing.Point(12, 131);
             this.receiptDateLbl.Name = "receiptDateLbl";
             this.receiptDateLbl.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.receiptDateLbl.Size = new System.Drawing.Size(78, 13);
@@ -78,9 +79,8 @@
             // 
             // receiptNumberLbl
             // 
-            this.receiptNumberLbl.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.receiptNumberLbl.AutoSize = true;
-            this.receiptNumberLbl.Location = new System.Drawing.Point(517, 96);
+            this.receiptNumberLbl.Location = new System.Drawing.Point(12, 99);
             this.receiptNumberLbl.Name = "receiptNumberLbl";
             this.receiptNumberLbl.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.receiptNumberLbl.Size = new System.Drawing.Size(82, 13);
@@ -89,9 +89,8 @@
             // 
             // stockLbl
             // 
-            this.stockLbl.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.stockLbl.AutoSize = true;
-            this.stockLbl.Location = new System.Drawing.Point(576, 66);
+            this.stockLbl.Location = new System.Drawing.Point(12, 69);
             this.stockLbl.Name = "stockLbl";
             this.stockLbl.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.stockLbl.Size = new System.Drawing.Size(27, 13);
@@ -100,31 +99,35 @@
             // 
             // receiptNumberTxt
             // 
-            this.receiptNumberTxt.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.receiptNumberTxt.Location = new System.Drawing.Point(12, 93);
+            this.receiptNumberTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.receiptNumberTxt.Location = new System.Drawing.Point(100, 96);
             this.receiptNumberTxt.Name = "receiptNumberTxt";
             this.receiptNumberTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.receiptNumberTxt.Size = new System.Drawing.Size(495, 20);
+            this.receiptNumberTxt.Size = new System.Drawing.Size(505, 20);
             this.receiptNumberTxt.TabIndex = 26;
             // 
             // receiptDatePicker
             // 
-            this.receiptDatePicker.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.receiptDatePicker.Location = new System.Drawing.Point(12, 122);
+            this.receiptDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.receiptDatePicker.Location = new System.Drawing.Point(100, 125);
             this.receiptDatePicker.Name = "receiptDatePicker";
             this.receiptDatePicker.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.receiptDatePicker.RightToLeftLayout = true;
-            this.receiptDatePicker.Size = new System.Drawing.Size(495, 20);
+            this.receiptDatePicker.Size = new System.Drawing.Size(505, 20);
             this.receiptDatePicker.TabIndex = 25;
             // 
             // stockCombo
             // 
-            this.stockCombo.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.stockCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.stockCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.stockCombo.FormattingEnabled = true;
-            this.stockCombo.Location = new System.Drawing.Point(12, 63);
+            this.stockCombo.Location = new System.Drawing.Point(100, 66);
             this.stockCombo.Name = "stockCombo";
             this.stockCombo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.stockCombo.Size = new System.Drawing.Size(495, 21);
+            this.stockCombo.Size = new System.Drawing.Size(505, 21);
             this.stockCombo.TabIndex = 24;
             this.stockCombo.SelectedIndexChanged += new System.EventHandler(this.stockCombo_SelectedIndexChanged);
             // 
@@ -143,8 +146,9 @@
             this.Controls.Add(this.stockCombo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddReceiptForm";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "سند ورود جدید";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddReceiptForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.stockCombo, 0);
