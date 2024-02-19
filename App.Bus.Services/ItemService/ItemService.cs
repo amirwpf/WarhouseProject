@@ -38,7 +38,7 @@ namespace WarehouseTest.Services.ItemService
 
         public void Save(int id, string name, string code)
         {
-            var codeInt = ValidateData(name, code);
+            var codeInt = ValidateData(id, name, code);
 
 
             if (id == 0)
@@ -60,13 +60,13 @@ namespace WarehouseTest.Services.ItemService
             itemServiceDAO.Save(itemDataSet);
         }
 
-        public void ValidateDataSet(ItemDataSet itemDataSet)
-        {
-            foreach (var item in itemDataSet.ItemTable)
-            {
-                ValidateData(item.Name, item.Code.ToString());
-            }
-        }
+        //public void ValidateDataSet(ItemDataSet itemDataSet)
+        //{
+        //    foreach (var item in itemDataSet.ItemTable)
+        //    {
+        //        ValidateData(item.Name, item.Code.ToString());
+        //    }
+        //}
 
         public void DeleteById(int itemId)
         {
@@ -74,11 +74,11 @@ namespace WarehouseTest.Services.ItemService
         }
 
 
-        public int ValidateData(string name, string code)
+        public int ValidateData(int id, string name, string code)
         {
             errorsMessageString = new StringBuilder();
             ValidateName(name);
-            var codeInt = ValidateCode(code);
+            var codeInt = ValidateCode(id, code);
 
             if (errorsMessageString.Length > 0)
             {
@@ -95,22 +95,38 @@ namespace WarehouseTest.Services.ItemService
             }
         }
 
-        public int ValidateCode(string code)
+        public int ValidateCode(int id, string code)
         {
+            int codeInt = 0;
             if (string.IsNullOrEmpty(code))
             {
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کد"));
             }
-            bool validCode = int.TryParse(code, out int codeInt);
+            bool validCode = int.TryParse(code, out codeInt);
             if (!validCode || codeInt <= 0)
             {
                 errorsMessageString.Append(ErrorMessage.InValidFieldValue("کد"));
             }
-            else
+            var itemTable = itemServiceDAO.GetAll().ItemTable;
+            foreach (var item in itemTable)
             {
-                return codeInt;
+                if (item.Code == codeInt && id != 0)
+                {
+                    var itemRowId = item.Id;
+                    if (itemRowId != id)
+                    {
+                        errorsMessageString.Append(ErrorMessage.RepititiveValue("کد"));
+                        break;
+                    }
+                }
+
+                if (item.Code == codeInt && id == 0)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("کد"));
+                    break;
+                }
             }
-            return 0;
+            return codeInt;
         }
     }
 }

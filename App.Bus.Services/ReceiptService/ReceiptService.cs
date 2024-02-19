@@ -34,7 +34,7 @@ namespace WarehouseTest.Services.ReceiptService
         {
             errorsMessageString = new StringBuilder();
             errorsMessageString.Append(ValidateStockSelection(receiptDataset , selectedItem));
-            int receipNumber =ValidateReceiptNumber(receiptNumberText);
+            int receipNumber =ValidateReceiptNumber(receiptDataset.ReceiptTable[0].Id,receiptNumberText);
             ValidateData(receiptDataset);
 
             //receiptDataset.ReceiptTable.Add(receiptDataset.ReceiptTable.GetNewRow());
@@ -88,11 +88,20 @@ namespace WarehouseTest.Services.ReceiptService
         }
 
 
-        private int ValidateReceiptNumber(string receiptNumberText)
+        private int ValidateReceiptNumber(int id,string receiptNumberText)
         {
             if (!int.TryParse(receiptNumberText, out int receiptNumber))
             {
-                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره رسید انبار"));
+                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره سند ورود"));
+            }
+            var receiptTable = receiptServiceDAO.GetMasterAll().ReceiptTable;
+            foreach (var receipt in receiptTable)
+            {
+                if (receipt.Number == receiptNumber && receipt.Id!=id)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند ورود"));
+                    break;
+                }
             }
             return receiptNumber;
         }

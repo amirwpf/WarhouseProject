@@ -34,7 +34,7 @@ namespace WarehouseTest.Services.DeliveryService
             errorsMessageString = new StringBuilder();
             //var receipNumber =ValidateData(deliveryDataset, selectedItem, deliveryNumberText);
             errorsMessageString.Append(ValidateStockSelection(deliveryDataset, selectedItem));
-            int receipNumber = ValidateReceiptNumber(deliveryNumberText);
+            int receipNumber = ValidateReceiptNumber(deliveryDataset.DeliveryTable[0].Id,deliveryNumberText);
             ValidateData(deliveryDataset);
 
             deliveryDataset.DeliveryTable[0].StockId = ((DataRowView)selectedItem).Row.Field<int>("Id");
@@ -145,13 +145,22 @@ namespace WarehouseTest.Services.DeliveryService
         }
 
 
-        private int ValidateReceiptNumber(string receiptNumberText)
+        private int ValidateReceiptNumber(int id,string deliveryNumberText)
         {
-            if (!int.TryParse(receiptNumberText, out int receiptNumber))
+            if (!int.TryParse(deliveryNumberText, out int deliveryNumber))
             {
-                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره خروج انبار"));
+                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره  سند خروج"));
             }
-            return receiptNumber;
+            var deliveryTable = deliveryServiceDAO.GetMasterAll().DeliveryTable;
+            foreach (var delivery in deliveryTable)
+            {
+                if (delivery.Number == deliveryNumber && delivery.Id != id)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند خروج"));
+                    break;
+                }
+            }
+            return deliveryNumber;
         }
     }
 }

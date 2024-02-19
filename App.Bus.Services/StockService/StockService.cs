@@ -32,12 +32,12 @@ namespace WarehouseTest.Services.StockService
             return stockServiceDAO.GetAll();
         }
 
-        public void Save(int id ,string name, string code)
+        public void Save(int id, string name, string code)
         {
-            var codeInt = ValidateData(name, code);
+            var codeInt = ValidateData(id, name, code);
 
 
-            if (id==0)
+            if (id == 0)
             {
                 newStockRow = stockDataSet.StockTable.GetNewRow();
                 newStockRow.Id = tableIdService.GetId(DbTablesEnum.stock);
@@ -62,13 +62,13 @@ namespace WarehouseTest.Services.StockService
         //    stockServiceDAO.Save(stockDataSet);
         //}
 
-        public void ValidateDataSet(StockDataSet stockDataSet)
-        {
-            foreach (var stock in stockDataSet.StockTable)
-            {
-                ValidateData(stock.Name, stock.Code.ToString());
-            }
-        }
+        //public void ValidateDataSet(StockDataSet stockDataSet)
+        //{
+        //    foreach (var stock in stockDataSet.StockTable)
+        //    {
+        //        ValidateData(stock.Name, stock.Code.ToString());
+        //    }
+        //}
 
         public void DeleteById(int itemId)
         {
@@ -76,11 +76,11 @@ namespace WarehouseTest.Services.StockService
         }
 
 
-        public int ValidateData(string name, string code)
+        public int ValidateData(int id, string name, string code)
         {
             errorsMessageString = new StringBuilder();
             ValidateName(name);
-            var codeInt = ValidateCode(code);
+            var codeInt = ValidateCode(id, code);
 
             if (errorsMessageString.Length > 0)
             {
@@ -97,22 +97,38 @@ namespace WarehouseTest.Services.StockService
             }
         }
 
-        public int ValidateCode(string code)
+        public int ValidateCode(int id, string code)
         {
+            int codeInt = 0;
             if (string.IsNullOrEmpty(code))
             {
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کد"));
             }
-            bool validCode = int.TryParse(code, out int codeInt);
+            bool validCode = int.TryParse(code, out codeInt);
             if (!validCode || codeInt <= 0)
             {
                 errorsMessageString.Append(ErrorMessage.InValidFieldValue("کد"));
             }
-            else
+            var stockTable = stockServiceDAO.GetAll().StockTable;
+
+            foreach (var stock in stockTable)
             {
-                return codeInt;
+                if (stock.Code == codeInt && id != 0)
+                {
+                    var stockRowId = stock.Id;
+                    if (stockRowId != id)
+                    {
+                        errorsMessageString.Append(ErrorMessage.RepititiveValue("کد"));
+                        break;
+                    }
+                }
+                if (stock.Code == codeInt && id == 0)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("کد"));
+                    break;
+                }
             }
-            return 0;
+            return codeInt;
         }
     }
 }

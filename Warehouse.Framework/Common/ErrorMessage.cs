@@ -23,5 +23,10 @@ namespace Warehouse.Framework.Common
             return $"- {fieldName} را نمی توان حذف کرد \n";
         }
 
+        public static string RepititiveValue(string fieldName)
+        {
+            return $"- مقدار {fieldName} تکراری می باشد  \n";
+        }
+
     }
 }
