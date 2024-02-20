@@ -1,4 +1,6 @@
 ﻿using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -11,24 +13,24 @@ using System.Windows.Forms;
 using WarehouseTest.Services.DeliveryService;
 using WarehouseTest.Services.ReceiptService;
 using WarehouseTest.Services.StockService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.UI
 {
-    public partial class DeliveryListForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "خروج انبار", Order = 6)]
+    public partial class DeliveryListForm : BaseForm , IMenuExtension
     {
         IDeliveryService _deliveryService;
         IStockService _stockService;
         DeliveryDataset deliveryDataset;
         DeliveryTable deliveryTable;
+
+
         public DeliveryListForm()
         {
             InitializeComponent();
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IDeliveryService, DeliveryService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _deliveryService = serviceFactory.Resolve<IDeliveryService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
             deliveryDataset = _deliveryService.GetMasterAll();
 
@@ -109,19 +111,19 @@ namespace WarehouseTest.UI
             addDeliveryForm.Show();
         }
 
-        internal override void refreshBtn_Click(object sender, EventArgs e)
+        public override void refreshBtn_Click(object sender, EventArgs e)
         {
             deliveryDataset = _deliveryService.GetMasterAll();
             deliveryDataGrid.DataSource = deliveryDataset.DeliveryTable;
         }
 
-        internal override void addBtn_Click(object sender, EventArgs e)
+        public override void addBtn_Click(object sender, EventArgs e)
         {
             AddDeliveryForm addDeliveryForm = new AddDeliveryForm();
             addDeliveryForm.Show();
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = deliveryDataGrid.SelectedRows;
             if (selectedRows.Count > 0)

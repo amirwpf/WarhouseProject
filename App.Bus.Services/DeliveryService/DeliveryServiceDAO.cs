@@ -1,5 +1,5 @@
-﻿using Core.Entites;
-using Infrastructure.Repositories;
+﻿using App.Framework;
+using Core.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;

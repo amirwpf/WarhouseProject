@@ -1,5 +1,5 @@
-﻿using Core.Entites;
-using Infrastructure.Repositories;
+﻿using App.Framework;
+using Core.Entites;
 
 namespace WarehouseTest.Services.TableIdService
 {

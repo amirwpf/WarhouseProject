@@ -1,4 +1,7 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -8,17 +11,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework.Common;
 using WarehouseTest.Services.DeliveryService;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
-using WarehouseTest.UI.models;
-using static WarehouseTest.Program;
+
 
 namespace WarehouseTest.UI
 {
-    public partial class AddDeliveryForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse" , MenuName = "خروج انبار جدید" , Order =5)]
+    public partial class AddDeliveryForm : BaseForm, IMenuExtension
     {
         private readonly IItemService _itemService;
         private readonly ITableIdService _tableIdService;
@@ -31,19 +33,18 @@ namespace WarehouseTest.UI
         ItemTable itemTable;
         DeliveryRow newDeliveryRow;
         int deliveryId;
-        
+
+        private bool validUiInput;
+
+
         public AddDeliveryForm()
         {
             InitializeComponent();
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IDeliveryService, DeliveryService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _deliveryService = serviceFactory.Resolve<IDeliveryService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
             InitializeStockCombo();
             InitializeItemDataGirdView();
             FormSetUp();
@@ -54,15 +55,11 @@ namespace WarehouseTest.UI
             InitializeComponent();
             deliveryDataset = _deliveryDataset;
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IDeliveryService, DeliveryService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _deliveryService = proxyFactory.Resolve<IDeliveryService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _deliveryService = serviceFactory.Resolve<IDeliveryService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
             InitializeItemDataGirdView();
             InitializeStockCombo();
@@ -146,13 +143,38 @@ namespace WarehouseTest.UI
             //MaximizeBox = false;
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
+        public override void SaveBtn_Click(object sender, EventArgs e)
         {
+            validUiInput = true;
             try
             {
                 var selectedItem = stockCombo.SelectedItem;
-                _deliveryService.Save(deliveryDataset, selectedItem, deliveryNumberTxt.Text, deliveryDatePicker.Value);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                if (ValidateStockSelection(deliveryDataset, selectedItem))
+                {
+                    deliveryDataset.DeliveryTable[0].StockId = ((DataRowView)selectedItem).Row.Field<int>("Id");
+                }
+                else
+                {
+                    validUiInput = false;
+                }
+                deliveryDataset.DeliveryTable[0].Date = deliveryDatePicker.Value;
+
+                var deliveryNumberValid = int.TryParse(deliveryNumberTxt.Text, out int deliveryNumber);
+                if (deliveryNumberValid && deliveryNumber > 0)
+                {
+                    deliveryDataset.DeliveryTable[0].Number = deliveryNumber;
+                }
+                else
+                {
+                    ReceiptNumberIsNotValid();
+                    validUiInput = false;
+                }
+
+                if (validUiInput)
+                {
+                    _deliveryService.Save(deliveryDataset);
+                    MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                }
             }
             catch (Exception ex)
             {
@@ -160,7 +182,7 @@ namespace WarehouseTest.UI
             }
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = itemDataGrid.SelectedRows;
             if (selectedRows.Count > 0)
@@ -232,84 +254,45 @@ namespace WarehouseTest.UI
                 e.Cancel = true;
             }
         }
-    }
-}
 
 
-/*
-If you want to use Castle.DynamicProxy without Castle.Windsor and manually register and resolve dependencies, you can follow this simplified example:
-
-```csharp
-using Castle.DynamicProxy;
-using System;
-using System.Collections.Generic;
-
-public interface IService
-{
-    void DoSomething();
-}
-
-public class Service : IService
-{
-    public void DoSomething()
-    {
-        Console.WriteLine("Service is doing something.");
-    }
-}
-
-public class ProxyFactory
-{
-    private readonly ProxyGenerator _proxyGenerator = new ProxyGenerator();
-    private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
-
-    public void Register<TInterface, TImplementation>() where TImplementation : TInterface, new()
-    {
-        if (!_registeredInstances.ContainsKey(typeof(TInterface)))
+        private void ReceiptNumberIsNotValid()
         {
-            _registeredInstances[typeof(TInterface)] = new TImplementation();
-        }
-    }
-
-    public TInterface Resolve<TInterface>()
-    {
-        if (_registeredInstances.TryGetValue(typeof(TInterface), out var instance))
-        {
-            return (TInterface)instance;
+            MessageBox.Show("مقدار شماره سند خروج ناصحیح می باشد");
+            deliveryNumberTxt.Text = "0";
         }
 
-        var interceptor = new MyInterceptor();
-        return _proxyGenerator.CreateInterfaceProxyWithTarget<TInterface>(Activator.CreateInstance<TInterface>(), interceptor);
+        private bool ValidateStockSelection(DeliveryDataset deliveryDataset, object selectedItem)
+        {
+            if (selectedItem == null)
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            if (!(selectedItem is DataRowView rowView))
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            DataRow row = rowView.Row;
+
+            if (row == null)
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            if (!row.Table.Columns.Contains("Id"))
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            deliveryDataset.DeliveryTable[0].StockId = row.Field<int>("Id");
+            return true;
+        }
+
     }
 }
-
-public class MyInterceptor : IInterceptor
-{
-    public void Intercept(IInvocation invocation)
-    {
-        Console.WriteLine($"Intercepting method: {invocation.Method.Name}");
-        invocation.Proceed();
-    }
-}
-
-class Program
-{
-    static void Main()
-    {
-        var proxyFactory = new ProxyFactory();
-
-        proxyFactory.Register<IService, Service>();
-
-        var service = proxyFactory.Resolve<IService>();
-
-        service.DoSomething();
-    }
-}
-```
-
-In this example:
-
-- `ProxyFactory` manually registers instances for specific interfaces.
-- If an interface is not registered, it creates a proxy using `CreateInterfaceProxyWithTarget` and a custom interceptor (`MyInterceptor`).
-
-This is a basic example, and for more complex scenarios, you might need to enhance the registration and resolution logic.
-*/

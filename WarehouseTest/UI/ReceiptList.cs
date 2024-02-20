@@ -1,4 +1,6 @@
 ﻿using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,25 +12,24 @@ using System.Text;
 using System.Windows.Forms;
 using WarehouseTest.Services.ReceiptService;
 using WarehouseTest.Services.StockService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.UI
 {
-    public partial class ReceiptList : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار", Order = 8)]
+    public partial class ReceiptList : BaseForm, IMenuExtension
     {
         private readonly IReceiptService _receiptService;
         ReceiptDataset receiptDataset;
         private readonly IStockService _stockService;
         ReceiptTable receiptRows;
+
         public ReceiptList()
         {
             InitializeComponent();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IReceiptService, ReceiptService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _receiptService = proxyFactory.Resolve<IReceiptService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _receiptService = serviceFactory.Resolve<IReceiptService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
             receiptDataset = _receiptService.GetMasterAll();
 
@@ -107,19 +108,19 @@ namespace WarehouseTest.UI
             addReceiptForm.Show();
         }
 
-        internal override void refreshBtn_Click(object sender, EventArgs e)
+        public override void refreshBtn_Click(object sender, EventArgs e)
         {
             receiptDataset = _receiptService.GetMasterAll();
             receiptDataGrid.DataSource = receiptDataset.ReceiptTable;
         }
 
-        internal override void addBtn_Click(object sender, EventArgs e)
+        public override void addBtn_Click(object sender, EventArgs e)
         {
             AddReceiptForm addReceiptForm = new AddReceiptForm();
             addReceiptForm.Show();
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = receiptDataGrid.SelectedRows;
             if (selectedRows.Count > 0)

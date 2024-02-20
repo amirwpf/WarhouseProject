@@ -3,8 +3,8 @@ using System.Data;
 using System.Text;
 using System.Linq;
 using Core.Entites;
-using Warehouse.Framework.Common;
 using App.Domin.Core.Contracts.ServiceInterface;
+using App.Domin.Core;
 
 namespace WarehouseTest.Services.ReceiptService
 {
@@ -30,84 +30,40 @@ namespace WarehouseTest.Services.ReceiptService
             return receiptServiceDAO.GetMasterAll();
         }
 
-        public void Save(ReceiptDataset receiptDataset, object selectedItem, string receiptNumberText, DateTime receiptDate)
+        public void Save(ReceiptDataset receiptDataset)
         {
-            errorsMessageString = new StringBuilder();
-            errorsMessageString.Append(ValidateStockSelection(receiptDataset , selectedItem));
-            int receipNumber =ValidateReceiptNumber(receiptDataset.ReceiptTable[0].Id,receiptNumberText);
             ValidateData(receiptDataset);
 
-            //receiptDataset.ReceiptTable.Add(receiptDataset.ReceiptTable.GetNewRow());
-            receiptDataset.ReceiptTable[0].StockId = ((DataRowView)selectedItem).Row.Field<int>("Id");
-            receiptDataset.ReceiptTable[0].Date = receiptDate;
-            receiptDataset.ReceiptTable[0].Number = receipNumber;
-
             receiptServiceDAO.SaveMasterDetail(receiptDataset);
-
-
         }
-
-        //public void Save(ReceiptDataset receiptDataset)
-        //{
-        //    errorsMessageString = new StringBuilder();
-        //    ValidateData(receiptDataset);
-        //    receiptServiceDAO.SaveMasterDetail(receiptDataset);
-        //}
 
         public void DeleteById(int ReceiptId)
         {
             receiptServiceDAO.DeleteMasterDetailByMasterId(ReceiptId);
         }
 
-        private string ValidateStockSelection(ReceiptDataset receiptDataset, object selectedItem)
+        private bool ValidateReceiptNumber(int id ,int receiptNumber)
         {
-            if (selectedItem == null)
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            if (!(selectedItem is DataRowView rowView))
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            DataRow row = rowView.Row;
-
-            if (row == null)
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            if (!row.Table.Columns.Contains("Id"))
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            receiptDataset.ReceiptTable[0].StockId = row.Field<int>("Id");
-            return null;
-        }
-
-
-        private int ValidateReceiptNumber(int id,string receiptNumberText)
-        {
-            if (!int.TryParse(receiptNumberText, out int receiptNumber))
-            {
-                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره سند ورود"));
-            }
             var receiptTable = receiptServiceDAO.GetMasterAll().ReceiptTable;
             foreach (var receipt in receiptTable)
             {
                 if (receipt.Number == receiptNumber && receipt.Id!=id)
                 {
-                    errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند ورود"));
-                    break;
+                    return false;
                 }
             }
-            return receiptNumber;
+            return true;
         }
 
         private void ValidateData(ReceiptDataset receiptDataset)
         {
+            errorsMessageString = new StringBuilder();
+
+            if(!ValidateReceiptNumber(receiptDataset.ReceiptTable[0].Id, receiptDataset.ReceiptTable[0].Number))
+            {
+                errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند ورود"));
+            }
+
             if (receiptDataset.ReceiptItemsTable.Rows.Count == 0)
             {
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("لیست کالا ها"));

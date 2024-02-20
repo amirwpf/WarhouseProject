@@ -1,4 +1,7 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -8,25 +11,26 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework.Common;
 using WarehouseTest.forms;
 using WarehouseTest.Services.StockService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.UI
 {
-    public partial class StockListForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "انبار" , Order = 4)]
+    public partial class StockListForm : BaseForm , IMenuExtension
     {
         StockDataSet stockDataSet;
         private readonly IStockService _stockService;
         StockTable stockTable;
+
         public StockListForm()
         {
             InitializeComponent();
             stockDataSet = new StockDataSet();
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IStockService, StockService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+
+            var serviceFactory = new ServiceFactory();
+            _stockService = serviceFactory.Resolve<IStockService>();
+
             stockDataSet = _stockService.GetAll();
 
 
@@ -71,19 +75,19 @@ namespace WarehouseTest.UI
             //MaximizeBox = false;
         }
 
-        internal override void refreshBtn_Click(object sender, EventArgs e)
+        public override void refreshBtn_Click(object sender, EventArgs e)
         {
             stockDataSet = _stockService.GetAll();
             stockDataGrid.DataSource = stockDataSet.StockTable;
         }
 
-        internal override void addBtn_Click(object sender, EventArgs e)
+        public override void addBtn_Click(object sender, EventArgs e)
         {
             AddStockForm addStockForm = new AddStockForm();
             addStockForm.Show();
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = stockDataGrid.SelectedRows;
             if (selectedRows.Count > 0)

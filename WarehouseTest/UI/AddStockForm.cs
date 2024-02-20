@@ -1,4 +1,6 @@
 ﻿using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,24 +12,25 @@ using System.Text;
 using System.Windows.Forms;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.UI
 {
-    public partial class AddStockForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse",  MenuName = "انبار جدید", Order =3)]
+    public partial class AddStockForm : BaseForm , IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IStockService _stockService;
         StockDataSet stockDataSet;
         private int _id;
+
+
         public AddStockForm()
         {
             InitializeComponent();
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+
+            var serviceFactory = new ServiceFactory();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
             stockDataSet = new StockDataSet();
             _id = 0;
         }
@@ -36,11 +39,9 @@ namespace WarehouseTest.UI
         {
             InitializeComponent();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
             stockDataSet = new StockDataSet();
 
             //itemTable = new ItemTable();
@@ -59,7 +60,7 @@ namespace WarehouseTest.UI
             //MaximizeBox = false;
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
+        public override void SaveBtn_Click(object sender, EventArgs e)
         {
             try
             {

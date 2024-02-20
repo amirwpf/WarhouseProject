@@ -1,6 +1,6 @@
-﻿using App.Bus.Services.ReportService;
-using App.Domin.Core.Contracts.ServiceInterface;
-using App.Domin.Core.Entities.TypedDataTables;
+﻿using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,46 +10,37 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.UI
 {
-    public partial class StockItemQuantityReportForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse" , MenuName = "گزارش کالای انبار", Order =31)]
+    public partial class StockItemQuantityReportForm : BaseForm , IMenuExtension
     {
-        private readonly IReportService _reportService;
-        StockItemQuantityReportDataSet stockItemQuantityReportDataSet;
-        StockItemQuantityReportDataTable stockItemQuantityReportDataTable;
+        private readonly IStockService _stockService;
+        //StockItemQuantityReportDataSet stockItemQuantityReportDataSet;
+        DataTable stockItemQuantityReportDataTable;
+
         public StockItemQuantityReportForm()
         {
             InitializeComponent();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IReportService, ReportService>();
-            _reportService = proxyFactory.Resolve<IReportService>();
+            var serviceFactory = new ServiceFactory();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
-            stockItemQuantityReportDataSet = _reportService.GetStockItemQuantityReport();
+            stockItemQuantityReportDataTable = _stockService.GetStockItemQuantityReport();
 
             InitializeItemDataGirdView();
         }
 
         private void InitializeItemDataGirdView()
         {
-            stockItemQuantityReportDataTable = stockItemQuantityReportDataSet.StockItemQuantityReportDataTable;
+            //stockItemQuantityReportDataTable = stockItemQuantityReportDataSet.StockItemQuantityReportDataTable;
             itemDataGrid.DataSource = stockItemQuantityReportDataTable;
             itemDataGrid.AllowUserToAddRows = false;
             itemDataGrid.AllowUserToDeleteRows = false;
             itemDataGrid.Columns["Id"].Visible = false;
             itemDataGrid.Columns["Name"].Visible = false;
             itemDataGrid.Columns["Quantity"].Visible = false;
-
-            //var codeColumn = new DataGridViewTextBoxColumn
-            //{
-            //    Name = "codeColumn",
-            //    HeaderText = "کد انبار",
-            //    DataPropertyName = "Code",
-            //};
-
-            //itemDataGrid.Columns.Add(codeColumn);
 
             var nameColumn = new DataGridViewTextBoxColumn
             {
@@ -74,8 +65,14 @@ namespace WarehouseTest.UI
         {
             saveBtn.Enabled = false;
             deleteBtn.Enabled = false;
-            refreshBtn.Enabled = false;
+            //refreshBtn.Enabled = false;
             addBtn.Enabled = false;
+        }
+
+        public override void refreshBtn_Click(object sender, EventArgs e)
+        {
+            stockItemQuantityReportDataTable = _stockService.GetStockItemQuantityReport();
+            itemDataGrid.DataSource = stockItemQuantityReportDataTable;
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
 using Core.Entites;
 using System;
+using System.Data;
 using System.Text;
-using Warehouse.Framework.Common;
 
 namespace WarehouseTest.Services.StockService
 {
@@ -129,6 +130,12 @@ namespace WarehouseTest.Services.StockService
                 }
             }
             return codeInt;
+        }
+
+        public DataTable GetStockItemQuantityReport()
+        {
+            var res = stockServiceDAO.GetStockItemQuantityReport();
+            return res;
         }
     }
 }

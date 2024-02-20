@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using App.Framework;
+using Core.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IItemService
+    public interface IItemService : IBaseService
     {
         ItemDataSet GetById(int itemId);
         ItemDataSet GetAll();

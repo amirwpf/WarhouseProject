@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="App.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DbTablesEnum.cs" />
+    <Compile Include="Common\ErrorMessage.cs" />
+    <Compile Include="Common\StaticFields.cs" />
     <Compile Include="Contracts\ServiceInterface\IDeliveryService.cs" />
     <Compile Include="Contracts\ServiceInterface\IItemService.cs" />
     <Compile Include="Contracts\ServiceInterface\IReceiptService.cs" />
-    <Compile Include="Contracts\ServiceInterface\IReportService.cs" />
     <Compile Include="Contracts\ServiceInterface\IStockService.cs" />
     <Compile Include="Contracts\ServiceInterface\ITableIdService.cs" />
     <Compile Include="Entities\TypedDataSets\DeliveryDataset.cs">
@@ -62,9 +68,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataSets\StockDataSet.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Entities\TypedDataSets\StockItemQuantityReportDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataSets\TableIdDataSet.cs">
@@ -94,9 +97,6 @@
     <Compile Include="Entities\TypedDataTables\ReceiptTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Entities\TypedDataTables\StockItemQuantityReportDataTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Entities\TypedDataTables\StockTable.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -104,12 +104,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositoies\GenericRepository.cs" />
+    <Compile Include="Repositoies\MasterDetailDAO.cs" />
+    <Compile Include="Repositoies\NonMasterDetailDAO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Warehouse.Framework\Warehouse.Framework.csproj">
-      <Project>{90F636C7-6DA1-496C-9B56-99DED8BB4BA9}</Project>
-      <Name>Warehouse.Framework</Name>
-    </ProjectReference>
+    <Content Include="Common\New Text Document %282%29.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

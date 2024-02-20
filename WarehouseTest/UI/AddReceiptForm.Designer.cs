@@ -59,7 +59,9 @@
             this.itemDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.itemDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.itemDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.itemDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemDataGrid.Location = new System.Drawing.Point(12, 169);
             this.itemDataGrid.Name = "itemDataGrid";
@@ -146,8 +148,9 @@
             this.Controls.Add(this.receiptNumberTxt);
             this.Controls.Add(this.receiptDatePicker);
             this.Controls.Add(this.stockCombo);
+            this.Location = new System.Drawing.Point(600, 300);
             this.Name = "AddReceiptForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "سند ورود جدید";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddReceiptForm_Load);

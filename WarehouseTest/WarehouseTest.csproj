@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{077434C5-64F0-46A5-9122-BCB82034CA94}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>WarehouseTest</RootNamespace>
     <AssemblyName>WarehouseTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="App.Bus.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Bus.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="App.Domin.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Domin.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="App.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="App.Framework.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Framework.UI.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\..\..\..\..\Downloads\Castle.Core.dll</HintPath>
     </Reference>
@@ -50,8 +69,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interceptor.cs" />
-    <Compile Include="ProxyFactory.cs" />
     <Compile Include="UI\AddDeliveryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,46 +105,8 @@
     <Compile Include="UI\ItemList.Designer.cs">
       <DependentUpon>ItemList.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\MainMenuExtentions\AddDeliveryExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\AddItemExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\AddReceiptExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\AddStockExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\DeliveryListExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\ItemListExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\ReceiptListExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\StockItemQuantityReportExt.cs" />
-    <Compile Include="UI\MainMenuExtentions\StockListExt.cs" />
-    <Compile Include="UI\models\AddDeliveryTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\models\AddItemTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\models\AddReceiptTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\models\AddStockTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\models\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\models\BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\models\CloseableTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\models\IExtention.cs" />
-    <Compile Include="UI\models\ReceiptListTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ReceiptList.cs">
@@ -171,9 +150,6 @@
     <EmbeddedResource Include="UI\ItemList.resx">
       <DependentUpon>ItemList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -183,9 +159,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\models\BaseForm.resx">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\ReceiptList.resx">
       <DependentUpon>ReceiptList.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,20 +189,6 @@
     <None Include="warehouseDataSet.xss">
       <DependentUpon>warehouseDataSet.xsd</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\App.Bus.Services\App.Bus.Services.csproj">
-      <Project>{77B6529E-E012-4F37-BA65-39B0E6BB8D37}</Project>
-      <Name>App.Bus.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\App.Domin.Core\App.Domin.Core.csproj">
-      <Project>{01683487-8163-4067-853D-5F15ADEDED23}</Project>
-      <Name>App.Domin.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warehouse.Framework\Warehouse.Framework.csproj">
-      <Project>{90F636C7-6DA1-496C-9B56-99DED8BB4BA9}</Project>
-      <Name>Warehouse.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,7 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -7,16 +10,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework.Common;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.ReceiptService;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest
 {
-    public partial class AddReceiptForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار جدید", Order = 7)]
+    public partial class AddReceiptForm : BaseForm ,IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IReceiptService _receiptService;
@@ -27,20 +29,17 @@ namespace WarehouseTest
         ItemTable itemTable;
         ReceiptRow newReceiptRow;
         int receiptId;
+        private bool validUiInput;
 
         public AddReceiptForm()
         {
             InitializeComponent();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IReceiptService, ReceiptService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _receiptService = proxyFactory.Resolve<IReceiptService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _receiptService = serviceFactory.Resolve<IReceiptService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
             InitializeStockCombo();
             InitializeItemDataGirdView();
@@ -52,15 +51,11 @@ namespace WarehouseTest
             InitializeComponent();
             receiptDataset = _receiptDataset;
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            proxyFactory.Register<IReceiptService, ReceiptService>();
-            proxyFactory.Register<IStockService, StockService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-            _receiptService = proxyFactory.Resolve<IReceiptService>();
-            _stockService = proxyFactory.Resolve<IStockService>();
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
+            _receiptService = serviceFactory.Resolve<IReceiptService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
 
             InitializeItemDataGirdView();
             InitializeStockCombo();
@@ -78,15 +73,6 @@ namespace WarehouseTest
 
             itemDataGrid.Columns["Id"].Visible = false;
             itemDataGrid.Columns["ReceiptId"].Visible = false;
-
-
-            //Button deleteBtn = new Button();
-            //deleteBtn.Text = "X";
-            //deleteBtn.Size = new Size(25, 25);
-            //deleteBtn.Location = new System.Drawing.Point(75, 0);
-            //deleteBtn.BackColor = System.Drawing.Color.Crimson;
-            //deleteBtn.Click += new System.EventHandler(deleteBtn_Click);
-            //panel1.Controls.Add(deleteBtn);
         }
 
         private void InitializeStockCombo()
@@ -152,10 +138,10 @@ namespace WarehouseTest
             //MaximizeBox = false;
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = itemDataGrid.SelectedRows;
-            if(selectedRows.Count>0)
+            if (selectedRows.Count > 0)
             {
                 DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
 
@@ -170,7 +156,6 @@ namespace WarehouseTest
                             try
                             {
                                 receiptItem.Delete();
-                                //MessageBox.Show("آیتم با موفقیت حذف گردید");
                             }
                             catch
                             {
@@ -180,7 +165,7 @@ namespace WarehouseTest
                     }
                 }
             }
-            
+
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -196,7 +181,7 @@ namespace WarehouseTest
             return result;
         }
 
-        
+
 
         private void addItemBtn_Click(object sender, EventArgs e)
         {
@@ -212,13 +197,39 @@ namespace WarehouseTest
         }
 
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
+        public override void SaveBtn_Click(object sender, EventArgs e)
         {
+            validUiInput = true;
             try
             {
                 var selectedItem = stockCombo.SelectedItem;
-                _receiptService.Save(receiptDataset, selectedItem, receiptNumberTxt.Text, receiptDatePicker.Value);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                if (ValidateStockSelection(receiptDataset, selectedItem))
+                {
+                    receiptDataset.ReceiptTable[0].StockId = ((DataRowView)selectedItem).Row.Field<int>("Id");
+                }
+                else
+                {
+                    validUiInput = false;
+                }
+                receiptDataset.ReceiptTable[0].Date = receiptDatePicker.Value;
+
+                var receiptNumberValid = int.TryParse(receiptNumberTxt.Text, out int receiptNumber);
+                if (receiptNumberValid && receiptNumber > 0)
+                {
+                    receiptDataset.ReceiptTable[0].Number = receiptNumber;
+                }
+                else
+                {
+                    ReceiptNumberIsNotValid();
+                    validUiInput = false;
+                }
+
+                if (validUiInput)
+                {
+                    _receiptService.Save(receiptDataset);
+                    MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                }
+
             }
             catch (Exception ex)
             {
@@ -241,13 +252,51 @@ namespace WarehouseTest
 
         private void itemDataGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            if (e.ColumnIndex == 3 )//&& e.Context == DataGridViewDataErrorContexts.Formatting)
+            if (e.ColumnIndex == 3)
             {
                 MessageBox.Show("مقدار تعداد ناصحیح می باشد");
                 e.ThrowException = false;
                 receiptDataset.ReceiptItemsTable[e.RowIndex].Quantity = 0;
                 e.Cancel = true;
             }
+        }
+
+        private void ReceiptNumberIsNotValid()
+        {
+            MessageBox.Show("مقدار شماره سند ورود ناصحیح می باشد");
+            receiptNumberTxt.Text = "0";
+        }
+
+        private bool ValidateStockSelection(ReceiptDataset receiptDataset, object selectedItem)
+        {
+            if (selectedItem == null)
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            if (!(selectedItem is DataRowView rowView))
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            DataRow row = rowView.Row;
+
+            if (row == null)
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            if (!row.Table.Columns.Contains("Id"))
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
+                return false;
+            }
+
+            receiptDataset.ReceiptTable[0].StockId = row.Field<int>("Id");
+            return true;
         }
     }
 }

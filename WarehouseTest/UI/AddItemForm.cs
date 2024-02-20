@@ -1,4 +1,7 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
+using App.Framework.UI;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,11 +13,11 @@ using System.Text;
 using System.Windows.Forms;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.TableIdService;
-using WarehouseTest.UI.models;
 
 namespace WarehouseTest.forms
 {
-    public partial class AddItemForm : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "کالا جدید", Order = 1)]
+    public partial class AddItemForm : BaseForm , IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IItemService _itemService;
@@ -22,14 +25,14 @@ namespace WarehouseTest.forms
 
         private ItemDataSet _itemDataset;
         private int _id;
+
         public AddItemForm()
         {
             InitializeComponent();
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
+
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+             _tableIdService = serviceFactory.Resolve<ITableIdService>();
             itemTable = new ItemTable();
 
             _itemDataset = new ItemDataSet();
@@ -40,14 +43,11 @@ namespace WarehouseTest.forms
         {
             InitializeComponent();
 
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _tableIdService = serviceFactory.Resolve<ITableIdService>();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            proxyFactory.Register<ITableIdService, TableIdService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
-            _tableIdService = proxyFactory.Resolve<ITableIdService>();
-
-           // itemTable = new ItemTable();
+            // itemTable = new ItemTable();
 
 
             itemCodeTxt.Text = code.ToString();
@@ -63,7 +63,7 @@ namespace WarehouseTest.forms
             //MaximizeBox = false;
         }
 
-        internal override void SaveBtn_Click(object sender, EventArgs e)
+        public override void SaveBtn_Click(object sender, EventArgs e)
         {
             try
             {
@@ -75,5 +75,21 @@ namespace WarehouseTest.forms
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        //public int ValidateCode(string code)
+        //{
+        //    int codeInt = 0;
+        //    if (string.IsNullOrEmpty(code))
+        //    {
+        //        MessageBox.Show(ErrorMessage.ItemCantBeEmpty("کد"));
+        //    }
+        //    bool validCode = int.TryParse(code, out codeInt);
+        //    if (!validCode || codeInt <= 0)
+        //    {
+        //        MessageBox.Show(ErrorMessage.InValidFieldValue("کد"));
+        //    }
+        //    return codeInt;
+        //}
     }
 }

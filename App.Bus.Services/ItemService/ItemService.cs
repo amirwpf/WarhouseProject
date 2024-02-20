@@ -5,8 +5,8 @@ using WarehouseTest.Services.TableIdService;
 using System;
 using System.Text;
 using Core.Entites;
-using Warehouse.Framework.Common;
 using App.Domin.Core.Contracts.ServiceInterface;
+using App.Domin.Core;
 
 namespace WarehouseTest.Services.ItemService
 {
@@ -86,6 +86,9 @@ namespace WarehouseTest.Services.ItemService
             }
             return codeInt;
         }
+
+
+
 
         public void ValidateName(string name)
         {

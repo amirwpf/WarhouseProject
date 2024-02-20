@@ -7,26 +7,29 @@ using System.Text;
 using System;
 using System.Windows.Forms;
 using WarehouseTest.Services.ItemService;
-using WarehouseTest.UI.models;
 using WarehouseTest.forms;
 using Core.Entites;
 using App.Domin.Core.Contracts.ServiceInterface;
-using Warehouse.Framework.Common;
+using App.Framework.UI;
+using App.Framework;
+using App.Domin.Core;
 
 namespace WarehouseTest.UI
 {
-    public partial class ItemList : BaseForm
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "کالا", Order = 2)]
+    public partial class ItemList : BaseForm , IMenuExtension
     {
         private readonly IItemService _itemService;
         ItemDataSet itemDataSet;
         ItemTable itemTable;
+
+
         public ItemList()
         {
             InitializeComponent();
 
-            var proxyFactory = new ProxyFactory();
-            proxyFactory.Register<IItemService, ItemService>();
-            _itemService = proxyFactory.Resolve<IItemService>();
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
 
             itemDataSet = _itemService.GetAll();
 
@@ -69,19 +72,19 @@ namespace WarehouseTest.UI
             itemDataGrid.Columns.Add(nameColumn);
         }
 
-        internal override void refreshBtn_Click(object sender, EventArgs e)
+        public override void refreshBtn_Click(object sender, EventArgs e)
         {
             itemDataSet = _itemService.GetAll();
             itemDataGrid.DataSource = itemDataSet.ItemTable;
         }
 
-        internal override void addBtn_Click(object sender, EventArgs e)
+        public override void addBtn_Click(object sender, EventArgs e)
         {
             AddItemForm addItemForm = new AddItemForm();
             addItemForm.Show();
         }
 
-        internal override void deleteBtn_Click(object sender, EventArgs e)
+        public override void deleteBtn_Click(object sender, EventArgs e)
         {
             var selectedRows = itemDataGrid.SelectedRows;
             if(selectedRows.Count>0)

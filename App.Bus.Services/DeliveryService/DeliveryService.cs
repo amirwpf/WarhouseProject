@@ -1,11 +1,11 @@
-﻿using App.Domin.Core.Contracts.ServiceInterface;
+﻿using App.Domin.Core;
+using App.Domin.Core.Contracts.ServiceInterface;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using Warehouse.Framework.Common;
 using WarehouseTest.Services.StockService;
 
 namespace WarehouseTest.Services.DeliveryService
@@ -29,47 +29,50 @@ namespace WarehouseTest.Services.DeliveryService
             return deliveryServiceDAO.GetMasterAll();
         }
 
-        public void Save(DeliveryDataset deliveryDataset, object selectedItem, string deliveryNumberText, DateTime deliveryDate)
+        public void Save(DeliveryDataset deliveryDataset)
         {
-            errorsMessageString = new StringBuilder();
-            //var receipNumber =ValidateData(deliveryDataset, selectedItem, deliveryNumberText);
-            errorsMessageString.Append(ValidateStockSelection(deliveryDataset, selectedItem));
-            int receipNumber = ValidateReceiptNumber(deliveryDataset.DeliveryTable[0].Id,deliveryNumberText);
             ValidateData(deliveryDataset);
 
-            deliveryDataset.DeliveryTable[0].StockId = ((DataRowView)selectedItem).Row.Field<int>("Id");
-            deliveryDataset.DeliveryTable[0].Date = deliveryDate;
-            deliveryDataset.DeliveryTable[0].Number = receipNumber;
-
             deliveryServiceDAO.SaveMasterDetail(deliveryDataset);
-
-
         }
-
-        //public void Save(DeliveryDataset deliveryDataset)
-        //{
-        //    errorsMessageString = new StringBuilder();
-        //    ValidateData(deliveryDataset);
-        //    deliveryServiceDAO.SaveMasterDetail(deliveryDataset);
-        //}
 
         public void DeleteById(int deliveryId)
         {
             deliveryServiceDAO.DeleteMasterDetailByMasterId(deliveryId);
         }
 
+        private bool ValidateReceiptNumber(int id, int deliveryNumber)
+        {
+            var deliveryTable = deliveryServiceDAO.GetMasterAll().DeliveryTable;
+            foreach (var delivery in deliveryTable)
+            {
+                if (delivery.Number == deliveryNumber && delivery.Id != id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void ValidateData(DeliveryDataset deliveryDataset)
         {
+            errorsMessageString = new StringBuilder();
+
+            if (!ValidateReceiptNumber(deliveryDataset.DeliveryTable[0].Id, deliveryDataset.DeliveryTable[0].Number))
+            {
+                errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند ورود"));
+            }
+
             if (deliveryDataset.DeliveryItemsTable.Rows.Count == 0)
             {
-                errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("لیست کالا"));
+                errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("لیست کالا ها"));
             }
             else
             {
                 foreach (var item in deliveryDataset.DeliveryItemsTable.Where(x => x.RowState != DataRowState.Deleted))
                 {
                     if (item.Quantity <= 0 || item.Quantity == null)
-                        errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty(" تعداد کالا"));
+                        errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("تعداد کالا"));
 
                     if (item.ItemId == 0)
                         errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کالا"));
@@ -80,87 +83,6 @@ namespace WarehouseTest.Services.DeliveryService
             {
                 throw new Exception(errorsMessageString.ToString());
             }
-        }
-
-
-        //private int ValidateData(DeliveryDataset deliveryDataset, object selectedItem, string deliveryNumberText)
-        //{
-
-        //    errorsMessageString.Append(ValidateStockSelection(deliveryDataset, selectedItem));
-        //    int receipNumber = ValidateReceiptNumber(deliveryNumberText);
-
-
-
-        //    if (deliveryDataset.DeliveryItemsTable.Rows.Count == 0)
-        //    {
-        //        errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("Receipt Items"));
-        //    }
-        //    else
-        //    {
-        //        foreach (var item in deliveryDataset.DeliveryItemsTable.Where(x => x.RowState != DataRowState.Deleted))
-        //        {
-        //            if (item.Quantity <= 0 || item.Quantity == null)
-        //                errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("Item Quantity"));
-
-        //            if (item.ItemId == 0)
-        //                errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("Item"));
-        //        }
-        //    }
-
-        //    if (errorsMessageString.Length > 0)
-        //    {
-        //        throw new Exception(errorsMessageString.ToString());
-        //    }
-
-        //    return receipNumber;
-        //}
-
-
-        private string ValidateStockSelection(DeliveryDataset deliveryDataset, object selectedItem)
-        {
-            if (selectedItem == null)
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            if (!(selectedItem is DataRowView rowView))
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            DataRow row = rowView.Row;
-
-            if (row == null)
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            if (!row.Table.Columns.Contains("Id"))
-            {
-                return ErrorMessage.InValidFieldValue("انبار");
-            }
-
-            deliveryDataset.DeliveryTable[0].StockId = row.Field<int>("Id");
-            return null;
-        }
-
-
-        private int ValidateReceiptNumber(int id,string deliveryNumberText)
-        {
-            if (!int.TryParse(deliveryNumberText, out int deliveryNumber))
-            {
-                errorsMessageString.Append(ErrorMessage.InValidFieldValue("شماره  سند خروج"));
-            }
-            var deliveryTable = deliveryServiceDAO.GetMasterAll().DeliveryTable;
-            foreach (var delivery in deliveryTable)
-            {
-                if (delivery.Number == deliveryNumber && delivery.Id != id)
-                {
-                    errorsMessageString.Append(ErrorMessage.RepititiveValue("شماره سند خروج"));
-                    break;
-                }
-            }
-            return deliveryNumber;
         }
     }
 }
