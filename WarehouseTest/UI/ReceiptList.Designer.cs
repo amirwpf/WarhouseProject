@@ -33,6 +33,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.receiptDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
+            // 
             // receiptDataGrid
             // 
             this.receiptDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -59,7 +60,6 @@
             this.Controls.Add(this.receiptDataGrid);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ReceiptList";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "سند ورود";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ReceiptList_Load);

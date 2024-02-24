@@ -30,6 +30,14 @@ namespace App.Framework
             return ds;
         }
 
+        public TDataSet GetAll()
+        {
+            TDataSet ds = new TDataSet();
+            ds.MasterTable = masterRepository.GetAll();
+            ds.DetailTable = detailRepository.GetAll();
+            return ds;
+        }
+
         public TDataSet GetMasterDetailByMasterId(int masterId)
         {
             TDataSet dataSet = new TDataSet();

@@ -20,26 +20,6 @@ namespace App.Framework.UI
 
         }
 
-        public virtual void SaveBtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public virtual void deleteBtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public virtual void addBtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public virtual void refreshBtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private TabControl tabCtrl = new TabControl();
         private TabPage tabPag = new TabPage();
 

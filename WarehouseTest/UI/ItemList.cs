@@ -13,11 +13,12 @@ using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework.UI;
 using App.Framework;
 using App.Domin.Core;
+using App.Framework.UI.Model;
 
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "کالا", Order = 2)]
-    public partial class ItemList : BaseForm , IMenuExtension
+    public partial class ItemList : ListBaseForm, IMenuExtension
     {
         private readonly IItemService _itemService;
         ItemDataSet itemDataSet;
@@ -38,7 +39,7 @@ namespace WarehouseTest.UI
 
         private void ItemList_Load(object sender, EventArgs e)
         {
-            saveBtn.Enabled = false;
+            //saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
@@ -106,9 +107,9 @@ namespace WarehouseTest.UI
                                 MessageBox.Show("آیتم با موفقیت حذف گردید");
                                 RefreshDataGrid();
                             }
-                            catch
+                            catch(Exception ex)
                             {
-                                MessageBox.Show(ErrorMessage.ItemCantBeDeleted(itemRow.Name), "خطا");
+                                MessageBox.Show(ex.Message, "خطا");
                             }
                         }
                     }

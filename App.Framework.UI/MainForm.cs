@@ -8,6 +8,8 @@ using Warehouse.Framework;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Drawing;
+using System.Globalization;
+using System.Threading;
 
 namespace App.Framework.UI
 {
@@ -19,9 +21,16 @@ namespace App.Framework.UI
         public MainForm()
         {
             InitializeComponent();
+            InitializePersianCulture();
+
             addPanel.AutoScroll = true;
 
             extensions = new List<IMenuExtension>();
+
+            MessageBoxManager.OK = "بله";
+            MessageBoxManager.Yes = "بله";
+            MessageBoxManager.No = "خیر";
+            MessageBoxManager.Register();
 
         }
 
@@ -211,6 +220,15 @@ namespace App.Framework.UI
         {
             LoadExtensions();
             AddExtensionButtons(" ");
+        }
+
+
+        private static void InitializePersianCulture()
+        {
+
+            CultureInfo info = new CultureInfo("fa-Ir");
+            info.DateTimeFormat.Calendar = new PersianCalendar();
+            Thread.CurrentThread.CurrentCulture = info;
         }
     }
 }

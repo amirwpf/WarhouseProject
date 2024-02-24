@@ -1,6 +1,7 @@
 ﻿using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework;
 using App.Framework.UI;
+using App.Framework.UI.Model;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Windows.Forms;
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse" , MenuName = "گزارش کالای انبار", Order =31)]
-    public partial class StockItemQuantityReportForm : BaseForm , IMenuExtension
+    public partial class StockItemQuantityReportForm : ListBaseForm , IMenuExtension
     {
         private readonly IStockService _stockService;
         //StockItemQuantityReportDataSet stockItemQuantityReportDataSet;
@@ -63,7 +64,7 @@ namespace WarehouseTest.UI
 
         private void StockItemQuantityReportForm_Load(object sender, EventArgs e)
         {
-            saveBtn.Enabled = false;
+            //saveBtn.Enabled = false;
             deleteBtn.Enabled = false;
             //refreshBtn.Enabled = false;
             addBtn.Enabled = false;

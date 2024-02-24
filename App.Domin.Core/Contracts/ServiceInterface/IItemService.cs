@@ -7,7 +7,7 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IItemService : IBaseService
+    public interface IItemService : IBaseService//<ItemDataSet>
     {
         ItemDataSet GetById(int itemId);
         ItemDataSet GetAll();

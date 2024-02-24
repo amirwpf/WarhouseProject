@@ -2,6 +2,7 @@
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework;
 using App.Framework.UI;
+using App.Framework.UI.Model;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using WarehouseTest.Services.StockService;
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "انبار" , Order = 4)]
-    public partial class StockListForm : BaseForm , IMenuExtension
+    public partial class StockListForm : ListBaseForm , IMenuExtension
     {
         StockDataSet stockDataSet;
         private readonly IStockService _stockService;
@@ -71,7 +72,7 @@ namespace WarehouseTest.UI
 
         private void StockListForm_Load(object sender, EventArgs e)
         {
-            saveBtn.Enabled = false;
+            //saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 

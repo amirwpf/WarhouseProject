@@ -2,6 +2,7 @@
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework;
 using App.Framework.UI;
+using App.Framework.UI.Model;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using WarehouseTest.Services.TableIdService;
 namespace WarehouseTest.forms
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "کالا جدید", Order = 1)]
-    public partial class AddItemForm : BaseForm , IMenuExtension
+    public partial class AddItemForm : AddBaseForm , IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IItemService _itemService;
@@ -59,7 +60,7 @@ namespace WarehouseTest.forms
         {
             deleteBtn.Enabled = false;
             addBtn.Enabled = false;
-            refreshBtn.Enabled = false;
+            //refreshBtn.Enabled = false;
             //MaximizeBox = false;
         }
 

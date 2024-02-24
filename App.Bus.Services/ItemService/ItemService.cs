@@ -7,12 +7,15 @@ using System.Text;
 using Core.Entites;
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Domin.Core;
+using WarehouseTest.Services.ReceiptService;
 
 namespace WarehouseTest.Services.ItemService
 {
     public class ItemService : IItemService
     {
-        private readonly ItemServiceDAO itemServiceDAO;
+        private readonly ItemServiceDAO _itemServiceDAO;
+        private readonly ReceiptServiceDAO _receiptServiceDAO;
+        private readonly DeliveryServiceDAO _deliveryServiceDAO;
         TableIdService.TableIdService tableIdService;
         StringBuilder errorsMessageString;
         ItemDataSet itemDataSet;
@@ -20,7 +23,9 @@ namespace WarehouseTest.Services.ItemService
         public bool updateRow;
         public ItemService()
         {
-            itemServiceDAO = new ItemServiceDAO();
+            _itemServiceDAO = new ItemServiceDAO();
+            _receiptServiceDAO = new ReceiptServiceDAO();
+            _deliveryServiceDAO = new DeliveryServiceDAO();
             tableIdService = new TableIdService.TableIdService();
             itemDataSet = new ItemDataSet();
             //updateRow = true;
@@ -28,12 +33,12 @@ namespace WarehouseTest.Services.ItemService
 
         public ItemDataSet GetById(int itemId)
         {
-            return itemServiceDAO.GetById(itemId);
+            return _itemServiceDAO.GetById(itemId);
         }
 
         public ItemDataSet GetAll()
         {
-            return itemServiceDAO.GetAll();
+            return _itemServiceDAO.GetAll();
         }
 
         public void Save(int id, string name, string code)
@@ -52,12 +57,12 @@ namespace WarehouseTest.Services.ItemService
             }
             else
             {
-                itemDataSet = itemServiceDAO.GetById(id);
+                itemDataSet = _itemServiceDAO.GetById(id);
                 itemDataSet.ItemTable[0].Name = name;
                 itemDataSet.ItemTable[0].Code = codeInt;
             }
 
-            itemServiceDAO.Save(itemDataSet);
+            _itemServiceDAO.Save(itemDataSet);
         }
 
         //public void ValidateDataSet(ItemDataSet itemDataSet)
@@ -70,7 +75,25 @@ namespace WarehouseTest.Services.ItemService
 
         public void DeleteById(int itemId)
         {
-            itemServiceDAO.Delete(itemId);
+            var o = _receiptServiceDAO.GetMasterAll();
+            var itemRecList = _receiptServiceDAO.GetAll().ReceiptItemsTable.Where(x => x.ItemId == itemId);
+            var itemDelList = _deliveryServiceDAO.GetAll().DeliveryItemsTable.Where(x => x.ItemId == itemId);
+            var errorMsg = new StringBuilder();
+            foreach (var item in itemRecList)
+            {
+                errorMsg.Append( $"کالا در ورود کد { _receiptServiceDAO.GetMasterDetailByMasterId(item.ReceiptId).ReceiptTable[0].Number} استفاده شده است \n ");
+            }
+
+            foreach (var item in itemDelList)
+            {
+                errorMsg.Append($"کالا در خروج کد { _deliveryServiceDAO.GetMasterDetailByMasterId(item.DeliveryId).DeliveryTable[0].Number} استفاده شده است \n ");
+            }
+
+            if(itemRecList.Count()>0 || itemDelList.Count()>0)
+            {
+                throw new Exception(errorMsg.ToString());
+            }
+            _itemServiceDAO.Delete(itemId);
         }
 
 
@@ -110,7 +133,7 @@ namespace WarehouseTest.Services.ItemService
             {
                 errorsMessageString.Append(ErrorMessage.InValidFieldValue("کد"));
             }
-            var itemTable = itemServiceDAO.GetAll().ItemTable;
+            var itemTable = _itemServiceDAO.GetAll().ItemTable;
             foreach (var item in itemTable)
             {
                 if (item.Code == codeInt && id != 0)

@@ -1,6 +1,7 @@
 ﻿using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework;
 using App.Framework.UI;
+using App.Framework.UI.Model;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ using WarehouseTest.Services.StockService;
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار", Order = 8)]
-    public partial class ReceiptList : BaseForm, IMenuExtension
+    public partial class ReceiptList : ListBaseForm, IMenuExtension
     {
         private readonly IReceiptService _receiptService;
         ReceiptDataset receiptDataset;
@@ -92,7 +93,7 @@ namespace WarehouseTest.UI
 
         private void ReceiptList_Load(object sender, EventArgs e)
         {
-            saveBtn.Enabled = false;
+            //saveBtn.Enabled = false;
             //MaximizeBox = false;
         }
 
