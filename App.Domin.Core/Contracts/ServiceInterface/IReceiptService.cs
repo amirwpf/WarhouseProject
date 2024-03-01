@@ -8,16 +8,16 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IReceiptService : IBaseService
+    public interface IReceiptService : IBaseService , IGenericService<ReceiptDataset>
     {
-        ReceiptDataset GetByMasterId(int ReceiptId);
-        ReceiptDataset GetMasterAll();
+        //ReceiptDataset GetByMasterId(int ReceiptId);
+        //ReceiptDataset GetMasterAll();
 
         void Save(ReceiptDataset receiptDataset);//, object selectedItem, string receiptNumberText, DateTime receiptDate);
 
         //void Save(ReceiptDataset receiptDataset);
 
-        void DeleteById(int ReceiptId);
+        //void DeleteById(int ReceiptId);
         
     }
 }

@@ -8,6 +8,7 @@ using Core.Entites;
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Domin.Core;
 using WarehouseTest.Services.ReceiptService;
+using App.Framework;
 
 namespace WarehouseTest.Services.ItemService
 {

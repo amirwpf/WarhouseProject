@@ -9,16 +9,20 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public partial class ListBaseForm :BaseForm//<TDataSet,TDataRow> : BaseForm where TDataSet:DataSet,new() where TDataRow : DataRow
+    public partial class ListBaseForm<TDataSet,TDataTable,TDataRow,TForm> : BaseForm 
+        where TDataSet:BaseDataSet<TDataTable, TDataRow>,new() 
+        where TDataRow : DataRow 
+        where TForm:EntityBaseForm,new()
+        where TDataTable:MasterDataTable<TDataRow> , new()
     {
-        //private readonly IBaseService<TDataSet> _baseService;
-        //private TDataSet _dataSet;
-        public ListBaseForm()//(IBaseService<TDataSet> baseService)
+        private readonly IGenericService<TDataSet> _baseService;
+        private TDataSet _dataSet;
+        public ListBaseForm(IGenericService<TDataSet> baseService)
         {
             InitializeComponent();
             InitializeToolTips();
-            //_baseService = baseService;
-            //_dataSet = new TDataSet();
+            _baseService = baseService;
+            _dataSet = _baseService.GetAll();
 
         }
 
@@ -37,34 +41,34 @@ namespace App.Framework.UI.Model
 
         public virtual void deleteBtn_Click(object sender, EventArgs e)
         {
-            //var selectedRows = baseDataGrid.SelectedRows;
-            //if (selectedRows.Count > 0)
-            //{
-            //    DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
+            var selectedRows = baseDataGrid.SelectedRows;
+            if (selectedRows.Count > 0)
+            {
+                DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
 
-            //    if (result == DialogResult.Yes)
-            //    {
+                if (result == DialogResult.Yes)
+                {
 
-            //        foreach (DataGridViewRow row in selectedRows)
-            //        {
-            //            var itemRow = (row.DataBoundItem as DataRowView)?.Row as TDataRow;
-            //            if (itemRow != null)
-            //            {
-            //                var id = itemRow.Id;
-            //                try
-            //                {
-            //                    _baseService.DeleteById(id);
-            //                    MessageBox.Show("آیتم با موفقیت حذف گردید");
-            //                    RefreshDataGrid();
-            //                }
-            //                catch (Exception ex)
-            //                {
-            //                    MessageBox.Show(ex.Message, "خطا");
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                    foreach (DataGridViewRow row in selectedRows)
+                    {
+                        var itemRow = (row.DataBoundItem as DataRowView)?.Row as TDataRow;
+                        if (itemRow != null)
+                        {
+                            var id = (int)itemRow["Id"];
+                            try
+                            {
+                                _baseService.DeleteById(id);
+                                MessageBox.Show("آیتم با موفقیت حذف گردید");
+                                RefreshDataGrid();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, "خطا");
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public virtual void addBtn_Click(object sender, EventArgs e)
@@ -82,44 +86,43 @@ namespace App.Framework.UI.Model
 
         }
 
-    //    private void itemDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-    //    {
-    //        if (e.RowIndex >= 0 && e.RowIndex < baseDataGrid.Rows.Count)
-    //        {
-    //            DataRowView selectedRow = (DataRowView)baseDataGrid.Rows[e.RowIndex].DataBoundItem;
+        private void itemDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < baseDataGrid.Rows.Count)
+            {
+                DataRowView selectedRow = (DataRowView)baseDataGrid.Rows[e.RowIndex].DataBoundItem;
 
 
-    //            if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
-    //            {
+                if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
+                {
 
-    //                var id = (int)selectedRow["Id"];
-    //                var code = (int)selectedRow["Code"];
-    //                var name = (string)selectedRow["Name"];
+                    var _id = (int)selectedRow["Id"];
 
-    //                AddItemForm addItemForm = new AddItemForm(id, code, name);
-    //                addItemForm.WindowState = FormWindowState.Normal;
-    //                addItemForm.ShowDialog();
-    //            }
-    //        }
-    //    }
+                    TForm entityForm = new TForm();
+                    entityForm.SetInputId(_id);
+                    entityForm.WindowState = FormWindowState.Normal;
+                    entityForm.ShowDialog();
+                }
+            }
+        }
 
-    //    private DialogResult ShowConfirmationMessageBox(string message)
-    //    {
-    //        DialogResult result = MessageBox.Show(
-    //            message,
-    //            "تایید حذف",
-    //            MessageBoxButtons.YesNo,
-    //            MessageBoxIcon.Question,
-    //            MessageBoxDefaultButton.Button2
-    //        );
+        private DialogResult ShowConfirmationMessageBox(string message)
+        {
+            DialogResult result = MessageBox.Show(
+                message,
+                "تایید حذف",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
+            );
 
-    //        return result;
-    //    }
+            return result;
+        }
 
-    //    public void RefreshDataGrid()
-    //    {
-    //        _dataSet = _baseService.GetAll();
-    //        baseDataGrid.DataSource = _dataSet.Tables[0];
-    //    }
+        public void RefreshDataGrid()
+        {
+            _dataSet = _baseService.GetAll();
+            baseDataGrid.DataSource = _dataSet.MasterTable;
+        }
     }
 }

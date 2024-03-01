@@ -1,5 +1,6 @@
 ﻿using App.Domin.Core;
 using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
 using Core.Entites;
 
 namespace WarehouseTest.Services.TableIdService

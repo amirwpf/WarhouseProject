@@ -1,6 +1,8 @@
-﻿namespace Core.Entites
+﻿using App.Framework;
+
+namespace Core.Entites
 {
-    public class TableIdDataSet : NonMasterDetailDataset<TableIdTable, TableIdRow>
+    public class TableIdDataSet : BaseDataSet<TableIdTable, TableIdRow>
     {
         public TableIdDataSet()
         {

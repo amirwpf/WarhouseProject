@@ -5,6 +5,7 @@ using System.Linq;
 using Core.Entites;
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Domin.Core;
+using App.Framework;
 
 namespace WarehouseTest.Services.ReceiptService
 {
@@ -19,13 +20,13 @@ namespace WarehouseTest.Services.ReceiptService
             
         }
 
-        public ReceiptDataset GetByMasterId(int ReceiptId)
+        public ReceiptDataset GetById(int id)
         {
-            var res = receiptServiceDAO.GetMasterDetailByMasterId(ReceiptId);
+            var res = receiptServiceDAO.GetMasterDetailByMasterId(id);
             return res;
         }
 
-        public ReceiptDataset GetMasterAll()
+        public ReceiptDataset GetAll()
         {
             return receiptServiceDAO.GetMasterAll();
         }
@@ -85,6 +86,7 @@ namespace WarehouseTest.Services.ReceiptService
                 throw new Exception(errorsMessageString.ToString());
             }
         }
+
     }
 }
 

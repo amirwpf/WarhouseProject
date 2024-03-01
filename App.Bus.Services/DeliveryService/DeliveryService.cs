@@ -1,5 +1,6 @@
 ﻿using App.Domin.Core;
 using App.Domin.Core.Contracts.ServiceInterface;
+using App.Framework;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,12 @@ namespace WarehouseTest.Services.DeliveryService
         {
             deliveryServiceDAO = new DeliveryServiceDAO();
         }
-
-        public DeliveryDataset GetByMasterId(int deliveryId)
+        public DeliveryDataset GetById(int id)
         {
-            return deliveryServiceDAO.GetMasterDetailByMasterId(deliveryId);
+            return deliveryServiceDAO.GetMasterDetailByMasterId(id);
         }
 
-        public DeliveryDataset GetMasterAll()
+        public DeliveryDataset GetAll()
         {
             return deliveryServiceDAO.GetMasterAll();
         }
@@ -84,5 +84,6 @@ namespace WarehouseTest.Services.DeliveryService
                 throw new Exception(errorsMessageString.ToString());
             }
         }
+
     }
 }

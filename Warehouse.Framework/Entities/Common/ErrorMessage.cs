@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace App.Domin.Core
+namespace App.Framework
 {
     public static class ErrorMessage
     {

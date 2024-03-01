@@ -6,12 +6,8 @@ using System.Text;
 
 namespace App.Framework
 {
-    public interface IBaseService//<TDataSet> where TDataSet:DataSet
+    public interface IBaseService
     {
-        //TDataSet GetById(int id);
-        //TDataSet GetAll();
-        //void DeleteById(int id);
-
     }
 }
 

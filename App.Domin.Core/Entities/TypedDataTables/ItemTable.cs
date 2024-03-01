@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using App.Framework;
+using System.Data;
 
 
 namespace Core.Entites

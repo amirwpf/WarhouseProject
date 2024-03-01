@@ -23,7 +23,7 @@ using WarehouseTest.Services.TableIdService;
 namespace WarehouseTest
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار جدید", Order = 7)]
-    public partial class AddReceiptForm : AddBaseForm ,IMenuExtension
+    public partial class AddReceiptForm : EntityBaseForm ,IMenuExtension
     {
 
         #region Fields

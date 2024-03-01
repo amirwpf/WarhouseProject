@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 
-namespace Core.Entites
+namespace App.Framework
 {
-    public abstract class MasterDetailDataset<TMaster, TDetail, TMasterRow, TDetailRow> : DataSet
+    public abstract class MasterDetailDataset<TMaster, TDetail, TMasterRow, TDetailRow> : BaseDataSet<TMaster,TMasterRow>
 where TDetail : DetailDataTable<TDetailRow>, new()
 where TDetailRow : DataRow
 where TMaster : MasterDataTable<TMasterRow>, new()
@@ -26,7 +26,7 @@ where TMasterRow : DataRow
         }
 
 
-        public abstract TMaster MasterTable { get; set; }
+        //public abstract TMaster MasterTable { get; set; }
         public abstract TDetail DetailTable { get; set; }
     }
 }

@@ -11,13 +11,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using WarehouseTest.forms;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
 
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse",  MenuName = "انبار جدید", Order =3)]
-    public partial class AddStockForm : AddBaseForm , IMenuExtension
+    public partial class AddStockForm : EntityBaseForm , IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IStockService _stockService;
@@ -34,6 +35,11 @@ namespace WarehouseTest.UI
             _stockService = serviceFactory.Resolve<IStockService>();
             stockDataSet = new StockDataSet();
             _id = 0;
+
+
+            AddItemForm addItemForm = new AddItemForm();
+            addItemForm.SetInputId(1);
+            addItemForm.Show();
         }
 
         public AddStockForm(int id, int code, string name)

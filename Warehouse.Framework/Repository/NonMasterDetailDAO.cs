@@ -1,11 +1,10 @@
-﻿using Core.Entites;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 
 namespace App.Framework
 {
     public abstract class NonMasterDetailDAO<TDataSet, TMaster, TMasterRow>
-    where TDataSet : NonMasterDetailDataset<TMaster, TMasterRow>, new()
+    where TDataSet : BaseDataSet<TMaster, TMasterRow>, new()
     where TMaster : MasterDataTable<TMasterRow>, new()
     where TMasterRow : DataRow
     {

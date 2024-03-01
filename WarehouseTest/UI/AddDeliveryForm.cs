@@ -22,7 +22,7 @@ using WarehouseTest.Services.TableIdService;
 namespace WarehouseTest.UI
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "خروج انبار جدید", Order = 5)]
-    public partial class AddDeliveryForm : AddBaseForm, IMenuExtension
+    public partial class AddDeliveryForm : EntityBaseForm, IMenuExtension
     {
         #region Fields
 
@@ -72,6 +72,21 @@ namespace WarehouseTest.UI
 
             //itemDataGrid.Columns["DeliveryId"].Visible = false;
             //itemDataGrid.Columns["Id"].Visible = false;
+        }
+
+        public override void SetInputId(int inputId)
+        {
+            _deliveryDataset = _deliveryService.GetById(inputId);
+            _deliveryId = _deliveryDataset.DeliveryTable[0].Id;
+            deliveryNumberTxt.Text = _deliveryDataset.DeliveryTable[0].Number.ToString();
+            deliveryDatePicker.Value = _deliveryDataset.DeliveryTable[0].Date;
+            itemDataGrid.DataSource = _deliveryDataset.DeliveryItemsTable;
+            var stockRow = _stockTable.FirstOrDefault(x => x.Id == _deliveryDataset.DeliveryTable[0].StockId);
+            var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
+            stockCombo.SelectedIndex = stockRowIndex;
+            InitializeStockCombo();
+            InitializeItemDataGridView();
+            FormSetUp();
         }
 
         #endregion

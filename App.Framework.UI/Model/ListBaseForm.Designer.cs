@@ -2,7 +2,11 @@
 
 namespace App.Framework.UI.Model
 {
-    public partial class ListBaseForm : BaseForm//<TDataSet, TDataRow> : BaseForm where TDataSet : DataSet, new() where TDataRow : DataRow
+    public partial class ListBaseForm<TDataSet, TDataTable, TDataRow, TForm> : BaseForm
+        where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
+        where TDataRow : DataRow
+        where TForm : EntityBaseForm, new()
+        where TDataTable : MasterDataTable<TDataRow>, new()
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +34,7 @@ namespace App.Framework.UI.Model
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListBaseForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListBaseForm<TDataSet, TDataTable, TDataRow, TForm>));
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.refreshBtn = new System.Windows.Forms.Button();

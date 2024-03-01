@@ -1,6 +1,4 @@
-﻿using App.Domin.Core;
-using Core.Entites;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;

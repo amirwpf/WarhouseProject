@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 
 
-namespace Core.Entites
+namespace App.Framework
 {
     public abstract class BaseTypedDataTable<T> : DataTable, IEnumerable<T> where T : DataRow
     {

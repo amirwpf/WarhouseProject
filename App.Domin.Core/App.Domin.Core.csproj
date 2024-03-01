@@ -44,9 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DbTablesEnum.cs" />
-    <Compile Include="Common\ErrorMessage.cs" />
-    <Compile Include="Common\StaticFields.cs" />
     <Compile Include="Contracts\ServiceInterface\IDeliveryService.cs" />
     <Compile Include="Contracts\ServiceInterface\IItemService.cs" />
     <Compile Include="Contracts\ServiceInterface\IReceiptService.cs" />
@@ -58,12 +55,6 @@
     <Compile Include="Entities\TypedDataSets\ItemDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Entities\TypedDataSets\MasterDetailDataset.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Entities\TypedDataSets\NonMasterDetailDataset.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Entities\TypedDataSets\ReceiptDataset.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -73,22 +64,13 @@
     <Compile Include="Entities\TypedDataSets\TableIdDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Entities\TypedDataTables\BaseTypedDataTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Entities\TypedDataTables\DeliveryItemsTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataTables\DeliveryTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Entities\TypedDataTables\DetailDataTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Entities\TypedDataTables\ItemTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Entities\TypedDataTables\MasterDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataTables\ReceiptItemsTable.cs">
@@ -104,12 +86,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositoies\GenericRepository.cs" />
-    <Compile Include="Repositoies\MasterDetailDAO.cs" />
-    <Compile Include="Repositoies\NonMasterDetailDAO.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Common\New Text Document %282%29.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

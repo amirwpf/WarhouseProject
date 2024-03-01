@@ -1,7 +1,9 @@
 ﻿
+using App.Framework;
+
 namespace Core.Entites
 {
-    public class StockDataSet : NonMasterDetailDataset<StockTable, StockRow>
+    public class StockDataSet : BaseDataSet<StockTable, StockRow>
     {
         public StockDataSet()
         {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
 
-namespace Core.Entites
+namespace App.Framework
 {
-    public abstract class NonMasterDetailDataset<TMaster, TMasterRow> : DataSet
+    public abstract class BaseDataSet<TMaster, TMasterRow> : DataSet
     where TMaster : MasterDataTable<TMasterRow>, new()
     where TMasterRow : DataRow
     {
-        public NonMasterDetailDataset()
+        public BaseDataSet()
         {
             //MasterTable = Activator.CreateInstance<TMaster>();
         }

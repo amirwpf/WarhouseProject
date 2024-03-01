@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="App.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\App.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -48,11 +52,11 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AddBaseForm.cs">
+    <Compile Include="Model\EntityBaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Model\AddBaseForm.Designer.cs">
-      <DependentUpon>AddBaseForm.cs</DependentUpon>
+    <Compile Include="Model\EntityBaseForm.Designer.cs">
+      <DependentUpon>EntityBaseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\BaseForm.cs">
       <SubType>Form</SubType>
@@ -78,8 +82,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\AddBaseForm.resx">
-      <DependentUpon>AddBaseForm.cs</DependentUpon>
+    <EmbeddedResource Include="Model\EntityBaseForm.resx">
+      <DependentUpon>EntityBaseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
@@ -91,12 +95,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Warehouse.Framework\App.Framework.csproj">
-      <Project>{90f636c7-6da1-496c-9b56-99ded8bb4ba9}</Project>
-      <Name>App.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

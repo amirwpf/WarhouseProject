@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using App.Framework;
+using Core.Entites;
 
 namespace Core.Entites
 {

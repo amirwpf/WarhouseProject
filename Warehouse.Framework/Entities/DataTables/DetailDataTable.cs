@@ -1,7 +1,7 @@
 ﻿using System.Data;
 
 
-namespace Core.Entites
+namespace App.Framework
 {
     public abstract class DetailDataTable<T> : BaseTypedDataTable<T> where T : DataRow
     {

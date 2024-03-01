@@ -14,11 +14,12 @@ using System.Text;
 using System.Windows.Forms;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.TableIdService;
+using WarehouseTest.UI;
 
 namespace WarehouseTest.forms
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "کالا جدید", Order = 1)]
-    public partial class AddItemForm : AddBaseForm , IMenuExtension
+    public partial class AddItemForm : EntityBaseForm , IMenuExtension
     {
         private readonly ITableIdService _tableIdService;
         private readonly IItemService _itemService;
@@ -38,6 +39,24 @@ namespace WarehouseTest.forms
 
             _itemDataset = new ItemDataSet();
             _id = 0;
+
+
+            //ListBaseForm<ItemDataSet, ItemTable, ItemRow, AddItemForm> listBaseForm = new ListBaseForm<ItemDataSet, ItemTable, ItemRow, AddItemForm>(_itemService);
+            //listBaseForm.Show();
+        }
+
+        public override void SetInputId(int inputId)
+        {
+            //var serviceFactory = new ServiceFactory();
+            //_itemService = serviceFactory.Resolve<IItemService>();
+            //_tableIdService = serviceFactory.Resolve<ITableIdService>();
+
+            // itemTable = new ItemTable();
+            _itemDataset = _itemService.GetById(inputId);
+
+            itemCodeTxt.Text = _itemDataset.ItemTable[0].Code.ToString();
+            itemNameTx.Text = _itemDataset.ItemTable[0].Name.ToString();
+            _id = inputId;
         }
 
         public AddItemForm(int id, int code, string name)

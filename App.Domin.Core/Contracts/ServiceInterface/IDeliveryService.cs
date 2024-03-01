@@ -8,14 +8,13 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IDeliveryService : IBaseService
+    public interface IDeliveryService : IBaseService,IGenericService<DeliveryDataset>
     {
-        DeliveryDataset GetByMasterId(int deliveryId);
-        DeliveryDataset GetMasterAll();
+        //DeliveryDataset GetByMasterId(int deliveryId);
         void Save(DeliveryDataset deliveryDataset);//, object selectedItem, string deliveryNumberText, DateTime deliveryDate);
 
         //void Save(DeliveryDataset deliveryDataset);
-        void DeleteById(int deliveryId);
+        //void DeleteById(int deliveryId);
 
     }
 }
