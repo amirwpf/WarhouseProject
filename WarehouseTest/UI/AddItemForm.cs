@@ -35,14 +35,17 @@ namespace WarehouseTest.forms
             var serviceFactory = new ServiceFactory();
             _itemService = serviceFactory.Resolve<IItemService>();
              _tableIdService = serviceFactory.Resolve<ITableIdService>();
+
+            var receiptService = serviceFactory.Resolve<IReceiptService>();
             itemTable = new ItemTable();
 
             _itemDataset = new ItemDataSet();
             _id = 0;
 
 
-            //ListBaseForm<ItemDataSet, ItemTable, ItemRow, AddItemForm> listBaseForm = new ListBaseForm<ItemDataSet, ItemTable, ItemRow, AddItemForm>(_itemService);
-            //listBaseForm.Show();
+            BaseListFormGeneric<ReceiptDataset,ReceiptTable,ReceiptRow,AddReceiptForm> listBaseForm = new BaseListFormGeneric<ReceiptDataset, ReceiptTable, ReceiptRow, AddReceiptForm>(receiptService);
+            listBaseForm.Text = "کالا";
+            listBaseForm.Show();
         }
 
         public override void SetInputId(int inputId)

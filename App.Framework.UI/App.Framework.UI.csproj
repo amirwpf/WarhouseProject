@@ -52,6 +52,15 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\BaseListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\BaseListForm.Designer.cs">
+      <DependentUpon>BaseListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BaseListFormGeneric.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Model\EntityBaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +90,9 @@
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\BaseListForm.resx">
+      <DependentUpon>BaseListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\EntityBaseForm.resx">
       <DependentUpon>EntityBaseForm.cs</DependentUpon>

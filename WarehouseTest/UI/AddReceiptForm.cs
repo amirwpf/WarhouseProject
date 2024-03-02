@@ -80,6 +80,21 @@ namespace WarehouseTest
             //itemDataGrid.Columns["ReceiptId"].Visible = false;
         }
 
+        public override void SetInputId(int inputId)
+        {
+            _receiptDataset = _receiptService.GetById(inputId);
+            _receiptId = _receiptDataset.ReceiptTable[0].Id;
+            receiptNumberTxt.Text = _receiptDataset.ReceiptTable[0].Number.ToString();
+            receiptDatePicker.Value = _receiptDataset.ReceiptTable[0].Date;
+            itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
+            var stockRow = _stockTable.FirstOrDefault(x => x.Id == _receiptDataset.ReceiptTable[0].StockId);
+            var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
+            stockCombo.SelectedIndex = stockRowIndex;
+            InitializeStockCombo();
+            InitializeItemDataGirdView();
+            FormSetUp();
+        }
+
         #endregion
 
         #region Initialization Methods
