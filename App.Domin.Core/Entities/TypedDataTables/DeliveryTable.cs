@@ -1,5 +1,6 @@
 ﻿using App.Framework;
 using System;
+using System.ComponentModel;
 using System.Data;
 
 
@@ -34,7 +35,7 @@ namespace Core.Entites
             get { return (int)this["Id"]; }
             set { this["Id"] = value; }
         }
-
+        [DisplayName("شماره")]
         public int Number
         {
             get { return (int)this["Number"]; }
@@ -46,19 +47,19 @@ namespace Core.Entites
             get { return (int)this["StockId"]; }
             set { this["StockId"] = value; }
         }
-
+        [DisplayName("تاریخ")]
         public DateTime Date
         {
             get { return (DateTime)this["Date"]; }
             set { this["Date"] = value; }
         }
-
+        [DisplayName("کد انبار")]
         public int StockCode
         {
             get { return (int)this["StockCode"]; }
             set { this["StockCode"] = value; }
         }
-
+        [DisplayName("انبار")]
         public string StockName
         {
             get { return (string)this["StockName"]; }

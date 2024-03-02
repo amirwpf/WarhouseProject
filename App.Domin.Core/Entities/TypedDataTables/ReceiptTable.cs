@@ -52,7 +52,7 @@ namespace Core.Entites
             get { return (DateTime)this["Date"]; }
             set { this["Date"] = value; }
         }
-
+        [DisplayName("کد انبار")]
         public int StockCode
         {
             get { return (int)this["StockCode"]; }

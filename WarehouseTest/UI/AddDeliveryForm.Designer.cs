@@ -40,21 +40,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
-            // saveBtn
-            // 
-            this.saveBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            // 
             // panel1
             // 
             this.panel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             // 
-            // refreshBtn
+            // saveBtn
             // 
-            //this.refreshBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.saveBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             // 
             // addBtn
             // 
-            this.addBtn.Location = new System.Drawing.Point(38, 1);
             this.addBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             // 
             // deleteBtn

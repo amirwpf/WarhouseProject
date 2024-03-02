@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using System.ComponentModel;
 using System.Data;
 
 
@@ -27,13 +28,13 @@ namespace Core.Entites
             get { return (int)this["Id"]; }
             set { this["Id"] = value; }
         }
-
+        [DisplayName("کد")]
         public int Code
         {
             get { return (int)this["Code"]; }
             set { this["Code"] = value; }
         }
-
+        [DisplayName("نام")]
         public string Name
         {
             get { return (string)this["Name"]; }

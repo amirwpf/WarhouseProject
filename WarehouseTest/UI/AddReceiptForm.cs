@@ -90,9 +90,6 @@ namespace WarehouseTest
             var stockRow = _stockTable.FirstOrDefault(x => x.Id == _receiptDataset.ReceiptTable[0].StockId);
             var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
             stockCombo.SelectedIndex = stockRowIndex;
-            InitializeStockCombo();
-            InitializeItemDataGirdView();
-            FormSetUp();
         }
 
         #endregion

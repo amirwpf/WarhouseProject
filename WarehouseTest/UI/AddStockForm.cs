@@ -35,11 +35,15 @@ namespace WarehouseTest.UI
             _stockService = serviceFactory.Resolve<IStockService>();
             stockDataSet = new StockDataSet();
             _id = 0;
+        }
 
+        public override void SetInputId(int inputId)
+        {
+            stockDataSet = _stockService.GetById(inputId);
 
-            AddItemForm addItemForm = new AddItemForm();
-            addItemForm.SetInputId(1);
-            addItemForm.Show();
+            stockCodeTxt.Text = stockDataSet.StockTable[0].Code.ToString();
+            stockNameTx.Text = stockDataSet.StockTable[0].Name.ToString();
+            _id = inputId;
         }
 
         public AddStockForm(int id, int code, string name)
