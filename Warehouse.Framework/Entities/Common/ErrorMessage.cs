@@ -18,6 +18,11 @@ namespace App.Framework
             return $"- {fieldName} باید به درستی مقدار دهی شود \n";
         }
 
+        public static string ValueMustBePositive(string fieldName)
+        {
+            return $"- {fieldName} باید عدد بزرگ تر از صفر باشد \n";
+        }
+
         public static string ItemCantBeDeleted(string fieldName)
         {
             return $"- {fieldName} را نمی توان حذف کرد \n";

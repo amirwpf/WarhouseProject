@@ -72,7 +72,7 @@ namespace WarehouseTest.Services.DeliveryService
                 foreach (var item in deliveryDataset.DeliveryItemsTable.Where(x => x.RowState != DataRowState.Deleted))
                 {
                     if (item.Quantity <= 0 || item.Quantity == null)
-                        errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("تعداد کالا"));
+                        errorsMessageString.Append(ErrorMessage.ValueMustBePositive("تعداد کالا"));
 
                     if (item.ItemId == 0)
                         errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کالا"));

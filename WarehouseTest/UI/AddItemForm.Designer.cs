@@ -39,7 +39,7 @@
             // 
             this.itemNameTx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.itemNameTx.Location = new System.Drawing.Point(55, 84);
+            this.itemNameTx.Location = new System.Drawing.Point(55, 123);
             this.itemNameTx.Name = "itemNameTx";
             this.itemNameTx.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemNameTx.Size = new System.Drawing.Size(529, 20);
@@ -48,7 +48,7 @@
             // itemNameLbl
             // 
             this.itemNameLbl.AutoSize = true;
-            this.itemNameLbl.Location = new System.Drawing.Point(29, 87);
+            this.itemNameLbl.Location = new System.Drawing.Point(29, 126);
             this.itemNameLbl.Name = "itemNameLbl";
             this.itemNameLbl.Size = new System.Drawing.Size(20, 13);
             this.itemNameLbl.TabIndex = 1;
@@ -57,7 +57,7 @@
             // itemCodeLbl
             // 
             this.itemCodeLbl.AutoSize = true;
-            this.itemCodeLbl.Location = new System.Drawing.Point(29, 124);
+            this.itemCodeLbl.Location = new System.Drawing.Point(29, 88);
             this.itemCodeLbl.Name = "itemCodeLbl";
             this.itemCodeLbl.Size = new System.Drawing.Size(19, 13);
             this.itemCodeLbl.TabIndex = 3;
@@ -67,7 +67,7 @@
             // 
             this.itemCodeTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.itemCodeTxt.Location = new System.Drawing.Point(55, 121);
+            this.itemCodeTxt.Location = new System.Drawing.Point(55, 85);
             this.itemCodeTxt.Name = "itemCodeTxt";
             this.itemCodeTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemCodeTxt.Size = new System.Drawing.Size(529, 20);
@@ -83,7 +83,6 @@
             this.Controls.Add(this.itemCodeLbl);
             this.Controls.Add(this.itemNameLbl);
             this.Name = "AddItemForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "کالا جدید";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddItemForm_Load);

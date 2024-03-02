@@ -74,7 +74,7 @@ namespace WarehouseTest.Services.ReceiptService
                 foreach (var item in receiptDataset.ReceiptItemsTable.Where(x=>x.RowState!=DataRowState.Deleted))
                 {
                     if (item.Quantity <= 0 || item.Quantity == null)
-                        errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("تعداد کالا"));
+                        errorsMessageString.Append(ErrorMessage.ValueMustBePositive("تعداد کالا"));
 
                     if (item.ItemId == 0)
                         errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("کالا"));
