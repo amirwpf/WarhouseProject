@@ -25,34 +25,77 @@ namespace App.Framework.UI.Model
             dataGrid.DataSource = _dataSet.MasterTable;
         }
 
+        //public override void deleteBtn_Click(object sender, EventArgs e)
+        //{
+        //    var selectedRows = dataGrid.SelectedRows;
+        //    if (selectedRows.Count > 0)
+        //    {
+        //        DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
+
+        //        if (result == DialogResult.Yes)
+        //        {
+
+        //            foreach (DataGridViewRow row in selectedRows)
+        //            {
+        //                var itemRow = (row.DataBoundItem as DataRowView)?.Row as TDataRow;
+        //                if (itemRow != null)
+        //                {
+        //                    var id = (int)itemRow["Id"];
+        //                    try
+        //                    {
+        //                        _baseService.DeleteById(id);
+        //                        MessageBox.Show("آیتم با موفقیت حذف گردید");
+        //                        RefreshDataGrid();
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        MessageBox.Show(ex.Message, "خطا");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
         public override void deleteBtn_Click(object sender, EventArgs e)
         {
-            var selectedRows = dataGrid.SelectedRows;
-            if (selectedRows.Count > 0)
+            var selectedCells = dataGrid.SelectedCells;
+
+            if (selectedCells.Count > 0)
             {
                 DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
 
                 if (result == DialogResult.Yes)
                 {
+                    HashSet<int> deletedRows = new HashSet<int>();
 
-                    foreach (DataGridViewRow row in selectedRows)
+                    foreach (DataGridViewCell cell in selectedCells)
                     {
-                        var itemRow = (row.DataBoundItem as DataRowView)?.Row as TDataRow;
-                        if (itemRow != null)
+                        int rowIndex = cell.RowIndex;
+
+                        if (!deletedRows.Contains(rowIndex))
                         {
-                            var id = (int)itemRow["Id"];
-                            try
+                            var itemRow = (dataGrid.Rows[rowIndex].DataBoundItem as DataRowView)?.Row as TDataRow;
+
+                            if (itemRow != null)
                             {
-                                _baseService.DeleteById(id);
-                                MessageBox.Show("آیتم با موفقیت حذف گردید");
-                                RefreshDataGrid();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message, "خطا");
+                                var id = (int)itemRow["Id"];
+
+                                try
+                                {
+                                    _baseService.DeleteById(id);
+                                    deletedRows.Add(rowIndex);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message, "خطا");
+                                }
                             }
                         }
                     }
+
+                    MessageBox.Show("آیتم‌ها با موفقیت حذف گردیدند");
+                    RefreshDataGrid();
                 }
             }
         }
