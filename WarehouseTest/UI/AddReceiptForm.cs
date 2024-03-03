@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Warehouse.Framework;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.ReceiptService;
 using WarehouseTest.Services.StockService;

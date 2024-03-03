@@ -93,39 +93,16 @@
     <Compile Include="UI\AddReceiptForm.Designer.cs">
       <DependentUpon>AddReceiptForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\DeliveryListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\DeliveryListForm.Designer.cs">
-      <DependentUpon>DeliveryListForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ItemList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ItemList.Designer.cs">
-      <DependentUpon>ItemList.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\models\CloseableTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\ReceiptList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ReceiptList.Designer.cs">
-      <DependentUpon>ReceiptList.cs</DependentUpon>
-    </Compile>
+    <Compile Include="UI\ListInitializer.cs" />
     <Compile Include="UI\StockItemQuantityReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\StockItemQuantityReportForm.Designer.cs">
       <DependentUpon>StockItemQuantityReportForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\StockListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\StockListForm.Designer.cs">
-      <DependentUpon>StockListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="warehouseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -144,12 +121,6 @@
     <EmbeddedResource Include="UI\AddStockForm.resx">
       <DependentUpon>AddStockForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DeliveryListForm.resx">
-      <DependentUpon>DeliveryListForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ItemList.resx">
-      <DependentUpon>ItemList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -159,14 +130,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\ReceiptList.resx">
-      <DependentUpon>ReceiptList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\StockItemQuantityReportForm.resx">
       <DependentUpon>StockItemQuantityReportForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\StockListForm.resx">
-      <DependentUpon>StockListForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -190,5 +155,6 @@
       <DependentUpon>warehouseDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

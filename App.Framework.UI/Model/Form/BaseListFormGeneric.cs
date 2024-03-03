@@ -8,18 +8,20 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm> : BaseListForm
+    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm ,TService> : BaseListForm
         where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
         where TDataRow : DataRow
         where TForm : EntityBaseForm, new()
         where TDataTable : MasterDataTable<TDataRow>, new()
+        where TService : IGenericService<TDataSet>
     {
         private readonly IGenericService<TDataSet> _baseService;
         private TDataSet _dataSet;
 
-        public BaseListFormGeneric(IGenericService<TDataSet> baseService)
+        public BaseListFormGeneric()
         {
-            _baseService = baseService;
+            ServiceFactory serviceFactory = new ServiceFactory();
+            _baseService = serviceFactory.Resolve<TService>();
             _dataSet = _baseService.GetAll();
             InitializeDataGridView();
             dataGrid.DataSource = _dataSet.MasterTable;

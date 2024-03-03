@@ -16,6 +16,8 @@ namespace App.Framework.UI
     public partial class MainForm : Form
     {
         private List<IMenuExtension> extensions;
+        private Dictionary<string, List<Type>> categorizedExtensions;
+        private Dictionary<string, List<MenuListType>> categorizedListExtensions;
         ExtentionMenuAttribute attribute;
 
         public MainForm()
@@ -39,12 +41,10 @@ namespace App.Framework.UI
             LoadExtensions();
             AddExtensionButtons("Warehouse");
         }
-
-        private Dictionary<string, List<Type>> categorizedExtensions;
-
         private void LoadExtensions()
         {
             categorizedExtensions = new Dictionary<string, List<Type>>();
+            categorizedListExtensions = new Dictionary<string, List<MenuListType>>();
             try
             {
                 var path = AppDomain.CurrentDomain.BaseDirectory;
@@ -56,6 +56,8 @@ namespace App.Framework.UI
                     {
                         var assembly = Assembly.LoadFrom(dllFile);
                         var types = assembly.GetTypes().Where(t => typeof(IMenuExtension).IsAssignableFrom(t) && typeof(BaseForm).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+                        var listTypes = assembly.GetTypes().Where(t => typeof(IMenuListInitializer).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface);
 
                         foreach (var type in types)
                         {
@@ -76,6 +78,29 @@ namespace App.Framework.UI
                                 MessageBox.Show($"Error processing type {type.FullName}: {ex.Message}");
                             }
                         }
+
+                        foreach (var listType in listTypes)
+                        {
+                            var instanse = Activator.CreateInstance(listType);
+                            MethodInfo methodInfo = listType.GetMethod("GetMenuLists");
+                            try
+                            {
+                                var formLists = (List<MenuListType>)(methodInfo.Invoke(instanse, null));
+                                attribute = (ExtentionMenuAttribute)listType.GetCustomAttributes(typeof(ExtentionMenuAttribute), true).LastOrDefault();
+                                if (attribute != null)
+                                {
+                                    if (!categorizedListExtensions.ContainsKey(attribute.CategoryName))
+                                        categorizedListExtensions[attribute.CategoryName] = new List<MenuListType>();
+
+                                    categorizedListExtensions[attribute.CategoryName].AddRange(formLists);
+                                }
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+
                     }
                     catch
                     {
@@ -118,7 +143,7 @@ namespace App.Framework.UI
                 {
                     MessageBox.Show($"Error creating an instance: {ex.Message}");
                 }
-                
+
             }
         }
 
@@ -128,10 +153,63 @@ namespace App.Framework.UI
         }
 
 
-
         private void AddExtensionButtons(string categoryName)
         {
             addPanel.Controls.Clear();
+
+            if (categorizedListExtensions.ContainsKey(categoryName))
+            {
+                var result = categorizedListExtensions[categoryName];
+                var extensionLists = result.OrderByDescending(x => x.Order);
+                foreach (var extensionList in extensionLists)
+                {
+                    Label label = new Label
+                    {
+                        Text = extensionList.FormTitle,
+                        Tag = extensionList.Form,
+                        Dock = DockStyle.Top,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Cursor = Cursors.Hand,
+                        RightToLeft = RightToLeft.Yes
+                    };
+
+                    label.Click += ExtensionListButton_Click;
+                    label.MouseEnter += Label_MouseEnter;
+                    label.MouseLeave += Label_MouseLeave;
+
+                    Panel panel = new Panel
+                    {
+                        Dock = DockStyle.Top,
+                        Height = Math.Max(label.Height, label.Height),
+                        Cursor = Cursors.Hand,
+                        RightToLeft = RightToLeft.No,
+                    };
+
+                    panel.Controls.Add(label);
+                    addPanel.Controls.Add(panel);
+                }
+            }
+
+            Label listLbl = new Label
+            {
+                Text = "---> فهرست ",
+                ForeColor = System.Drawing.Color.Gray,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Hand,
+                RightToLeft = RightToLeft.Yes
+            };
+            Panel listPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = Math.Max(listLbl.Height, listLbl.Height),
+                Cursor = Cursors.Hand,
+                RightToLeft = RightToLeft.No,
+            };
+
+            listPanel.Controls.Add(listLbl);
+            addPanel.Controls.Add(listPanel);
+
             if (categorizedExtensions.ContainsKey(categoryName))
             {
                 var categoryExtensions = categorizedExtensions[categoryName]
@@ -139,7 +217,7 @@ namespace App.Framework.UI
                     {
                         var attribute = (ExtentionMenuAttribute)extensionType.GetCustomAttributes(typeof(ExtentionMenuAttribute), true).FirstOrDefault();
                         return attribute?.Order ?? int.MaxValue;
-            })
+                    })
                     .ToList();
 
                 foreach (var extensionType in categoryExtensions)
@@ -171,8 +249,62 @@ namespace App.Framework.UI
                     addPanel.Controls.Add(panel);
                 }
             }
+
+            Label menuLbl = new Label
+            {
+                Text = "---> عملیات ",
+                ForeColor = System.Drawing.Color.Gray,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Cursor = Cursors.Hand,
+                RightToLeft = RightToLeft.Yes
+            };
+            Panel menuPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = Math.Max(menuLbl.Height, menuLbl.Height),
+                Cursor = Cursors.Hand,
+                RightToLeft = RightToLeft.No,
+            };
+
+            menuPanel.Controls.Add(menuLbl);
+            addPanel.Controls.Add(menuPanel);
+
+
         }
 
+        private void ExtensionListButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Label label && label.Tag is Type extensionType)
+            {
+                try
+                {
+                    var resForm = (BaseForm)Activator.CreateInstance(extensionType);
+                    resForm.Text = label.Text;
+
+                    resForm.MdiParent = this;
+
+                    resForm.TabCtrl = mainTabControl;
+
+                    TabPage tp = new TabPage();
+                    tp.Parent = mainTabControl;
+                    tp.Text = resForm.Text;
+                    tp.Show();
+
+                    resForm.TabPag = tp;
+                    tp.Controls.Add(resForm);
+
+                    resForm.Show();
+
+                    mainTabControl.SelectedTab = tp;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error creating an instance: {ex.Message}");
+                }
+
+            }
+        }
 
         private void Label_MouseLeave(object sender, EventArgs e)
         {
@@ -229,6 +361,11 @@ namespace App.Framework.UI
             CultureInfo info = new CultureInfo("fa-Ir");
             info.DateTimeFormat.Calendar = new PersianCalendar();
             Thread.CurrentThread.CurrentCulture = info;
+        }
+
+        private void menuBox_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

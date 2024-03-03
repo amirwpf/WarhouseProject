@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Warehouse.Framework;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.TableIdService;
 using WarehouseTest.UI;
@@ -36,24 +37,10 @@ namespace WarehouseTest.forms
             _itemService = serviceFactory.Resolve<IItemService>();
              _tableIdService = serviceFactory.Resolve<ITableIdService>();
 
-            var receiptService = serviceFactory.Resolve<IReceiptService>();
-            var receiptService2 = serviceFactory.Resolve<IStockService>();
-            var receiptService3 = serviceFactory.Resolve<IDeliveryService>();
-
-
             itemTable = new ItemTable();
 
             _itemDataset = new ItemDataSet();
             _id = 0;
-
-
-            BaseListFormGeneric<DeliveryDataset,DeliveryTable,DeliveryRow,AddDeliveryForm> listBaseForm = new BaseListFormGeneric<DeliveryDataset, DeliveryTable, DeliveryRow, AddDeliveryForm>(receiptService3);
-            listBaseForm.Text = "خروج";
-            listBaseForm.Show();
-
-            BaseListFormGeneric<StockDataSet, StockTable, StockRow, AddStockForm> listBaseForm2 = new BaseListFormGeneric<StockDataSet, StockTable, StockRow, AddStockForm>(receiptService2);
-            listBaseForm2.Text = "انبار";
-            listBaseForm2.Show();
         }
 
         public override void SetInputId(int inputId)

@@ -7,7 +7,5 @@ namespace Warehouse.Framework
 {
     public interface IMenuExtension
     {
-        string Name { get; }
-        int Order { get; }
     }
 }

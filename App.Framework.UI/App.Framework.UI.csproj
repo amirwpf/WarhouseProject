@@ -46,31 +46,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMenuExtention.cs" />
+    <Compile Include="IMenuListExtention.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\BaseListForm.cs">
+    <Compile Include="Model\MenuListType.cs" />
+    <Compile Include="Model\Form\BaseListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Model\BaseListForm.Designer.cs">
+    <Compile Include="Model\Form\BaseListForm.Designer.cs">
       <DependentUpon>BaseListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\BaseListFormGeneric.cs">
+    <Compile Include="Model\Form\BaseListFormGeneric.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Model\EntityBaseForm.cs">
+    <Compile Include="Model\Form\EntityBaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Model\EntityBaseForm.Designer.cs">
+    <Compile Include="Model\Form\EntityBaseForm.Designer.cs">
       <DependentUpon>EntityBaseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\BaseForm.cs">
+    <Compile Include="Model\Form\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Model\BaseForm.Designer.cs">
+    <Compile Include="Model\Form\BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\MessageBoxManager.cs" />
@@ -85,13 +87,13 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\BaseListForm.resx">
+    <EmbeddedResource Include="Model\Form\BaseListForm.resx">
       <DependentUpon>BaseListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\EntityBaseForm.resx">
+    <EmbeddedResource Include="Model\Form\EntityBaseForm.resx">
       <DependentUpon>EntityBaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\BaseForm.resx">
+    <EmbeddedResource Include="Model\Form\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
