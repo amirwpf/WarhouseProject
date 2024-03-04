@@ -8,7 +8,7 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IDeliveryService : IBaseService,IGenericService<DeliveryDataset>
+    public interface IDeliveryService : IEntityService<DeliveryDataset>
     {
         //DeliveryDataset GetByMasterId(int deliveryId);
         void Save(DeliveryDataset deliveryDataset);//, object selectedItem, string deliveryNumberText, DateTime deliveryDate);

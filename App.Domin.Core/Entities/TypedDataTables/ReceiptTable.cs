@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using App.Framework.Entities.DataRows;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -24,11 +25,12 @@ namespace Core.Entites
             Columns["StockCode"].Caption = "Unserializable";
         }
     }
-    public class ReceiptRow : DataRow
+    public class ReceiptRow : IdDataRow
     {
         public ReceiptRow(DataRowBuilder builder) : base(builder)
         {
         }
+        public override int ID { get => Id; set => Id = value; }
         public int Id
         {
             get { return (int)this["Id"]; }

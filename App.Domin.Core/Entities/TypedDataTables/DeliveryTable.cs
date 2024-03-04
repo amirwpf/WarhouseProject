@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using App.Framework.Entities.DataRows;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -25,11 +26,12 @@ namespace Core.Entites
         }
     }
 
-    public class DeliveryRow : DataRow
+    public class DeliveryRow : IdDataRow
     {
         public DeliveryRow(DataRowBuilder builder) : base(builder)
         {
         }
+        public override int ID { get => Id; set => Id = value; }
         public int Id
         {
             get { return (int)this["Id"]; }

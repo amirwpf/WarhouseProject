@@ -192,32 +192,12 @@ namespace WarehouseTest
 
         public override void deleteBtn_Click(object sender, EventArgs e)
         {
-            var selectedRows = itemDataGrid.SelectedRows;
-            if (selectedRows.Count > 0)
+            DialogResult result = ShowConfirmationMessageBox("سند ورورد حذف گردد؟");
+            if (result == DialogResult.Yes)
             {
-                DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
-
-                if (result == DialogResult.Yes)
-                {
-
-                    foreach (DataGridViewRow row in selectedRows)
-                    {
-                        var receiptItem = (row.DataBoundItem as DataRowView)?.Row as ReceiptItemsRow;
-                        if (receiptItem != null)
-                        {
-                            try
-                            {
-                                receiptItem.Delete();
-                            }
-                            catch
-                            {
-                                MessageBox.Show("خطا در حذف آیتم", "خطا");
-                            }
-                        }
-                    }
-                }
+                _receiptService.DeleteById(_receiptId);
+                this.Close();
             }
-
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -350,5 +330,35 @@ namespace WarehouseTest
             //receiptDataset.ReceiptTable[0].StockId = row.Field<int>("Id");
             return true;
         }
+
+        private void deleteItemBtn_Click(object sender, EventArgs e)
+        {
+            var selectedRows = itemDataGrid.SelectedRows;
+            if (selectedRows.Count > 0)
+            {
+                DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
+
+                if (result == DialogResult.Yes)
+                {
+
+                    foreach (DataGridViewRow row in selectedRows)
+                    {
+                        var receiptItem = (row.DataBoundItem as DataRowView)?.Row as ReceiptItemsRow;
+                        if (receiptItem != null)
+                        {
+                            try
+                            {
+                                receiptItem.Delete();
+                            }
+                            catch
+                            {
+                                MessageBox.Show("خطا در حذف آیتم", "خطا");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

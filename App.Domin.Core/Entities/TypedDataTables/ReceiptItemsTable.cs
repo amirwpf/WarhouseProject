@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using App.Framework.Entities.DataRows;
 using System.Data;
 
 
@@ -19,11 +20,12 @@ namespace Core.Entites
         }
     }
 
-    public class ReceiptItemsRow : DataRow
+    public class ReceiptItemsRow : IdDataRow
     {
         public ReceiptItemsRow(DataRowBuilder builder) : base(builder)
         {
         }
+        public override int ID { get => Id; set => Id = value; }
         public int Id
         {
             get { return (int)this["id"]; }

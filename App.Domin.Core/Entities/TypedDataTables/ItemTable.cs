@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using App.Framework.Entities.DataRows;
 using System.ComponentModel;
 using System.Data;
 
@@ -18,16 +19,19 @@ namespace Core.Entites
         }
     }
 
-    public class ItemRow : DataRow
+    public class ItemRow : IdDataRow
     {
         public ItemRow(DataRowBuilder builder) : base(builder)
         {
         }
+
+        public override int ID { get => Id; set => Id=value; }
         public int Id
         {
             get { return (int)this["Id"]; }
             set { this["Id"] = value; }
         }
+
         [DisplayName("کد")]
         public int Code
         {

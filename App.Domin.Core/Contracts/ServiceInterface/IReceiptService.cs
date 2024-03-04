@@ -8,7 +8,7 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IReceiptService : IBaseService , IGenericService<ReceiptDataset>
+    public interface IReceiptService : IEntityService<ReceiptDataset>
     {
         //ReceiptDataset GetByMasterId(int ReceiptId);
         //ReceiptDataset GetMasterAll();

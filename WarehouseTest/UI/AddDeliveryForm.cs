@@ -233,31 +233,11 @@ namespace WarehouseTest.UI
 
         public override void deleteBtn_Click(object sender, EventArgs e)
         {
-            var selectedRows = itemDataGrid.SelectedRows;
-
-            if (selectedRows.Count > 0)
+            DialogResult result = ShowConfirmationMessageBox("سند خروج حذف گردد؟");
+            if (result == DialogResult.Yes)
             {
-                DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
-
-                if (result == DialogResult.Yes)
-                {
-                    foreach (DataGridViewRow row in selectedRows)
-                    {
-                        var deliveryItem = (row.DataBoundItem as DataRowView)?.Row as DeliveryItemsRow;
-
-                        if (deliveryItem != null)
-                        {
-                            try
-                            {
-                                deliveryItem.Delete();
-                            }
-                            catch
-                            {
-                                MessageBox.Show("خطا در حذف آیتم", "خطا");
-                            }
-                        }
-                    }
-                }
+                _deliveryService.DeleteById(_deliveryId);
+                this.Close();
             }
         }
 
@@ -324,6 +304,36 @@ namespace WarehouseTest.UI
         }
 
         #endregion
+
+        private void deleteItemBtn_Click(object sender, EventArgs e)
+        {
+            var selectedRows = itemDataGrid.SelectedRows;
+
+            if (selectedRows.Count > 0)
+            {
+                DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
+
+                if (result == DialogResult.Yes)
+                {
+                    foreach (DataGridViewRow row in selectedRows)
+                    {
+                        var deliveryItem = (row.DataBoundItem as DataRowView)?.Row as DeliveryItemsRow;
+
+                        if (deliveryItem != null)
+                        {
+                            try
+                            {
+                                deliveryItem.Delete();
+                            }
+                            catch
+                            {
+                                MessageBox.Show("خطا در حذف آیتم", "خطا");
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }

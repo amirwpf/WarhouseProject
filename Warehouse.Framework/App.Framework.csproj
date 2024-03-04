@@ -51,6 +51,7 @@
     <Compile Include="Entities\Common\DbTablesEnum.cs" />
     <Compile Include="Entities\Common\ErrorMessage.cs" />
     <Compile Include="Entities\Common\StaticFields.cs" />
+    <Compile Include="Entities\DataRows\IdDataRow.cs" />
     <Compile Include="Entities\DataSets\MasterDetailDataset.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -67,7 +68,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IBaseService.cs" />
-    <Compile Include="IGenericService.cs" />
+    <Compile Include="IEntityService.cs" />
     <Compile Include="Interceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace App.Domin.Core.Contracts.ServiceInterface
 {
-    public interface IItemService : IBaseService , IGenericService<ItemDataSet>
+    public interface IItemService : IEntityService<ItemDataSet>
     {
         void Save(int id,string name, string code);
     }

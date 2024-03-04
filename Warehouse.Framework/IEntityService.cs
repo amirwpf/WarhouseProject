@@ -6,7 +6,7 @@ using System.Text;
 
 namespace App.Framework
 {
-    public interface IGenericService<TDataSet> where TDataSet : DataSet
+    public interface IEntityService<TDataSet> :IBaseService where TDataSet : DataSet
     {
         TDataSet GetById(int id);
         TDataSet GetAll();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,12 +11,12 @@ namespace App.Framework.UI.Model
 {
     public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm, TService> : BaseListForm
         where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
-        where TDataRow : DataRow
+        where TDataRow : IdDataRow
         where TForm : EntityBaseForm, new()
         where TDataTable : MasterDataTable<TDataRow>, new()
-        where TService : IGenericService<TDataSet>
+        where TService : IEntityService<TDataSet>
     {
-        private readonly IGenericService<TDataSet> _baseService;
+        private readonly IEntityService<TDataSet> _baseService;
         private TDataSet _dataSet;
 
         public BaseListFormGeneric()
@@ -81,7 +82,7 @@ namespace App.Framework.UI.Model
 
                             if (itemRow != null)
                             {
-                                var id = (int)itemRow["Id"];
+                                var id = itemRow.ID;
                                 deleteIds.Add(id);
                             }
                         }

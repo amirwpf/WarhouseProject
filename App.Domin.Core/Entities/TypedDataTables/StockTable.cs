@@ -1,4 +1,5 @@
 ﻿using App.Framework;
+using App.Framework.Entities.DataRows;
 using System.ComponentModel;
 using System.Data;
 
@@ -17,12 +18,13 @@ namespace Core.Entites
             Columns.Add(new DataColumn("Name", typeof(string)));
         }
     }
-    public class StockRow : DataRow
+    public class StockRow : IdDataRow
     {
         public StockRow(DataRowBuilder builder) : base(builder)
         {
         }
 
+        public override int ID { get => Id; set => Id = value; }
         public int Id
         {
             get { return (int)this["Id"]; }
