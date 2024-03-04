@@ -67,9 +67,15 @@ namespace WarehouseTest.UI
         private void AddStockForm_Load(object sender, EventArgs e)
         {
             deleteBtn.Enabled = false;
-            addBtn.Enabled = false;
+            //addBtn.Enabled = false;
             //refreshBtn.Enabled = false;
             //MaximizeBox = false;
+        }
+
+        public override void addBtn_Click(object sender, EventArgs e)
+        {
+            AddStockForm addStockForm = new AddStockForm();
+            addStockForm.Show();
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)

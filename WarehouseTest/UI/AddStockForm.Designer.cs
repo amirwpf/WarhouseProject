@@ -35,6 +35,10 @@
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // addBtn
+            // 
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
+            // 
             // stockNameTx
             // 
             this.stockNameTx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 

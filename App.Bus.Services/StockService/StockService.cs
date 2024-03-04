@@ -4,13 +4,18 @@ using App.Framework;
 using Core.Entites;
 using System;
 using System.Data;
+using System.Linq;
 using System.Text;
+using WarehouseTest.Services.DeliveryService;
+using WarehouseTest.Services.ReceiptService;
 
 namespace WarehouseTest.Services.StockService
 {
     public class StockService : IStockService
     {
-        private readonly StockServiceDAO stockServiceDAO;
+        private readonly StockServiceDAO _stockServiceDAO;
+        private readonly ReceiptServiceDAO _receiptServiceDAO;
+        private readonly DeliveryServiceDAO _deliveryServiceDAO;
         TableIdService.TableIdService tableIdService;
         StringBuilder errorsMessageString;
         StockDataSet stockDataSet;
@@ -18,7 +23,9 @@ namespace WarehouseTest.Services.StockService
         bool updateRow;
         public StockService()
         {
-            stockServiceDAO = new StockServiceDAO();
+            _stockServiceDAO = new StockServiceDAO();
+            _receiptServiceDAO = new ReceiptServiceDAO();
+            _deliveryServiceDAO = new DeliveryServiceDAO();
             tableIdService = new TableIdService.TableIdService();
             stockDataSet = new StockDataSet();
 
@@ -26,12 +33,12 @@ namespace WarehouseTest.Services.StockService
 
         public StockDataSet GetById(int itemId)
         {
-            return stockServiceDAO.GetById(itemId);
+            return _stockServiceDAO.GetById(itemId);
         }
 
         public StockDataSet GetAll()
         {
-            return stockServiceDAO.GetAll();
+            return _stockServiceDAO.GetAll();
         }
 
         public void Save(int id, string name, string code)
@@ -50,12 +57,12 @@ namespace WarehouseTest.Services.StockService
             }
             else
             {
-                stockDataSet = stockServiceDAO.GetById(id);
+                stockDataSet = _stockServiceDAO.GetById(id);
                 stockDataSet.StockTable[0].Name = name;
                 stockDataSet.StockTable[0].Code = codeInt;
             }
 
-            stockServiceDAO.Save(stockDataSet);
+            _stockServiceDAO.Save(stockDataSet);
         }
 
         //public void Save(StockDataSet stockDataSet)
@@ -72,9 +79,28 @@ namespace WarehouseTest.Services.StockService
         //    }
         //}
 
-        public void DeleteById(int itemId)
+        public void DeleteById(int stockId)
         {
-            stockServiceDAO.Delete(itemId);
+            var itemRecList = _receiptServiceDAO.GetAll().ReceiptTable.Where(x => x.StockId == stockId);
+            var itemDelList = _deliveryServiceDAO.GetAll().DeliveryTable.Where(x => x.StockId == stockId);
+            var errorMsg = new StringBuilder();
+            var stock = _stockServiceDAO.GetById(stockId).MasterTable[0];
+
+            foreach (var item in itemRecList)
+            {
+                errorMsg.Append($"انبار {stock.Name} در ورود کد {item.Number} استفاده شده است \n ");
+            }
+
+            foreach (var item in itemDelList)
+            {
+                errorMsg.Append($"انبار {stock.Name} در خروج کد {item.Number} استفاده شده است \n ");
+            }
+
+            if (itemRecList.Count() > 0 || itemDelList.Count() > 0)
+            {
+                throw new Exception(errorMsg.ToString());
+            }
+            _stockServiceDAO.Delete(stockId);
         }
 
 
@@ -98,7 +124,7 @@ namespace WarehouseTest.Services.StockService
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("نام"));
             }
 
-            var stockTable = stockServiceDAO.GetAll().StockTable;
+            var stockTable = _stockServiceDAO.GetAll().StockTable;
 
             foreach (var stock in stockTable)
             {
@@ -131,7 +157,7 @@ namespace WarehouseTest.Services.StockService
             {
                 errorsMessageString.Append(ErrorMessage.InValidFieldValue("کد"));
             }
-            var stockTable = stockServiceDAO.GetAll().StockTable;
+            var stockTable = _stockServiceDAO.GetAll().StockTable;
 
             foreach (var stock in stockTable)
             {
@@ -155,7 +181,7 @@ namespace WarehouseTest.Services.StockService
 
         public DataTable GetStockItemQuantityReport()
         {
-            var res = stockServiceDAO.GetStockItemQuantityReport();
+            var res = _stockServiceDAO.GetStockItemQuantityReport();
             return res;
         }
     }

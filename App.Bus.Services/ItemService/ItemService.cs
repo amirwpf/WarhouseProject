@@ -76,18 +76,20 @@ namespace WarehouseTest.Services.ItemService
 
         public void DeleteById(int itemId)
         {
-            var o = _receiptServiceDAO.GetMasterAll();
+            //var o = _receiptServiceDAO.GetMasterAll();
             var itemRecList = _receiptServiceDAO.GetAll().ReceiptItemsTable.Where(x => x.ItemId == itemId);
             var itemDelList = _deliveryServiceDAO.GetAll().DeliveryItemsTable.Where(x => x.ItemId == itemId);
             var errorMsg = new StringBuilder();
-            foreach (var item in itemRecList)
+            var item = _itemServiceDAO.GetById(itemId).MasterTable[0];
+
+            foreach (var itemRow in itemRecList)
             {
-                errorMsg.Append( $"کالا در ورود کد { _receiptServiceDAO.GetMasterDetailByMasterId(item.ReceiptId).ReceiptTable[0].Number} استفاده شده است \n ");
+                errorMsg.Append( $"کالا { item.Name} در ورود کد { _receiptServiceDAO.GetMasterDetailByMasterId(itemRow.ReceiptId).ReceiptTable[0].Number} استفاده شده است \n ");
             }
 
-            foreach (var item in itemDelList)
+            foreach (var itemRow in itemDelList)
             {
-                errorMsg.Append($"کالا در خروج کد { _deliveryServiceDAO.GetMasterDetailByMasterId(item.DeliveryId).DeliveryTable[0].Number} استفاده شده است \n ");
+                errorMsg.Append($"کالا { item.Name} در خروج کد { _deliveryServiceDAO.GetMasterDetailByMasterId(itemRow.DeliveryId).DeliveryTable[0].Number} استفاده شده است \n ");
             }
 
             if(itemRecList.Count()>0 || itemDelList.Count()>0)

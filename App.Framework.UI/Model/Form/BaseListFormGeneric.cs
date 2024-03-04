@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm ,TService> : BaseListForm
+    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm, TService> : BaseListForm
         where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
         where TDataRow : DataRow
         where TForm : EntityBaseForm, new()
@@ -69,36 +69,40 @@ namespace App.Framework.UI.Model
 
                 if (result == DialogResult.Yes)
                 {
-                    HashSet<int> deletedRows = new HashSet<int>();
+                    HashSet<int> deleteIds = new HashSet<int>();
 
                     foreach (DataGridViewCell cell in selectedCells)
                     {
                         int rowIndex = cell.RowIndex;
 
-                        if (!deletedRows.Contains(rowIndex))
+                        if (!deleteIds.Contains(rowIndex) && rowIndex != -1)
                         {
                             var itemRow = (dataGrid.Rows[rowIndex].DataBoundItem as DataRowView)?.Row as TDataRow;
 
                             if (itemRow != null)
                             {
                                 var id = (int)itemRow["Id"];
-
-                                try
-                                {
-                                    _baseService.DeleteById(id);
-                                    deletedRows.Add(rowIndex);
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.Message, "خطا");
-                                }
+                                deleteIds.Add(id);
                             }
                         }
                     }
 
-                    MessageBox.Show("آیتم‌ها با موفقیت حذف گردیدند");
-                    RefreshDataGrid();
+                    foreach (var id in deleteIds)
+                    {
+                        try
+                        {
+                            _baseService.DeleteById(id);
+
+                            //MessageBox.Show("آیتم‌ها با موفقیت حذف گردیدند");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "خطا");
+                        }
+                    }
                 }
+
+                RefreshDataGrid();
             }
         }
 
@@ -162,7 +166,7 @@ namespace App.Framework.UI.Model
             var properties = typeof(TDataRow).GetProperties();
             foreach (var property in properties)
             {
-                if (property.Name != "Id" && (DisplayNameAttribute)Attribute.GetCustomAttribute(property, typeof(DisplayNameAttribute))!=null)
+                if (property.Name != "Id" && (DisplayNameAttribute)Attribute.GetCustomAttribute(property, typeof(DisplayNameAttribute)) != null)
                 {
                     var displayNameAttribute = (DisplayNameAttribute)Attribute.GetCustomAttribute(property, typeof(DisplayNameAttribute));
                     dataGrid.Columns.Add(new DataGridViewTextBoxColumn()

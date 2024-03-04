@@ -76,9 +76,15 @@ namespace WarehouseTest.forms
         private void AddItemForm_Load(object sender, EventArgs e)
         {
             deleteBtn.Enabled = false;
-            addBtn.Enabled = false;
+            //addBtn.Enabled = false;
             //refreshBtn.Enabled = false;
             //MaximizeBox = false;
+        }
+
+        public override void addBtn_Click(object sender, EventArgs e)
+        {
+            AddItemForm addItemForm = new AddItemForm();
+            addItemForm.Show();
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)
