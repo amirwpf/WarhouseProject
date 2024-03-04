@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace App.Framework
+namespace App.Framework.UI
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ExtentionMenuListAttribute : Attribute

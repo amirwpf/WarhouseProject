@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace App.Framework
+namespace App.Framework.UI
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ExtentionMenuAttribute : Attribute

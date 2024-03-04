@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtentionMenuAttribute.cs" />
+    <Compile Include="ExtentionMenuListAttribute.cs" />
     <Compile Include="IMenuExtention.cs" />
     <Compile Include="IMenuListExtention.cs" />
     <Compile Include="MainForm.cs">
