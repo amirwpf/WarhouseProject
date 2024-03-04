@@ -108,22 +108,48 @@ namespace App.Framework.UI.Model
 
         protected override void dataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < dataGrid.Rows.Count)
+            try
             {
-                DataRowView selectedRow = (DataRowView)dataGrid.Rows[e.RowIndex].DataBoundItem;
-
-
-                if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
+                if (e.RowIndex >= 0 && e.RowIndex < dataGrid.Rows.Count)
                 {
+                    DataRowView selectedRow = (DataRowView)dataGrid.Rows[e.RowIndex].DataBoundItem;
 
-                    var _id = (int)selectedRow["Id"];
 
-                    TForm entityForm = new TForm();
-                    entityForm.SetInputId(_id);
-                    entityForm.WindowState = FormWindowState.Normal;
-                    entityForm.ShowDialog();
+                    if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
+                    {
+
+                        var _id = (int)selectedRow["Id"];
+
+                        MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+                        if (mainForm == null)
+                        {
+                            mainForm = new MainForm();
+                            mainForm.Show();
+                        }
+
+                        TForm entityForm = new TForm();
+                        entityForm.SetInputId(_id);
+                        entityForm.MdiParent = mainForm;
+
+                        entityForm.TabCtrl = mainForm.mainTabControl;
+
+                        TabPage tp = new TabPage();
+                        tp.Parent = mainForm.mainTabControl;
+                        tp.Text = entityForm.Text;
+                        tp.Show();
+
+                        entityForm.TabPag = tp;
+                        tp.Controls.Add(entityForm);
+
+                        entityForm.Show();
+
+
+                        mainForm.mainTabControl.SelectedTab = tp;
+                    }
                 }
             }
+            catch { }
+            
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -154,8 +180,29 @@ namespace App.Framework.UI.Model
 
         protected override void addBtn_Click(object sender, EventArgs e)
         {
-            TForm form = new TForm();
-            form.Show();
+            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+            if (mainForm == null)
+            {
+                mainForm = new MainForm();
+                mainForm.Show();
+            }
+
+            TForm entityForm = new TForm();
+            entityForm.MdiParent = mainForm;
+
+            entityForm.TabCtrl = mainForm.mainTabControl;
+
+            TabPage tp = new TabPage();
+            tp.Parent = mainForm.mainTabControl;
+            tp.Text = entityForm.Text;
+            tp.Show();
+
+            entityForm.TabPag = tp;
+            tp.Controls.Add(entityForm);
+
+            entityForm.Show();
+
+            mainForm.mainTabControl.SelectedTab = tp;
         }
 
 

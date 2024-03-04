@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework;
+using Warehouse.Framework.UI;
 using WarehouseTest.forms;
 using WarehouseTest.Services.StockService;
 using WarehouseTest.Services.TableIdService;
@@ -74,8 +74,29 @@ namespace WarehouseTest.UI
 
         public override void addBtn_Click(object sender, EventArgs e)
         {
+            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+            if (mainForm == null)
+            {
+                mainForm = new MainForm();
+                mainForm.Show();
+            }
+
             AddStockForm addStockForm = new AddStockForm();
+            addStockForm.MdiParent = mainForm;
+
+            addStockForm.TabCtrl = mainForm.mainTabControl;
+
+            TabPage tp = new TabPage();
+            tp.Parent = mainForm.mainTabControl;
+            tp.Text = addStockForm.Text;
+            tp.Show();
+
+            addStockForm.TabPag = tp;
+            tp.Controls.Add(addStockForm);
+
             addStockForm.Show();
+
+            mainForm.mainTabControl.SelectedTab = tp;
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)

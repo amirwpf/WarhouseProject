@@ -51,6 +51,7 @@
             // addBtn
             // 
             this.addBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
             // 
             // deleteBtn
             // 
@@ -177,7 +178,7 @@
             this.Name = "AddDeliveryForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "سند خروج";
+            this.Text = "خروج انبار";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddDeliveryForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);

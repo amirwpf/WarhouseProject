@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Warehouse.Framework
+namespace Warehouse.Framework.UI
 {
     public interface IMenuExtension
     {

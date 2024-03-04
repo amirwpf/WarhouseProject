@@ -40,6 +40,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
+            // addBtn
+            // 
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
+            // 
             // addItemBtn
             // 
             this.addItemBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -152,7 +156,7 @@
             this.Name = "AddReceiptForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "سند ورود";
+            this.Text = "ورود انبار";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddReceiptForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);

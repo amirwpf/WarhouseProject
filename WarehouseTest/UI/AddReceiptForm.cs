@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework;
+using Warehouse.Framework.UI;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.ReceiptService;
 using WarehouseTest.Services.StockService;
@@ -23,7 +23,7 @@ using WarehouseTest.Services.TableIdService;
 
 namespace WarehouseTest
 {
-    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار جدید", Order = 7)]
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار", Order = 7)]
     public partial class AddReceiptForm : EntityBaseForm ,IMenuExtension
     {
 
@@ -159,8 +159,35 @@ namespace WarehouseTest
         private void AddReceiptForm_Load(object sender, EventArgs e)
         {
             //refreshBtn.Enabled = false;
-            addBtn.Enabled = false;
+            //addBtn.Enabled = false;
             //MaximizeBox = false;
+        }
+
+        public override void addBtn_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+            if (mainForm == null)
+            {
+                mainForm = new MainForm();
+                mainForm.Show();
+            }
+
+            AddReceiptForm addReceiptForm = new AddReceiptForm();
+            addReceiptForm.MdiParent = mainForm;
+
+            addReceiptForm.TabCtrl = mainForm.mainTabControl;
+
+            TabPage tp = new TabPage();
+            tp.Parent = mainForm.mainTabControl;
+            tp.Text = addReceiptForm.Text;
+            tp.Show();
+
+            addReceiptForm.TabPag = tp;
+            tp.Controls.Add(addReceiptForm);
+
+            addReceiptForm.Show();
+
+            mainForm.mainTabControl.SelectedTab = tp;
         }
 
         public override void deleteBtn_Click(object sender, EventArgs e)

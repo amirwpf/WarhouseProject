@@ -12,7 +12,7 @@ using App.Framework;
 using App.Framework.UI;
 using App.Framework.UI.Model;
 using Core.Entites;
-using Warehouse.Framework;
+using Warehouse.Framework.UI;
 using WarehouseTest.Services.DeliveryService;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.StockService;
@@ -22,7 +22,7 @@ using WarehouseTest.Services.TableIdService;
 
 namespace WarehouseTest.UI
 {
-    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "خروج انبار جدید", Order = 5)]
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "خروج انبار", Order = 5)]
     public partial class AddDeliveryForm : EntityBaseForm, IMenuExtension
     {
         #region Fields
@@ -157,8 +157,35 @@ namespace WarehouseTest.UI
         private void AddDeliveryForm_Load(object sender, EventArgs e)
         {
             //refreshBtn.Enabled = false;
-            addBtn.Enabled = false;
+            //addBtn.Enabled = false;
             //MaximizeBox = false;
+        }
+
+        public override void addBtn_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+            if (mainForm == null)
+            {
+                mainForm = new MainForm();
+                mainForm.Show();
+            }
+
+            AddDeliveryForm addDeliveryForm = new AddDeliveryForm();
+            addDeliveryForm.MdiParent = mainForm;
+
+            addDeliveryForm.TabCtrl = mainForm.mainTabControl;
+
+            TabPage tp = new TabPage();
+            tp.Parent = mainForm.mainTabControl;
+            tp.Text = addDeliveryForm.Text;
+            tp.Show();
+
+            addDeliveryForm.TabPag = tp;
+            tp.Controls.Add(addDeliveryForm);
+
+            addDeliveryForm.Show();
+
+            mainForm.mainTabControl.SelectedTab = tp;
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)
@@ -297,6 +324,7 @@ namespace WarehouseTest.UI
         }
 
         #endregion
+
     }
 }
 

@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Warehouse.Framework;
+using Warehouse.Framework.UI;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Drawing;

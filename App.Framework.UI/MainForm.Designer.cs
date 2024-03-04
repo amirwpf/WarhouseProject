@@ -192,8 +192,8 @@
         #endregion
         private System.Windows.Forms.GroupBox menuBox;
         private System.Windows.Forms.Panel addPanel;
-        private System.Windows.Forms.SplitContainer mainContaier;
-        private System.Windows.Forms.TabControl mainTabControl;
+        public System.Windows.Forms.SplitContainer mainContaier;
+        public System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.Button warehouseMenuBtn;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;

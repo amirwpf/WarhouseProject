@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Warehouse.Framework;
+using Warehouse.Framework.UI;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.TableIdService;
 using WarehouseTest.UI;
@@ -83,8 +83,29 @@ namespace WarehouseTest.forms
 
         public override void addBtn_Click(object sender, EventArgs e)
         {
+            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
+            if (mainForm == null)
+            {
+                mainForm = new MainForm();
+                mainForm.Show();
+            }
+
             AddItemForm addItemForm = new AddItemForm();
+            addItemForm.MdiParent = mainForm;
+
+            addItemForm.TabCtrl = mainForm.mainTabControl;
+
+            TabPage tp = new TabPage();
+            tp.Parent = mainForm.mainTabControl;
+            tp.Text = addItemForm.Text;
+            tp.Show();
+
+            addItemForm.TabPag = tp;
+            tp.Controls.Add(addItemForm);
+
             addItemForm.Show();
+
+            mainForm.mainTabControl.SelectedTab = tp;
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)
