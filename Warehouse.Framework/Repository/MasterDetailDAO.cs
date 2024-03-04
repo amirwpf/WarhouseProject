@@ -25,6 +25,7 @@ namespace App.Framework
         {
             TDataSet ds = new TDataSet();
             ds.MasterTable = masterRepository.GetAll();
+            ds.DetailTable = detailRepository.GetAll();
             return ds;
         }
 

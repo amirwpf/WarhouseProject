@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 
@@ -10,7 +10,7 @@ namespace App.Framework
     public class ServiceFactory
     {
         private readonly ProxyGenerator _proxyGenerator = new ProxyGenerator();
-        private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, Lazy<object>> _registeredInstances = new Dictionary<Type, Lazy<object>>();
 
         public ServiceFactory()
         {
@@ -27,9 +27,9 @@ namespace App.Framework
         {
             Type implementationType = FindImplementationType(tInterface);
 
-            if (!_registeredInstances.ContainsKey(tInterface) && implementationType!=null)
+            if (!_registeredInstances.ContainsKey(tInterface) && implementationType != null)
             {
-                _registeredInstances[tInterface] = Activator.CreateInstance(implementationType);
+                _registeredInstances[tInterface] = new Lazy<object>(() => Activator.CreateInstance(implementationType));
             }
         }
 
@@ -37,9 +37,9 @@ namespace App.Framework
         {
             Type interfaceType = typeof(TInterface);
 
-            if (_registeredInstances.TryGetValue(interfaceType, out var instance))
+            if (_registeredInstances.TryGetValue(interfaceType, out var lazyInstance))
             {
-                return (TInterface)instance;
+                return (TInterface)lazyInstance.Value;
             }
 
             Type implementationType = FindImplementationType(interfaceType);
@@ -53,6 +53,7 @@ namespace App.Framework
 
             throw new InvalidOperationException($"No implementation found for interface {interfaceType.FullName}");
         }
+
         private Type FindImplementationType(Type interfaceType)
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
@@ -65,21 +66,19 @@ namespace App.Framework
                     var assembly = Assembly.LoadFrom(dllFile);
                     var types = assembly.GetTypes();
 
-                    var filterdTypes = types
-                    .Where(t => t.IsClass && !t.IsAbstract && interfaceType.IsAssignableFrom(t))
-                     .ToList();
+                    var filteredTypes = types
+                        .Where(t => t.IsClass && !t.IsAbstract && interfaceType.IsAssignableFrom(t))
+                        .ToList();
 
-                    if (filterdTypes.Count > 0)
+                    if (filteredTypes.Count > 0)
                     {
-                        return filterdTypes.First();
+                        return filteredTypes.First();
                     }
                 }
                 catch
                 {
                     continue;
                 }
-
-
             }
             return null;
         }
@@ -97,8 +96,8 @@ namespace App.Framework
                     var assembly = Assembly.LoadFrom(dllFile);
                     var types = assembly.GetTypes();
                     var filteredTypes = types
-    .Where(t => t.IsInterface && baseInterfaceType.IsAssignableFrom(t) && t.Name!="IBaseService")
-    .ToList();
+                        .Where(t => t.IsInterface && baseInterfaceType.IsAssignableFrom(t) && t.Name != "IBaseService")
+                        .ToList();
 
                     result.AddRange(filteredTypes);
                 }
@@ -106,12 +105,9 @@ namespace App.Framework
                 {
                     continue;
                 }
-
-
             }
 
             return result;
         }
     }
-
 }

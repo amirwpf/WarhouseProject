@@ -89,4 +89,3 @@ namespace WarehouseTest.Services.ReceiptService
 
     }
 }
-

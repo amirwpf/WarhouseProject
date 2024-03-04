@@ -14,8 +14,8 @@ namespace WarehouseTest.Services.StockService
     public class StockService : IStockService
     {
         private readonly StockServiceDAO _stockServiceDAO;
-        private readonly ReceiptServiceDAO _receiptServiceDAO;
-        private readonly DeliveryServiceDAO _deliveryServiceDAO;
+        private readonly IReceiptService _receiptService;
+        private readonly IDeliveryService _deliveryService;
         TableIdService.TableIdService tableIdService;
         StringBuilder errorsMessageString;
         StockDataSet stockDataSet;
@@ -24,11 +24,11 @@ namespace WarehouseTest.Services.StockService
         public StockService()
         {
             _stockServiceDAO = new StockServiceDAO();
-            _receiptServiceDAO = new ReceiptServiceDAO();
-            _deliveryServiceDAO = new DeliveryServiceDAO();
             tableIdService = new TableIdService.TableIdService();
             stockDataSet = new StockDataSet();
-
+            ServiceFactory serviceFactory = new ServiceFactory();
+            _receiptService = serviceFactory.Resolve<IReceiptService>();
+            _deliveryService = serviceFactory.Resolve<IDeliveryService>();
         }
 
         public StockDataSet GetById(int itemId)
@@ -81,10 +81,10 @@ namespace WarehouseTest.Services.StockService
 
         public void DeleteById(int stockId)
         {
-            var itemRecList = _receiptServiceDAO.GetAll().ReceiptTable.Where(x => x.StockId == stockId);
-            var itemDelList = _deliveryServiceDAO.GetAll().DeliveryTable.Where(x => x.StockId == stockId);
+            var itemRecList = _receiptService.GetAll().ReceiptTable.Where(x => x.StockId == stockId);
+            var itemDelList = _deliveryService.GetAll().DeliveryTable.Where(x => x.StockId == stockId);
             var errorMsg = new StringBuilder();
-            var stock = _stockServiceDAO.GetById(stockId).MasterTable[0];
+            var stock = _stockServiceDAO.GetById(stockId).StockTable[0];
 
             foreach (var item in itemRecList)
             {
