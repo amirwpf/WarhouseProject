@@ -81,7 +81,7 @@ namespace WarehouseTest.Services.StockService
         public int ValidateData(int id, string name, string code)
         {
             errorsMessageString = new StringBuilder();
-            ValidateName(name);
+            ValidateName(name,id);
             var codeInt = ValidateCode(id, code);
 
             if (errorsMessageString.Length > 0)
@@ -91,11 +91,31 @@ namespace WarehouseTest.Services.StockService
             return codeInt;
         }
 
-        public void ValidateName(string name)
+        public void ValidateName(string name,int id)
         {
             if (string.IsNullOrEmpty(name))
             {
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("نام"));
+            }
+
+            var stockTable = stockServiceDAO.GetAll().StockTable;
+
+            foreach (var stock in stockTable)
+            {
+                if (stock.Name == name && id != 0)
+                {
+                    var stockRowId = stock.Id;
+                    if (stockRowId != id)
+                    {
+                        errorsMessageString.Append(ErrorMessage.RepititiveValue("نام"));
+                        break;
+                    }
+                }
+                if (stock.Name == name && id == 0)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("نام"));
+                    break;
+                }
             }
         }
 

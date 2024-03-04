@@ -101,7 +101,7 @@ namespace WarehouseTest.Services.ItemService
         public int ValidateData(int id, string name, string code)
         {
             errorsMessageString = new StringBuilder();
-            ValidateName(name);
+            ValidateName(name , id);
             var codeInt = ValidateCode(id, code);
 
             if (errorsMessageString.Length > 0)
@@ -114,11 +114,31 @@ namespace WarehouseTest.Services.ItemService
 
 
 
-        public void ValidateName(string name)
+        public void ValidateName(string name, int id)
         {
             if (string.IsNullOrEmpty(name))
             {
                 errorsMessageString.Append(ErrorMessage.ItemCantBeEmpty("نام"));
+            }
+
+            var itemTable = _itemServiceDAO.GetAll().ItemTable;
+            foreach (var item in itemTable)
+            {
+                if (item.Name == name && id != 0)
+                {
+                    var itemRowId = item.Id;
+                    if (itemRowId != id)
+                    {
+                        errorsMessageString.Append(ErrorMessage.RepititiveValue("نام"));
+                        break;
+                    }
+                }
+
+                if (item.Name == name && id == 0)
+                {
+                    errorsMessageString.Append(ErrorMessage.RepititiveValue("نام"));
+                    break;
+                }
             }
         }
 

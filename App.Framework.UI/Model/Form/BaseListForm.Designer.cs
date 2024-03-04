@@ -148,6 +148,7 @@ namespace App.Framework.UI.Model
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Name = "BaseListForm";
+            this.ShowIcon = false;
             this.Text = "BaseListForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panel1.ResumeLayout(false);

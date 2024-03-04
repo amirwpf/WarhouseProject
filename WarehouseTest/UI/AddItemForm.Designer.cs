@@ -83,7 +83,8 @@
             this.Controls.Add(this.itemCodeLbl);
             this.Controls.Add(this.itemNameLbl);
             this.Name = "AddItemForm";
-            this.Text = "کالا جدید";
+            this.ShowIcon = false;
+            this.Text = "کالا";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddItemForm_Load);
             this.Controls.SetChildIndex(this.itemNameLbl, 0);

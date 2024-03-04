@@ -175,8 +175,9 @@
             this.Location = new System.Drawing.Point(600, 300);
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "AddDeliveryForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "سند خروج جدید";
+            this.Text = "سند خروج";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddDeliveryForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);

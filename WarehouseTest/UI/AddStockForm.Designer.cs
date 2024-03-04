@@ -84,7 +84,8 @@
             this.Controls.Add(this.itemNameLbl);
             this.Controls.Add(this.stockCodeTxt);
             this.Name = "AddStockForm";
-            this.Text = "انبار جدید";
+            this.ShowIcon = false;
+            this.Text = "انبار";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddStockForm_Load);
             this.Controls.SetChildIndex(this.stockCodeTxt, 0);

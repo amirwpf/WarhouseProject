@@ -150,8 +150,9 @@
             this.Controls.Add(this.stockCombo);
             this.Location = new System.Drawing.Point(600, 300);
             this.Name = "AddReceiptForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "سند ورود جدید";
+            this.Text = "سند ورود";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddReceiptForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
