@@ -14,7 +14,7 @@ namespace WarehouseTest.Services.DeliveryService
     public class DeliveryService : IDeliveryService
     {
         private readonly DeliveryServiceDAO deliveryServiceDAO;
-        StringBuilder errorsMessageString;
+
         public DeliveryService()
         {
             deliveryServiceDAO = new DeliveryServiceDAO();
@@ -66,7 +66,7 @@ namespace WarehouseTest.Services.DeliveryService
 
         private void ValidateData(DeliveryDataset deliveryDataset)
         {
-            errorsMessageString = new StringBuilder();
+            var errorsMessageString = new StringBuilder();
 
             if (!ValidateReceiptNumber(deliveryDataset.DeliveryTable[0].Id, deliveryDataset.DeliveryTable[0].Number))
             {

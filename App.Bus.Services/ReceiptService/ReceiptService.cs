@@ -12,7 +12,6 @@ namespace WarehouseTest.Services.ReceiptService
     public class ReceiptService : IReceiptService
     {
         private readonly ReceiptServiceDAO receiptServiceDAO;
-        StringBuilder errorsMessageString;
 
         public ReceiptService()
         {
@@ -70,7 +69,7 @@ namespace WarehouseTest.Services.ReceiptService
 
         private void ValidateData(ReceiptDataset receiptDataset)
         {
-            errorsMessageString = new StringBuilder();
+            var errorsMessageString = new StringBuilder();
 
             if(!ValidateReceiptNumber(receiptDataset.ReceiptTable[0].Id, receiptDataset.ReceiptTable[0].Number))
             {

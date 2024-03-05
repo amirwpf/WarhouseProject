@@ -16,16 +16,11 @@ namespace WarehouseTest.Services.StockService
         private readonly StockServiceDAO _stockServiceDAO;
         private readonly IReceiptService _receiptService;
         private readonly IDeliveryService _deliveryService;
-        //TableIdService.TableIdService tableIdService;
-        StringBuilder errorsMessageString;
-        StockDataSet stockDataSet;
-        StockRow newStockRow;
-        bool updateRow;
+
         public StockService()
         {
             _stockServiceDAO = new StockServiceDAO();
-            //tableIdService = new TableIdService.TableIdService();
-            stockDataSet = new StockDataSet();
+            var stockDataSet = new StockDataSet();
             ServiceFactory serviceFactory = new ServiceFactory();
             _receiptService = serviceFactory.Resolve<IReceiptService>();
             _deliveryService = serviceFactory.Resolve<IDeliveryService>();
@@ -44,24 +39,6 @@ namespace WarehouseTest.Services.StockService
         public void Save(StockDataSet stockDataSet)
         {
             var codeInt = ValidateData(stockDataSet.StockTable[0].Id, stockDataSet.StockTable[0].Name, stockDataSet.StockTable[0].Code.ToString());
-
-
-            //if (id == 0)
-            //{
-            //    newStockRow = stockDataSet.StockTable.GetNewRow();
-            //    //newStockRow.Id = tableIdService.GetId(DbTablesEnum.stock);
-            //    newStockRow.Name = name;
-            //    newStockRow.Code = codeInt;
-            //    updateRow = false;
-            //    stockDataSet.StockTable.Add(newStockRow);
-            //}
-            //else
-            //{
-            //    stockDataSet = _stockServiceDAO.GetById(id);
-            //    stockDataSet.StockTable[0].Name = name;
-            //    stockDataSet.StockTable[0].Code = codeInt;
-            //}
-
             _stockServiceDAO.Save(stockDataSet);
         }
 
@@ -92,9 +69,9 @@ namespace WarehouseTest.Services.StockService
 
         public int ValidateData(int id, string name, string code)
         {
-            errorsMessageString = new StringBuilder();
-            ValidateName(name,id);
-            var codeInt = ValidateCode(id, code);
+            var errorsMessageString = new StringBuilder();
+            ValidateName(name,id, errorsMessageString);
+            var codeInt = ValidateCode(id, code, errorsMessageString);
 
             if (errorsMessageString.Length > 0)
             {
@@ -103,7 +80,7 @@ namespace WarehouseTest.Services.StockService
             return codeInt;
         }
 
-        public void ValidateName(string name,int id)
+        public void ValidateName(string name,int id, StringBuilder errorsMessageString)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -131,7 +108,7 @@ namespace WarehouseTest.Services.StockService
             }
         }
 
-        public int ValidateCode(int id, string code)
+        public int ValidateCode(int id, string code, StringBuilder errorsMessageString)
         {
             int codeInt = 0;
             if (string.IsNullOrEmpty(code))
