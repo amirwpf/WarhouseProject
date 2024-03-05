@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarehouseTest.Services.DeliveryService;
-using WarehouseTest.Services.TableIdService;
 using System;
 using System.Text;
 using Core.Entites;
@@ -17,7 +16,7 @@ namespace WarehouseTest.Services.ItemService
         private readonly ItemServiceDAO _itemServiceDAO;
         private readonly IReceiptService _receiptService;
         private readonly IDeliveryService _deliveryService;
-        TableIdService.TableIdService tableIdService;
+        //TableIdService.TableIdService tableIdService;
         StringBuilder errorsMessageString;
         ItemDataSet itemDataSet;
         ItemRow newItemRow;
@@ -25,7 +24,7 @@ namespace WarehouseTest.Services.ItemService
         public ItemService()
         {
             _itemServiceDAO = new ItemServiceDAO();
-            tableIdService = new TableIdService.TableIdService();
+            //tableIdService = new TableIdService.TableIdService();
             itemDataSet = new ItemDataSet();
             ServiceFactory serviceFactory = new ServiceFactory();
             _receiptService = serviceFactory.Resolve<IReceiptService>();
@@ -43,44 +42,17 @@ namespace WarehouseTest.Services.ItemService
             return _itemServiceDAO.GetAll();
         }
 
-        public void Save(int id, string name, string code)
+        public void Save(ItemDataSet itemDataSet)
         {
-            var codeInt = ValidateData(id, name, code);
-
-
-            if (id == 0)
-            {
-                newItemRow = itemDataSet.ItemTable.GetNewRow();
-                newItemRow.Id = id;
-                newItemRow.Name = name;
-                newItemRow.Code = codeInt;
-                newItemRow.Id = tableIdService.GetId(DbTablesEnum.item);
-                itemDataSet.ItemTable.Add(newItemRow);
-            }
-            else
-            {
-                itemDataSet = _itemServiceDAO.GetById(id);
-                itemDataSet.ItemTable[0].Name = name;
-                itemDataSet.ItemTable[0].Code = codeInt;
-            }
+            var codeInt = ValidateData(itemDataSet.ItemTable[0].Id, itemDataSet.ItemTable[0].Name, itemDataSet.ItemTable[0].Code.ToString());
 
             _itemServiceDAO.Save(itemDataSet);
         }
 
-        //public void ValidateDataSet(ItemDataSet itemDataSet)
-        //{
-        //    foreach (var item in itemDataSet.ItemTable)
-        //    {
-        //        ValidateData(item.Name, item.Code.ToString());
-        //    }
-        //}
-
         public void DeleteById(int itemId)
         {
-
-
-            var itemRecList = _receiptService.GetAll().ReceiptItemsTable.Where(x => x.ItemId == itemId);
-            var itemDelList = _deliveryService.GetAll().DeliveryItemsTable.Where(x => x.ItemId == itemId);
+            var itemRecList = _receiptService.GetByItemId(itemId).ReceiptItemsTable;
+            var itemDelList = _deliveryService.GetByItemId(itemId).DeliveryItemsTable;
             var errorMsg = new StringBuilder();
             var item = _itemServiceDAO.GetById(itemId).ItemTable[0];
 

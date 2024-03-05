@@ -61,8 +61,6 @@
     <Compile Include="ReceiptService\ReceiptServiceDAO.cs" />
     <Compile Include="StockService\StockService.cs" />
     <Compile Include="StockService\StockServiceDAO.cs" />
-    <Compile Include="TableIdService\TableIdService.cs" />
-    <Compile Include="TableIdService\TableIdServiceDAO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

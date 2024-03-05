@@ -9,6 +9,6 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 {
     public interface IItemService : IEntityService<ItemDataSet>
     {
-        void Save(int id,string name, string code);
+        void Save(ItemDataSet itemDataSet);
     }
 }

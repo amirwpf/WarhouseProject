@@ -16,7 +16,6 @@ using Warehouse.Framework.UI;
 using WarehouseTest.Services.DeliveryService;
 using WarehouseTest.Services.ItemService;
 using WarehouseTest.Services.StockService;
-using WarehouseTest.Services.TableIdService;
 
 #endregion
 
@@ -144,7 +143,6 @@ namespace WarehouseTest.UI
             itemDataGrid.Columns["Id"].Visible = false;
 
             _newDeliveryRow = _deliveryDataset.DeliveryTable.GetNewRow();
-            _newDeliveryRow.Id = _tableIdService.GetId(DbTablesEnum.delivery);
             _deliveryId = _newDeliveryRow.Id;
             _deliveryDataset.DeliveryTable.Add(_newDeliveryRow);
 
@@ -244,7 +242,6 @@ namespace WarehouseTest.UI
         private void addItemBtn_Click(object sender, EventArgs e)
         {
             var newReceiptItemRow = _deliveryDataset.DeliveryItemsTable.GetNewRow();
-            newReceiptItemRow.Id = _tableIdService.GetId(DbTablesEnum.deliveryItems);
             newReceiptItemRow.DeliveryId = _deliveryId;
             newReceiptItemRow.Quantity = 0;
             if (_itemTable.Rows.Count > 0)

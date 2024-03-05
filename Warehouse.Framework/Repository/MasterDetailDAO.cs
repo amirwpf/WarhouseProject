@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -8,12 +9,12 @@ namespace App.Framework
     public abstract class MasterDetailDAO<TDataSet, TMaster, TDetail, TRowMaster, TRowDetail>
     where TDataSet : MasterDetailDataset<TMaster, TDetail, TRowMaster, TRowDetail>, new()
     where TMaster : MasterDataTable<TRowMaster>, new()
-    where TRowMaster : DataRow
+    where TRowMaster : IdDataRow
     where TDetail : DetailDataTable<TRowDetail>, new()
-    where TRowDetail : DataRow
+    where TRowDetail : IdDataRow
     {
-        private readonly GenericRepository<TMaster, TRowMaster> masterRepository;
-        private readonly GenericRepository<TDetail, TRowDetail> detailRepository;
+        protected readonly GenericRepository<TMaster, TRowMaster> masterRepository;
+        protected readonly GenericRepository<TDetail, TRowDetail> detailRepository;
 
         public MasterDetailDAO(GenericRepository<TMaster, TRowMaster> masterRepository, GenericRepository<TDetail, TRowDetail> detailRepository)
         {

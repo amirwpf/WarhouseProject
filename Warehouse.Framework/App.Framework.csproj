@@ -58,6 +58,9 @@
     <Compile Include="Entities\DataSets\BaseDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Entities\DataSets\TableIdDataSet.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Entities\DataTables\BaseTypedDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -65,6 +68,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\DataTables\MasterDataTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Entities\DataTables\TableIdTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IBaseService.cs" />
@@ -75,6 +81,9 @@
     <Compile Include="Repository\MasterDetailDAO.cs" />
     <Compile Include="Repository\NonMasterDetailDAO.cs" />
     <Compile Include="ServiceFactory.cs" />
+    <Compile Include="Services\ITableIdService.cs" />
+    <Compile Include="Services\TableIdService.cs" />
+    <Compile Include="Services\TableIdServiceDAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Entities\Common\New Text Document %282%29.txt" />

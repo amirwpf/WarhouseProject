@@ -24,6 +24,16 @@ namespace WarehouseTest.Services.DeliveryService
             return deliveryServiceDAO.GetMasterDetailByMasterId(id);
         }
 
+        public DeliveryDataset GetByStockId(int stockId)
+        {
+            return deliveryServiceDAO.GetByStockId(stockId);
+        }
+
+        public DeliveryDataset GetByItemId(int itemId)
+        {
+            return deliveryServiceDAO.GetByItemId(itemId);
+        }
+
         public DeliveryDataset GetAll()
         {
             return deliveryServiceDAO.GetMasterAll();

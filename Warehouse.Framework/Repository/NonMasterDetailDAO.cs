@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using App.Framework.Entities.DataRows;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace App.Framework
@@ -6,9 +7,9 @@ namespace App.Framework
     public abstract class NonMasterDetailDAO<TDataSet, TMaster, TMasterRow>
     where TDataSet : BaseDataSet<TMaster, TMasterRow>, new()
     where TMaster : MasterDataTable<TMasterRow>, new()
-    where TMasterRow : DataRow
+    where TMasterRow : IdDataRow
     {
-        private readonly GenericRepository<TMaster, TMasterRow> repository;
+        protected readonly GenericRepository<TMaster, TMasterRow> repository;
 
         public NonMasterDetailDAO(GenericRepository<TMaster, TMasterRow> repository)
         {

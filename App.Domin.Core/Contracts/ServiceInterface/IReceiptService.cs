@@ -10,14 +10,9 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 {
     public interface IReceiptService : IEntityService<ReceiptDataset>
     {
-        //ReceiptDataset GetByMasterId(int ReceiptId);
-        //ReceiptDataset GetMasterAll();
+        void Save(ReceiptDataset receiptDataset);
 
-        void Save(ReceiptDataset receiptDataset);//, object selectedItem, string receiptNumberText, DateTime receiptDate);
-
-        //void Save(ReceiptDataset receiptDataset);
-
-        //void DeleteById(int ReceiptId);
-        
+        ReceiptDataset GetByStockId(int stockId);
+        ReceiptDataset GetByItemId(int itemId);
     }
 }

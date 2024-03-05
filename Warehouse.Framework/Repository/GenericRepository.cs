@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -6,7 +7,7 @@ using System.Reflection;
 namespace App.Framework
 {
     public class GenericRepository<T, Trow> where T : BaseTypedDataTable<Trow>, new()
-                                                           where Trow : DataRow
+                                                           where Trow : IdDataRow
     {
         public T GetAll()
         {

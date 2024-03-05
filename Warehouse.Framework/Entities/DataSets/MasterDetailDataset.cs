@@ -1,13 +1,14 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Data;
 
 namespace App.Framework
 {
     public abstract class MasterDetailDataset<TMaster, TDetail, TMasterRow, TDetailRow> : BaseDataSet<TMaster,TMasterRow>
 where TDetail : DetailDataTable<TDetailRow>, new()
-where TDetailRow : DataRow
+where TDetailRow : IdDataRow
 where TMaster : MasterDataTable<TMasterRow>, new()
-where TMasterRow : DataRow
+where TMasterRow : IdDataRow
     {
         public MasterDetailDataset()
         {

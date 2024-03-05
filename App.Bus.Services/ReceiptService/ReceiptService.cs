@@ -26,6 +26,18 @@ namespace WarehouseTest.Services.ReceiptService
             return res;
         }
 
+        public ReceiptDataset GetByStockId(int stockId)
+        {
+            var res = receiptServiceDAO.GetByStockId(stockId);
+            return res;
+        }
+
+        public ReceiptDataset GetByItemId(int itemId)
+        {
+            var res = receiptServiceDAO.GetByItemId(itemId);
+            return res;
+        }
+
         public ReceiptDataset GetAll()
         {
             return receiptServiceDAO.GetMasterAll();

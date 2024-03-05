@@ -10,8 +10,7 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 {
     public interface IStockService : IEntityService<StockDataSet>
     {
-        void Save(int id,string name, string code);
-        //void Save(StockDataSet stockDataSet);
+        void Save(StockDataSet stockDataSet);
         DataTable GetStockItemQuantityReport();
     }
 }

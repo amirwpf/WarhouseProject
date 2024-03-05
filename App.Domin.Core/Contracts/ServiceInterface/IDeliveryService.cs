@@ -10,11 +10,10 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 {
     public interface IDeliveryService : IEntityService<DeliveryDataset>
     {
-        //DeliveryDataset GetByMasterId(int deliveryId);
-        void Save(DeliveryDataset deliveryDataset);//, object selectedItem, string deliveryNumberText, DateTime deliveryDate);
 
-        //void Save(DeliveryDataset deliveryDataset);
-        //void DeleteById(int deliveryId);
+        void Save(DeliveryDataset deliveryDataset);
+        DeliveryDataset GetByStockId(int stockId);
+        DeliveryDataset GetByItemId(int itemId);
 
     }
 }

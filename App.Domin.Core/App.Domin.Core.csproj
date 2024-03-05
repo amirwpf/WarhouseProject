@@ -48,7 +48,6 @@
     <Compile Include="Contracts\ServiceInterface\IItemService.cs" />
     <Compile Include="Contracts\ServiceInterface\IReceiptService.cs" />
     <Compile Include="Contracts\ServiceInterface\IStockService.cs" />
-    <Compile Include="Contracts\ServiceInterface\ITableIdService.cs" />
     <Compile Include="Entities\TypedDataSets\DeliveryDataset.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -59,9 +58,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataSets\StockDataSet.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Entities\TypedDataSets\TableIdDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataTables\DeliveryItemsTable.cs">
@@ -80,9 +76,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\TypedDataTables\StockTable.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Entities\TypedDataTables\TableIdTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

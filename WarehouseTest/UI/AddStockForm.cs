@@ -14,7 +14,6 @@ using System.Windows.Forms;
 using Warehouse.Framework.UI;
 using WarehouseTest.forms;
 using WarehouseTest.Services.StockService;
-using WarehouseTest.Services.TableIdService;
 
 namespace WarehouseTest.UI
 {
@@ -23,7 +22,7 @@ namespace WarehouseTest.UI
     {
         private readonly ITableIdService _tableIdService;
         private readonly IStockService _stockService;
-        StockDataSet stockDataSet;
+        StockDataSet _stockDataSet;
         private int _id;
 
 
@@ -34,35 +33,35 @@ namespace WarehouseTest.UI
             var serviceFactory = new ServiceFactory();
             _tableIdService = serviceFactory.Resolve<ITableIdService>();
             _stockService = serviceFactory.Resolve<IStockService>();
-            stockDataSet = new StockDataSet();
+            _stockDataSet = new StockDataSet();
             _id = 0;
         }
 
         public override void SetInputId(int inputId)
         {
-            stockDataSet = _stockService.GetById(inputId);
+            _stockDataSet = _stockService.GetById(inputId);
 
-            stockCodeTxt.Text = stockDataSet.StockTable[0].Code.ToString();
-            stockNameTx.Text = stockDataSet.StockTable[0].Name.ToString();
+            stockCodeTxt.Text = _stockDataSet.StockTable[0].Code.ToString();
+            stockNameTx.Text = _stockDataSet.StockTable[0].Name.ToString();
             _id = inputId;
         }
 
-        public AddStockForm(int id, int code, string name)
-        {
-            InitializeComponent();
+        //public AddStockForm(int id, int code, string name)
+        //{
+        //    InitializeComponent();
 
-            var serviceFactory = new ServiceFactory();
-            _tableIdService = serviceFactory.Resolve<ITableIdService>();
-            _stockService = serviceFactory.Resolve<IStockService>();
-            stockDataSet = new StockDataSet();
+        //    var serviceFactory = new ServiceFactory();
+        //    _tableIdService = serviceFactory.Resolve<ITableIdService>();
+        //    _stockService = serviceFactory.Resolve<IStockService>();
+        //    stockDataSet = new StockDataSet();
 
-            //itemTable = new ItemTable();
+        //    //itemTable = new ItemTable();
 
 
-            stockCodeTxt.Text = code.ToString();
-            stockNameTx.Text = name;
-            _id = id;
-        }
+        //    stockCodeTxt.Text = code.ToString();
+        //    stockNameTx.Text = name;
+        //    _id = id;
+        //}
 
         private void AddStockForm_Load(object sender, EventArgs e)
         {
@@ -103,13 +102,62 @@ namespace WarehouseTest.UI
         {
             try
             {
-                _stockService.Save(_id,stockNameTx.Text, stockCodeTxt.Text);
-                MessageBox.Show("انبار با موفقیت ذخیره گردید");
+                bool dataIsValid = ValidateData(stockNameTx.Text, stockCodeTxt.Text, out int validCode);
+                if (dataIsValid)
+                {
+                    //ItemDataSet itemDataSet;
+                    if (_id == 0)
+                    {
+                        _stockDataSet = new StockDataSet();
+                        var newRow = _stockDataSet.StockTable.GetNewRow();
+                        _stockDataSet.StockTable.Add(newRow);
+                        _stockDataSet.StockTable[0].Code = validCode;
+                        _stockDataSet.StockTable[0].Name = stockNameTx.Text;
+                    }
+                    else
+                    {
+                        _stockDataSet = _stockService.GetById(_id);
+                        _stockDataSet.StockTable[0].Code = validCode;
+                        _stockDataSet.StockTable[0].Name = stockNameTx.Text;
+                    }
+                    _stockService.Save(_stockDataSet);
+                    MessageBox.Show("انبار با موفقیت ذخیره گردید");
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private bool ValidateData(string name, string code, out int validCode)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                MessageBox.Show(ErrorMessage.ItemCantBeEmpty("نام"));
+                validCode = 0;
+                return false;
+            }
+            if (string.IsNullOrEmpty(code))
+            {
+                MessageBox.Show(ErrorMessage.ItemCantBeEmpty("کد"));
+                validCode = 0;
+                return false;
+            }
+
+            if (int.TryParse(code, out int _validCode))
+            {
+                validCode = _validCode;
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(ErrorMessage.ItemCantBeEmpty("کد"));
+            }
+
+            validCode = 0;
+            return false;
         }
 
         private void itemCodeLbl_Click(object sender, EventArgs e)

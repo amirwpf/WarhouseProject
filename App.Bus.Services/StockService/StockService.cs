@@ -16,7 +16,7 @@ namespace WarehouseTest.Services.StockService
         private readonly StockServiceDAO _stockServiceDAO;
         private readonly IReceiptService _receiptService;
         private readonly IDeliveryService _deliveryService;
-        TableIdService.TableIdService tableIdService;
+        //TableIdService.TableIdService tableIdService;
         StringBuilder errorsMessageString;
         StockDataSet stockDataSet;
         StockRow newStockRow;
@@ -24,7 +24,7 @@ namespace WarehouseTest.Services.StockService
         public StockService()
         {
             _stockServiceDAO = new StockServiceDAO();
-            tableIdService = new TableIdService.TableIdService();
+            //tableIdService = new TableIdService.TableIdService();
             stockDataSet = new StockDataSet();
             ServiceFactory serviceFactory = new ServiceFactory();
             _receiptService = serviceFactory.Resolve<IReceiptService>();
@@ -41,48 +41,34 @@ namespace WarehouseTest.Services.StockService
             return _stockServiceDAO.GetAll();
         }
 
-        public void Save(int id, string name, string code)
+        public void Save(StockDataSet stockDataSet)
         {
-            var codeInt = ValidateData(id, name, code);
+            var codeInt = ValidateData(stockDataSet.StockTable[0].Id, stockDataSet.StockTable[0].Name, stockDataSet.StockTable[0].Code.ToString());
 
 
-            if (id == 0)
-            {
-                newStockRow = stockDataSet.StockTable.GetNewRow();
-                newStockRow.Id = tableIdService.GetId(DbTablesEnum.stock);
-                newStockRow.Name = name;
-                newStockRow.Code = codeInt;
-                updateRow = false;
-                stockDataSet.StockTable.Add(newStockRow);
-            }
-            else
-            {
-                stockDataSet = _stockServiceDAO.GetById(id);
-                stockDataSet.StockTable[0].Name = name;
-                stockDataSet.StockTable[0].Code = codeInt;
-            }
+            //if (id == 0)
+            //{
+            //    newStockRow = stockDataSet.StockTable.GetNewRow();
+            //    //newStockRow.Id = tableIdService.GetId(DbTablesEnum.stock);
+            //    newStockRow.Name = name;
+            //    newStockRow.Code = codeInt;
+            //    updateRow = false;
+            //    stockDataSet.StockTable.Add(newStockRow);
+            //}
+            //else
+            //{
+            //    stockDataSet = _stockServiceDAO.GetById(id);
+            //    stockDataSet.StockTable[0].Name = name;
+            //    stockDataSet.StockTable[0].Code = codeInt;
+            //}
 
             _stockServiceDAO.Save(stockDataSet);
         }
 
-        //public void Save(StockDataSet stockDataSet)
-        //{
-        //    ValidateDataSet(stockDataSet);
-        //    stockServiceDAO.Save(stockDataSet);
-        //}
-
-        //public void ValidateDataSet(StockDataSet stockDataSet)
-        //{
-        //    foreach (var stock in stockDataSet.StockTable)
-        //    {
-        //        ValidateData(stock.Name, stock.Code.ToString());
-        //    }
-        //}
-
         public void DeleteById(int stockId)
         {
-            var itemRecList = _receiptService.GetAll().ReceiptTable.Where(x => x.StockId == stockId);
-            var itemDelList = _deliveryService.GetAll().DeliveryTable.Where(x => x.StockId == stockId);
+            var itemRecList = _receiptService.GetByStockId(stockId).ReceiptTable;
+            var itemDelList = _deliveryService.GetByStockId(stockId).DeliveryTable;
             var errorMsg = new StringBuilder();
             var stock = _stockServiceDAO.GetById(stockId).StockTable[0];
 

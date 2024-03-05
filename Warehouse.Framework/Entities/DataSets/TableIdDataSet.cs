@@ -1,6 +1,6 @@
 ﻿using App.Framework;
 
-namespace Core.Entites
+namespace App.Framework
 {
     public class TableIdDataSet : BaseDataSet<TableIdTable, TableIdRow>
     {

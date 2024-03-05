@@ -3,7 +3,7 @@ using App.Framework.Entities.DataRows;
 using System.Data;
 
 
-namespace Core.Entites
+namespace App.Framework
 {
     public class TableIdTable : MasterDataTable<TableIdRow>
     {

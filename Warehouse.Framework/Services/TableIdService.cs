@@ -1,9 +1,5 @@
-﻿using App.Domin.Core;
-using App.Domin.Core.Contracts.ServiceInterface;
-using App.Framework;
-using Core.Entites;
-
-namespace WarehouseTest.Services.TableIdService
+﻿
+namespace App.Framework
 {
     public class TableIdService : ITableIdService
     {
@@ -13,13 +9,13 @@ namespace WarehouseTest.Services.TableIdService
             tableIdServiceDAO = new TableIdServiceDAO();
         }
 
-        public int GetId(DbTablesEnum DbTablesEnum)
+        public int GetId(string tableName)
         {
             TableIdDataSet tableIdDataSet = new TableIdDataSet();
             int idNumber = 0;
-            var id = (int)DbTablesEnum;
+            //var id = (int)DbTablesEnum;
 
-            tableIdDataSet = tableIdServiceDAO.GetById(id);
+            tableIdDataSet = tableIdServiceDAO.GetByTableName(tableName);
             if(tableIdDataSet != null)
             {
                 idNumber = tableIdDataSet.TableIdTable[0].IdNumber;

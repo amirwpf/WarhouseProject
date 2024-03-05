@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -6,13 +7,15 @@ using System.Data;
 
 namespace App.Framework
 {
-    public abstract class BaseTypedDataTable<T> : DataTable, IEnumerable<T> where T : DataRow
+    public abstract class BaseTypedDataTable<T> : DataTable, IEnumerable<T> where T : IdDataRow
     {
+        private readonly ITableIdService _tableIdService;
         public virtual string TableName { get; set; } = "";
         public virtual string ViewName { get; set; } = "";
 
         public BaseTypedDataTable()
         {
+            _tableIdService = new TableIdService();
         }
 
         protected override Type GetRowType()
@@ -43,7 +46,8 @@ namespace App.Framework
 
         public T GetNewRow()
         {
-            DataRow row = NewRow();
+            IdDataRow row = (IdDataRow)NewRow();
+            row.ID = _tableIdService.GetId(TableName);
             return (T)row;
         }
 
