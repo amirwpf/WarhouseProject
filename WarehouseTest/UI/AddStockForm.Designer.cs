@@ -31,7 +31,7 @@
             this.stockNameTx = new System.Windows.Forms.TextBox();
             this.itemCodeLbl = new System.Windows.Forms.Label();
             this.itemNameLbl = new System.Windows.Forms.Label();
-            this.stockCodeTxt = new System.Windows.Forms.TextBox();
+            this.stockCodeTxt = new NumericTextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +47,7 @@
             this.stockNameTx.Name = "stockNameTx";
             this.stockNameTx.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.stockNameTx.Size = new System.Drawing.Size(529, 20);
-            this.stockNameTx.TabIndex = 0;
+            this.stockNameTx.TabIndex = 8;
             // 
             // itemCodeLbl
             // 
@@ -74,29 +74,28 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.stockCodeTxt.Location = new System.Drawing.Point(55, 85);
             this.stockCodeTxt.Name = "stockCodeTxt";
-            this.stockCodeTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.stockCodeTxt.Size = new System.Drawing.Size(529, 20);
-            this.stockCodeTxt.TabIndex = 2;
+            this.stockCodeTxt.TabIndex = 0;
             // 
             // AddStockForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
+            this.Controls.Add(this.stockCodeTxt);
             this.Controls.Add(this.stockNameTx);
             this.Controls.Add(this.itemCodeLbl);
             this.Controls.Add(this.itemNameLbl);
-            this.Controls.Add(this.stockCodeTxt);
             this.Name = "AddStockForm";
             this.ShowIcon = false;
             this.Text = "انبار";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AddStockForm_Load);
-            this.Controls.SetChildIndex(this.stockCodeTxt, 0);
             this.Controls.SetChildIndex(this.itemNameLbl, 0);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.itemCodeLbl, 0);
             this.Controls.SetChildIndex(this.stockNameTx, 0);
+            this.Controls.SetChildIndex(this.stockCodeTxt, 0);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -107,6 +106,6 @@
         private System.Windows.Forms.TextBox stockNameTx;
         private System.Windows.Forms.Label itemCodeLbl;
         private System.Windows.Forms.Label itemNameLbl;
-        private System.Windows.Forms.TextBox stockCodeTxt;
+        private NumericTextBox stockCodeTxt;
     }
 }

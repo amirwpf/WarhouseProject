@@ -33,10 +33,10 @@
             this.deliveryDateLbl = new System.Windows.Forms.Label();
             this.deliveryNumberLbl = new System.Windows.Forms.Label();
             this.stockLbl = new System.Windows.Forms.Label();
-            this.deliveryNumberTxt = new System.Windows.Forms.TextBox();
             this.deliveryDatePicker = new System.Windows.Forms.DateTimePicker();
             this.stockCombo = new System.Windows.Forms.ComboBox();
             this.deleteItemBtn = new System.Windows.Forms.Button();
+            this.deliveryNumberTxt = new NumericTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -93,7 +93,7 @@
             // deliveryDateLbl
             // 
             this.deliveryDateLbl.AutoSize = true;
-            this.deliveryDateLbl.Location = new System.Drawing.Point(12, 126);
+            this.deliveryDateLbl.Location = new System.Drawing.Point(12, 131);
             this.deliveryDateLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.deliveryDateLbl.Name = "deliveryDateLbl";
             this.deliveryDateLbl.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -104,7 +104,7 @@
             // deliveryNumberLbl
             // 
             this.deliveryNumberLbl.AutoSize = true;
-            this.deliveryNumberLbl.Location = new System.Drawing.Point(12, 94);
+            this.deliveryNumberLbl.Location = new System.Drawing.Point(12, 99);
             this.deliveryNumberLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.deliveryNumberLbl.Name = "deliveryNumberLbl";
             this.deliveryNumberLbl.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -123,22 +123,11 @@
             this.stockLbl.TabIndex = 19;
             this.stockLbl.Text = "انبار";
             // 
-            // deliveryNumberTxt
-            // 
-            this.deliveryNumberTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deliveryNumberTxt.Location = new System.Drawing.Point(102, 91);
-            this.deliveryNumberTxt.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.deliveryNumberTxt.Name = "deliveryNumberTxt";
-            this.deliveryNumberTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.deliveryNumberTxt.Size = new System.Drawing.Size(505, 20);
-            this.deliveryNumberTxt.TabIndex = 18;
-            // 
             // deliveryDatePicker
             // 
             this.deliveryDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.deliveryDatePicker.Location = new System.Drawing.Point(102, 120);
+            this.deliveryDatePicker.Location = new System.Drawing.Point(100, 125);
             this.deliveryDatePicker.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.deliveryDatePicker.Name = "deliveryDatePicker";
             this.deliveryDatePicker.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -153,7 +142,7 @@
             this.stockCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.stockCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stockCombo.FormattingEnabled = true;
-            this.stockCombo.Location = new System.Drawing.Point(102, 61);
+            this.stockCombo.Location = new System.Drawing.Point(100, 66);
             this.stockCombo.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.stockCombo.Name = "stockCombo";
             this.stockCombo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -167,7 +156,7 @@
             this.deleteItemBtn.AutoSize = true;
             this.deleteItemBtn.BackColor = System.Drawing.Color.Red;
             this.deleteItemBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteItemBtn.Location = new System.Drawing.Point(46, 354);
+            this.deleteItemBtn.Location = new System.Drawing.Point(42, 354);
             this.deleteItemBtn.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.deleteItemBtn.Name = "deleteItemBtn";
             this.deleteItemBtn.Size = new System.Drawing.Size(31, 27);
@@ -176,18 +165,27 @@
             this.deleteItemBtn.UseVisualStyleBackColor = false;
             this.deleteItemBtn.Click += new System.EventHandler(this.deleteItemBtn_Click);
             // 
+            // deliveryNumberTxt
+            // 
+            this.deliveryNumberTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deliveryNumberTxt.Location = new System.Drawing.Point(100, 96);
+            this.deliveryNumberTxt.Name = "deliveryNumberTxt";
+            this.deliveryNumberTxt.Size = new System.Drawing.Size(505, 20);
+            this.deliveryNumberTxt.TabIndex = 25;
+            // 
             // AddDeliveryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
+            this.Controls.Add(this.deliveryNumberTxt);
             this.Controls.Add(this.deleteItemBtn);
             this.Controls.Add(this.addItemBtn);
             this.Controls.Add(this.itemDataGrid);
             this.Controls.Add(this.deliveryDateLbl);
             this.Controls.Add(this.deliveryNumberLbl);
             this.Controls.Add(this.stockLbl);
-            this.Controls.Add(this.deliveryNumberTxt);
             this.Controls.Add(this.deliveryDatePicker);
             this.Controls.Add(this.stockCombo);
             this.Location = new System.Drawing.Point(600, 300);
@@ -201,13 +199,13 @@
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.stockCombo, 0);
             this.Controls.SetChildIndex(this.deliveryDatePicker, 0);
-            this.Controls.SetChildIndex(this.deliveryNumberTxt, 0);
             this.Controls.SetChildIndex(this.stockLbl, 0);
             this.Controls.SetChildIndex(this.deliveryNumberLbl, 0);
             this.Controls.SetChildIndex(this.deliveryDateLbl, 0);
             this.Controls.SetChildIndex(this.itemDataGrid, 0);
             this.Controls.SetChildIndex(this.addItemBtn, 0);
             this.Controls.SetChildIndex(this.deleteItemBtn, 0);
+            this.Controls.SetChildIndex(this.deliveryNumberTxt, 0);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).EndInit();
             this.ResumeLayout(false);
@@ -222,9 +220,9 @@
         private System.Windows.Forms.Label deliveryDateLbl;
         private System.Windows.Forms.Label deliveryNumberLbl;
         private System.Windows.Forms.Label stockLbl;
-        private System.Windows.Forms.TextBox deliveryNumberTxt;
         private System.Windows.Forms.DateTimePicker deliveryDatePicker;
         private System.Windows.Forms.ComboBox stockCombo;
         public System.Windows.Forms.Button deleteItemBtn;
+        private NumericTextBox deliveryNumberTxt;
     }
 }

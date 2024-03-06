@@ -96,13 +96,8 @@
       <DependentUpon>AddReceiptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\models\CloseableTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\ListInitializer.cs" />
-    <Compile Include="UI\StockItemQuantityReportForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\StockItemQuantityReportForm.cs" />
     <Compile Include="UI\StockItemQuantityReportForm.Designer.cs">
       <DependentUpon>StockItemQuantityReportForm.cs</DependentUpon>
     </Compile>

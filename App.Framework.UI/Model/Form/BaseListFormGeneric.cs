@@ -9,15 +9,22 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TForm, TService> : BaseListForm
+    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TService> : BaseListForm
         where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
         where TDataRow : IdDataRow
-        where TForm : EntityBaseForm, new()
         where TDataTable : MasterDataTable<TDataRow>, new()
         where TService : IEntityService<TDataSet>
     {
+        #region public fields
+        public event Func<EntityBaseForm> NewForm;
+        public event Func<int, EntityBaseForm> EditForm;
+        #endregion
+
+        #region private fields
         private readonly IEntityService<TDataSet> _baseService;
         private TDataSet _dataSet;
+        #endregion
+
 
         public BaseListFormGeneric()
         {
@@ -27,38 +34,6 @@ namespace App.Framework.UI.Model
             InitializeDataGridView();
             dataGrid.DataSource = _dataSet.MasterTable;
         }
-
-        //public override void deleteBtn_Click(object sender, EventArgs e)
-        //{
-        //    var selectedRows = dataGrid.SelectedRows;
-        //    if (selectedRows.Count > 0)
-        //    {
-        //        DialogResult result = ShowConfirmationMessageBox("آیتم حذف گردد؟");
-
-        //        if (result == DialogResult.Yes)
-        //        {
-
-        //            foreach (DataGridViewRow row in selectedRows)
-        //            {
-        //                var itemRow = (row.DataBoundItem as DataRowView)?.Row as TDataRow;
-        //                if (itemRow != null)
-        //                {
-        //                    var id = (int)itemRow["Id"];
-        //                    try
-        //                    {
-        //                        _baseService.DeleteById(id);
-        //                        MessageBox.Show("آیتم با موفقیت حذف گردید");
-        //                        RefreshDataGrid();
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        MessageBox.Show(ex.Message, "خطا");
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         public override void deleteBtn_Click(object sender, EventArgs e)
         {
@@ -111,46 +86,19 @@ namespace App.Framework.UI.Model
         {
             try
             {
-                if (e.RowIndex >= 0 && e.RowIndex < dataGrid.Rows.Count)
+                if (EditForm!=null)
                 {
                     DataRowView selectedRow = (DataRowView)dataGrid.Rows[e.RowIndex].DataBoundItem;
 
-
                     if (selectedRow != null && selectedRow.Row.RowState != DataRowState.Deleted)
                     {
-
                         var _id = (int)selectedRow["Id"];
-
-                        MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
-                        if (mainForm == null)
-                        {
-                            mainForm = new MainForm();
-                            mainForm.Show();
-                        }
-
-                        TForm entityForm = new TForm();
-                        entityForm.SetInputId(_id);
-                        entityForm.MdiParent = mainForm;
-
-                        entityForm.TabCtrl = mainForm.mainTabControl;
-
-                        TabPage tp = new TabPage();
-                        tp.Parent = mainForm.mainTabControl;
-                        tp.Text = entityForm.Text;
-                        tp.Show();
-
-                        entityForm.TabPag = tp;
-                        tp.Controls.Add(entityForm);
-
-                        entityForm.Show();
-
-
-                        mainForm.mainTabControl.SelectedTab = tp;
+                        var form = EditForm(_id);
+                        MainFormManager.AddFormToMainForm(form);
                     }
                 }
             }
-            catch { }
-            
+            catch(Exception ex) { }
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -181,29 +129,8 @@ namespace App.Framework.UI.Model
 
         protected override void addBtn_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
-            if (mainForm == null)
-            {
-                mainForm = new MainForm();
-                mainForm.Show();
-            }
-
-            TForm entityForm = new TForm();
-            entityForm.MdiParent = mainForm;
-
-            entityForm.TabCtrl = mainForm.mainTabControl;
-
-            TabPage tp = new TabPage();
-            tp.Parent = mainForm.mainTabControl;
-            tp.Text = entityForm.Text;
-            tp.Show();
-
-            entityForm.TabPag = tp;
-            tp.Controls.Add(entityForm);
-
-            entityForm.Show();
-
-            mainForm.mainTabControl.SelectedTab = tp;
+            if(NewForm!=null)
+                MainFormManager.AddFormToMainForm(NewForm());
         }
 
 

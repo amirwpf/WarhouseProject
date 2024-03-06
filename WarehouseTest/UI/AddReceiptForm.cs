@@ -59,6 +59,11 @@ namespace WarehouseTest
             FormSetUp();
         }
 
+        public AddReceiptForm(int id) : base(id)
+        {
+            InitializeComponent();
+        }
+
         public AddReceiptForm(ReceiptDataset receiptDataset, int stockId) :this()
         {
             //InitializeComponent();
@@ -80,17 +85,17 @@ namespace WarehouseTest
             //itemDataGrid.Columns["ReceiptId"].Visible = false;
         }
 
-        public override void SetInputId(int inputId)
-        {
-            _receiptDataset = _receiptService.GetById(inputId);
-            _receiptId = _receiptDataset.ReceiptTable[0].Id;
-            receiptNumberTxt.Text = _receiptDataset.ReceiptTable[0].Number.ToString();
-            receiptDatePicker.Value = _receiptDataset.ReceiptTable[0].Date;
-            itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
-            var stockRow = _stockTable.FirstOrDefault(x => x.Id == _receiptDataset.ReceiptTable[0].StockId);
-            var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
-            stockCombo.SelectedIndex = stockRowIndex;
-        }
+        //public override void SetInputId(int inputId)
+        //{
+        //    _receiptDataset = _receiptService.GetById(inputId);
+        //    _receiptId = _receiptDataset.ReceiptTable[0].Id;
+        //    receiptNumberTxt.Text = _receiptDataset.ReceiptTable[0].Number.ToString();
+        //    receiptDatePicker.Value = _receiptDataset.ReceiptTable[0].Date;
+        //    itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
+        //    var stockRow = _stockTable.FirstOrDefault(x => x.Id == _receiptDataset.ReceiptTable[0].StockId);
+        //    var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
+        //    stockCombo.SelectedIndex = stockRowIndex;
+        //}
 
         #endregion
 
@@ -163,29 +168,7 @@ namespace WarehouseTest
 
         public override void addBtn_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
-            if (mainForm == null)
-            {
-                mainForm = new MainForm();
-                mainForm.Show();
-            }
-
-            AddReceiptForm addReceiptForm = new AddReceiptForm();
-            addReceiptForm.MdiParent = mainForm;
-
-            addReceiptForm.TabCtrl = mainForm.mainTabControl;
-
-            TabPage tp = new TabPage();
-            tp.Parent = mainForm.mainTabControl;
-            tp.Text = addReceiptForm.Text;
-            tp.Show();
-
-            addReceiptForm.TabPag = tp;
-            tp.Controls.Add(addReceiptForm);
-
-            addReceiptForm.Show();
-
-            mainForm.mainTabControl.SelectedTab = tp;
+            MainFormManager.AddFormToMainForm(new AddReceiptForm());
         }
 
         public override void deleteBtn_Click(object sender, EventArgs e)

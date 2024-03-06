@@ -31,7 +31,7 @@
             this.itemNameTx = new System.Windows.Forms.TextBox();
             this.itemNameLbl = new System.Windows.Forms.Label();
             this.itemCodeLbl = new System.Windows.Forms.Label();
-            this.itemCodeTxt = new System.Windows.Forms.TextBox();
+            this.itemCodeTxt = new NumericTextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,9 +73,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemCodeTxt.Location = new System.Drawing.Point(55, 85);
             this.itemCodeTxt.Name = "itemCodeTxt";
-            this.itemCodeTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.itemCodeTxt.Size = new System.Drawing.Size(529, 20);
-            this.itemCodeTxt.TabIndex = 2;
+            this.itemCodeTxt.TabIndex = 8;
             // 
             // AddItemForm
             // 
@@ -107,6 +106,6 @@
         private System.Windows.Forms.TextBox itemNameTx;
         private System.Windows.Forms.Label itemNameLbl;
         private System.Windows.Forms.Label itemCodeLbl;
-        private System.Windows.Forms.TextBox itemCodeTxt;
+        private NumericTextBox itemCodeTxt;
     }
 }

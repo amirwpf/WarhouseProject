@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
+using App.Framework.UI.Model;
 
 namespace App.Framework.UI
 {
@@ -122,7 +123,6 @@ namespace App.Framework.UI
                 try
                 {
                     var resForm = (BaseForm)Activator.CreateInstance(extensionType);
-
                     resForm.MdiParent = this;
 
                     resForm.TabCtrl = mainTabControl;
@@ -163,15 +163,8 @@ namespace App.Framework.UI
                 var extensionLists = result.OrderByDescending(x => x.Order);
                 foreach (var extensionList in extensionLists)
                 {
-                    Label label = new Label
-                    {
-                        Text = extensionList.FormTitle,
-                        Tag = extensionList.Form,
-                        Dock = DockStyle.Top,
-                        TextAlign = ContentAlignment.MiddleLeft,
-                        Cursor = Cursors.Hand,
-                        RightToLeft = RightToLeft.Yes
-                    };
+                    var label = new ListMenuItem(extensionList.FormTitle);
+                    label.GetListFormFunc = extensionList.Form;
 
                     label.Click += ExtensionListButton_Click;
                     label.MouseEnter += Label_MouseEnter;
@@ -275,11 +268,11 @@ namespace App.Framework.UI
 
         private void ExtensionListButton_Click(object sender, EventArgs e)
         {
-            if (sender is Label label && label.Tag is Type extensionType)
+            if (sender is ListMenuItem label && label.GetListFormFunc is Func<BaseListForm> extensionType)
             {
                 try
                 {
-                    var resForm = (BaseForm)Activator.CreateInstance(extensionType);
+                    var resForm =extensionType();
                     resForm.Text = label.Text;
 
                     resForm.MdiParent = this;

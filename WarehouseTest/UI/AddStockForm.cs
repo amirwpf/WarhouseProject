@@ -20,10 +20,8 @@ namespace WarehouseTest.UI
     [ExtentionMenu(CategoryName = "Warehouse",  MenuName = "انبار جدید", Order =3)]
     public partial class AddStockForm : EntityBaseForm , IMenuExtension
     {
-        private readonly ITableIdService _tableIdService;
         private readonly IStockService _stockService;
         StockDataSet _stockDataSet;
-        private int _id;
 
 
         public AddStockForm()
@@ -31,71 +29,78 @@ namespace WarehouseTest.UI
             InitializeComponent();
 
             var serviceFactory = new ServiceFactory();
-            _tableIdService = serviceFactory.Resolve<ITableIdService>();
             _stockService = serviceFactory.Resolve<IStockService>();
+
             _stockDataSet = new StockDataSet();
-            _id = 0;
+            var newRow = _stockDataSet.StockTable.GetNewRow();
+            _stockDataSet.StockTable.Add(newRow);
+            stockNameTx.DataBindings.Add("Text", _stockDataSet.StockTable[0], "Name");
+            Binding binding = new Binding("Text", _stockDataSet.StockTable[0], "Code", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            binding.Format += (sender, e) =>
+            {
+                if (e.Value != null && e.Value != DBNull.Value && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue.ToString();
+                }
+            };
+
+            binding.Parse += (sender, e) =>
+            {
+                if (e.Value != null && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue;
+                }
+                else
+                {
+                    e.Value = 0;
+                }
+            };
+
+            stockCodeTxt.DataBindings.Add(binding);
+            _inputId = 0;
         }
 
-        public override void SetInputId(int inputId)
+        public AddStockForm(int id):base(id)
         {
-            _stockDataSet = _stockService.GetById(inputId);
+            InitializeComponent();
+            var serviceFactory = new ServiceFactory();
+            _stockService = serviceFactory.Resolve<IStockService>();
+            _stockDataSet = _stockService.GetById(id);
+            stockNameTx.DataBindings.Add("Text", _stockDataSet.StockTable[0], "Name");
+            Binding binding = new Binding("Text", _stockDataSet.StockTable[0], "Code", true, DataSourceUpdateMode.OnPropertyChanged);
 
-            stockCodeTxt.Text = _stockDataSet.StockTable[0].Code.ToString();
-            stockNameTx.Text = _stockDataSet.StockTable[0].Name.ToString();
-            _id = inputId;
+            binding.Format += (sender, e) =>
+            {
+                if (e.Value != null && e.Value != DBNull.Value && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue.ToString();
+                }
+            };
+
+            binding.Parse += (sender, e) =>
+            {
+                if (e.Value != null && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue;
+                }
+                else
+                {
+                    e.Value = 0;
+                }
+            };
+
+            stockCodeTxt.DataBindings.Add(binding);
+            _inputId = id;
         }
-
-        //public AddStockForm(int id, int code, string name)
-        //{
-        //    InitializeComponent();
-
-        //    var serviceFactory = new ServiceFactory();
-        //    _tableIdService = serviceFactory.Resolve<ITableIdService>();
-        //    _stockService = serviceFactory.Resolve<IStockService>();
-        //    stockDataSet = new StockDataSet();
-
-        //    //itemTable = new ItemTable();
-
-
-        //    stockCodeTxt.Text = code.ToString();
-        //    stockNameTx.Text = name;
-        //    _id = id;
-        //}
-
         private void AddStockForm_Load(object sender, EventArgs e)
         {
             deleteBtn.Enabled = false;
-            //addBtn.Enabled = false;
-            //refreshBtn.Enabled = false;
-            //MaximizeBox = false;
         }
 
         public override void addBtn_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = Application.OpenForms.OfType<MainForm>().FirstOrDefault();
-            if (mainForm == null)
-            {
-                mainForm = new MainForm();
-                mainForm.Show();
-            }
-
-            AddStockForm addStockForm = new AddStockForm();
-            addStockForm.MdiParent = mainForm;
-
-            addStockForm.TabCtrl = mainForm.mainTabControl;
-
-            TabPage tp = new TabPage();
-            tp.Parent = mainForm.mainTabControl;
-            tp.Text = addStockForm.Text;
-            tp.Show();
-
-            addStockForm.TabPag = tp;
-            tp.Controls.Add(addStockForm);
-
-            addStockForm.Show();
-
-            mainForm.mainTabControl.SelectedTab = tp;
+            MainFormManager.AddFormToMainForm(new AddStockForm());
         }
 
         public override void SaveBtn_Click(object sender, EventArgs e)
@@ -106,20 +111,20 @@ namespace WarehouseTest.UI
                 if (dataIsValid)
                 {
                     //ItemDataSet itemDataSet;
-                    if (_id == 0)
-                    {
-                        _stockDataSet = new StockDataSet();
-                        var newRow = _stockDataSet.StockTable.GetNewRow();
-                        _stockDataSet.StockTable.Add(newRow);
-                        _stockDataSet.StockTable[0].Code = validCode;
-                        _stockDataSet.StockTable[0].Name = stockNameTx.Text;
-                    }
-                    else
-                    {
-                        _stockDataSet = _stockService.GetById(_id);
-                        _stockDataSet.StockTable[0].Code = validCode;
-                        _stockDataSet.StockTable[0].Name = stockNameTx.Text;
-                    }
+                    //if (_id == 0)
+                    //{
+                    //    _stockDataSet = new StockDataSet();
+                    //    var newRow = _stockDataSet.StockTable.GetNewRow();
+                    //    _stockDataSet.StockTable.Add(newRow);
+                    //    _stockDataSet.StockTable[0].Code = validCode;
+                    //    _stockDataSet.StockTable[0].Name = stockNameTx.Text;
+                    //}
+                    //else
+                    //{
+                    //    _stockDataSet = _stockService.GetById(_id);
+                    //    _stockDataSet.StockTable[0].Code = validCode;
+                    //    _stockDataSet.StockTable[0].Name = stockNameTx.Text;
+                    //}
                     _stockService.Save(_stockDataSet);
                     MessageBox.Show("انبار با موفقیت ذخیره گردید");
                 }

@@ -22,25 +22,25 @@ namespace WarehouseTest.UI.models
             {
                 new MenuListType()
                 {
-                    Form = typeof(BaseListFormGeneric<DeliveryDataset, DeliveryTable, DeliveryRow, AddDeliveryForm,IDeliveryService>),
+                    Form = GetNewDeliveryFormFunc,
                     FormTitle = "خروج",
                     Order=4
                 },
                 new MenuListType()
                 {
-                    Form = typeof(BaseListFormGeneric<ReceiptDataset, ReceiptTable, ReceiptRow, AddReceiptForm,IReceiptService>),
+                    Form = GetNewReceiptFormFunc,
                     FormTitle = "ورود",
                     Order=3
                 },
                 new MenuListType()
                 {
-                    Form = typeof(BaseListFormGeneric<ItemDataSet, ItemTable, ItemRow, AddItemForm,IItemService>),
+                    Form = GetNewItemFormFunc,
                     FormTitle = "کالا",
                     Order=1
                 },
                 new MenuListType()
                 {
-                    Form = typeof(BaseListFormGeneric<StockDataSet, StockTable, StockRow, AddStockForm,IStockService>),
+                    Form = GetNewStockFormFunc,
                     FormTitle = "انبار",
                     Order=2
                 },
@@ -49,5 +49,39 @@ namespace WarehouseTest.UI.models
 
             return menuLists;
         }
+
+        public BaseListForm GetNewStockFormFunc()
+        {
+            var form = new BaseListFormGeneric<StockDataSet, StockTable, StockRow, IStockService>();
+            form.NewForm += ()=>new AddStockForm();
+            form.EditForm += id => new AddStockForm(id);
+            return form;
+        }
+
+        public BaseListForm GetNewItemFormFunc()
+        {
+            var form = new BaseListFormGeneric<ItemDataSet, ItemTable, ItemRow, IItemService>();
+            form.NewForm += () => new AddItemForm();
+            form.EditForm += id => new AddItemForm(id);
+            return form;
+        }
+
+        public BaseListForm GetNewReceiptFormFunc()
+        {
+            var form = new BaseListFormGeneric<ReceiptDataset, ReceiptTable, ReceiptRow, IReceiptService>();
+            form.NewForm += () => new AddReceiptForm();
+            form.EditForm += id => new AddReceiptForm(id);
+            return form;
+        }
+
+
+        public BaseListForm GetNewDeliveryFormFunc()
+        {
+            var form = new BaseListFormGeneric<DeliveryDataset, DeliveryTable, DeliveryRow, IDeliveryService>();
+            form.NewForm += () => new AddDeliveryForm();
+            form.EditForm += id => new AddDeliveryForm(id);
+            return form;
+        }
+
     }
 }

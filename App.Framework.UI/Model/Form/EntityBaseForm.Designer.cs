@@ -98,7 +98,7 @@
             this.deleteBtn.UseVisualStyleBackColor = false;
             this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
-            // AddBaseForm
+            // EntityBaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -107,8 +107,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "AddBaseForm";
-            this.Text = "AddBaseForm";
+            this.Name = "EntityBaseForm";
+            this.Text = "EntityBaseForm";
             this.Load += new System.EventHandler(this.AddBaseForm_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

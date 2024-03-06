@@ -11,6 +11,7 @@ namespace App.Framework.UI.Model
 {
     public partial class BaseListForm :BaseForm
     {
+
         public BaseListForm()
         {
             InitializeComponent();

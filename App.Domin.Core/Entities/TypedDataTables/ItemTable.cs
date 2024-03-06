@@ -1,5 +1,6 @@
 ﻿using App.Framework;
 using App.Framework.Entities.DataRows;
+using System;
 using System.ComponentModel;
 using System.Data;
 
@@ -35,13 +36,13 @@ namespace Core.Entites
         [DisplayName("کد")]
         public int Code
         {
-            get { return (int)this["Code"]; }
+            get { if (this["Code"] != DBNull.Value) return (int)(this["Code"]); else return 0; }
             set { this["Code"] = value; }
         }
         [DisplayName("نام")]
         public string Name
         {
-            get { return (string)this["Name"]; }
+            get { if (this["Name"] != DBNull.Value) return (string)this["Name"]; else return ""; }
             set { this["Name"] = value; }
         }
     }

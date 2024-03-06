@@ -33,10 +33,10 @@
             this.receiptDateLbl = new System.Windows.Forms.Label();
             this.receiptNumberLbl = new System.Windows.Forms.Label();
             this.stockLbl = new System.Windows.Forms.Label();
-            this.receiptNumberTxt = new System.Windows.Forms.TextBox();
             this.receiptDatePicker = new System.Windows.Forms.DateTimePicker();
             this.stockCombo = new System.Windows.Forms.ComboBox();
             this.deleteItemBtn = new System.Windows.Forms.Button();
+            this.receiptNumberTxt = new NumericTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -106,16 +106,6 @@
             this.stockLbl.TabIndex = 27;
             this.stockLbl.Text = "انبار";
             // 
-            // receiptNumberTxt
-            // 
-            this.receiptNumberTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.receiptNumberTxt.Location = new System.Drawing.Point(100, 96);
-            this.receiptNumberTxt.Name = "receiptNumberTxt";
-            this.receiptNumberTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.receiptNumberTxt.Size = new System.Drawing.Size(505, 20);
-            this.receiptNumberTxt.TabIndex = 26;
-            // 
             // receiptDatePicker
             // 
             this.receiptDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -132,6 +122,7 @@
             this.stockCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.stockCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.stockCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.stockCombo.FormattingEnabled = true;
             this.stockCombo.Location = new System.Drawing.Point(100, 66);
             this.stockCombo.Name = "stockCombo";
@@ -155,18 +146,27 @@
             this.deleteItemBtn.UseVisualStyleBackColor = false;
             this.deleteItemBtn.Click += new System.EventHandler(this.deleteItemBtn_Click);
             // 
+            // receiptNumberTxt
+            // 
+            this.receiptNumberTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.receiptNumberTxt.Location = new System.Drawing.Point(100, 96);
+            this.receiptNumberTxt.Name = "receiptNumberTxt";
+            this.receiptNumberTxt.Size = new System.Drawing.Size(505, 20);
+            this.receiptNumberTxt.TabIndex = 33;
+            // 
             // AddReceiptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
+            this.Controls.Add(this.receiptNumberTxt);
             this.Controls.Add(this.deleteItemBtn);
             this.Controls.Add(this.addItemBtn);
             this.Controls.Add(this.itemDataGrid);
             this.Controls.Add(this.receiptDateLbl);
             this.Controls.Add(this.receiptNumberLbl);
             this.Controls.Add(this.stockLbl);
-            this.Controls.Add(this.receiptNumberTxt);
             this.Controls.Add(this.receiptDatePicker);
             this.Controls.Add(this.stockCombo);
             this.Location = new System.Drawing.Point(600, 300);
@@ -179,13 +179,13 @@
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.stockCombo, 0);
             this.Controls.SetChildIndex(this.receiptDatePicker, 0);
-            this.Controls.SetChildIndex(this.receiptNumberTxt, 0);
             this.Controls.SetChildIndex(this.stockLbl, 0);
             this.Controls.SetChildIndex(this.receiptNumberLbl, 0);
             this.Controls.SetChildIndex(this.receiptDateLbl, 0);
             this.Controls.SetChildIndex(this.itemDataGrid, 0);
             this.Controls.SetChildIndex(this.addItemBtn, 0);
             this.Controls.SetChildIndex(this.deleteItemBtn, 0);
+            this.Controls.SetChildIndex(this.receiptNumberTxt, 0);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).EndInit();
             this.ResumeLayout(false);
@@ -200,10 +200,10 @@
         private System.Windows.Forms.Label receiptDateLbl;
         private System.Windows.Forms.Label receiptNumberLbl;
         private System.Windows.Forms.Label stockLbl;
-        private System.Windows.Forms.TextBox receiptNumberTxt;
         private System.Windows.Forms.DateTimePicker receiptDatePicker;
         private System.Windows.Forms.ComboBox stockCombo;
         public System.Windows.Forms.Button deleteItemBtn;
+        private NumericTextBox receiptNumberTxt;
     }
 }
 

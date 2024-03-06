@@ -86,7 +86,7 @@
     <Compile Include="Services\TableIdServiceDAO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Entities\Common\New Text Document %282%29.txt" />
+    <Content Include="Entities\Common\InitializeTablesQuery.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

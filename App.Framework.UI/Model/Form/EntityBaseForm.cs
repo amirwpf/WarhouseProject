@@ -9,18 +9,18 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public partial class EntityBaseForm : BaseForm
+    public  partial class EntityBaseForm : BaseForm
     {
+        protected int _inputId;
         public EntityBaseForm()
         {
             InitializeComponent();
         }
 
-        public virtual void SetInputId(int inputId)
+        public EntityBaseForm(int id) : this()
         {
-
+            _inputId = id;
         }
-
         private void AddBaseForm_Load(object sender, EventArgs e)
         {
 
