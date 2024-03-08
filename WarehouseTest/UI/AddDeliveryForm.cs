@@ -58,6 +58,10 @@ namespace WarehouseTest.UI
             FormSetUp();
             InitializeStockCombo();
             BindData();
+
+            PersianDateTextBox persianDateTextBox = new PersianDateTextBox();
+            persianDateTextBox.Location = new System.Drawing.Point(12, 110);
+            this.Controls.Add(persianDateTextBox);
         }
 
         public AddDeliveryForm(int id) : base(id)
