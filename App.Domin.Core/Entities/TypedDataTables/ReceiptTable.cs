@@ -39,19 +39,19 @@ namespace Core.Entites
         [DisplayName("شماره")]
         public int Number
         {
-            get { return (int)this["Number"]; }
+            get { if (this["Number"] != DBNull.Value) return (int)this["Number"]; else return 0; }
             set { this["Number"] = value; }
         }
 
         public int StockId
         {
-            get { return (int)this["StockId"]; }
+            get { if (this["StockId"] != DBNull.Value) return (int)this["StockId"]; else return 0; }
             set { this["StockId"] = value; }
         }
         [DisplayName("تاریخ")]
         public DateTime Date
         {
-            get { return (DateTime)this["Date"]; }
+            get { if (this["Date"] != DBNull.Value) return (DateTime)this["Date"]; else return DateTime.Now; }
             set { this["Date"] = value; }
         }
         [DisplayName("کد انبار")]

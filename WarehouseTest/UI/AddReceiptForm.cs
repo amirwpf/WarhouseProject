@@ -23,13 +23,10 @@ using WarehouseTest.Services.StockService;
 namespace WarehouseTest
 {
     [ExtentionMenu(CategoryName = "Warehouse", MenuName = "ورود انبار", Order = 7)]
-    public partial class AddReceiptForm : EntityBaseForm ,IMenuExtension
+    public partial class AddReceiptForm : EntityBaseForm, IMenuExtension
     {
 
         #region Fields
-
-
-        private readonly ITableIdService _tableIdService;
         private readonly IReceiptService _receiptService;
         private readonly IItemService _itemService;
         private readonly IStockService _stockService;
@@ -38,8 +35,6 @@ namespace WarehouseTest
         private ItemTable _itemTable;
         private ReceiptRow _newReceiptRow;
         private int _receiptId;
-        private bool _validUiInput;
-
         #endregion
 
 
@@ -50,66 +45,97 @@ namespace WarehouseTest
 
             var serviceFactory = new ServiceFactory();
             _itemService = serviceFactory.Resolve<IItemService>();
-            _tableIdService = serviceFactory.Resolve<ITableIdService>();
             _receiptService = serviceFactory.Resolve<IReceiptService>();
             _stockService = serviceFactory.Resolve<IStockService>();
-
-            InitializeStockCombo();
+            _receiptDataset = new ReceiptDataset();
+            _newReceiptRow = _receiptDataset.ReceiptTable.GetNewRow();
+            _receiptId = _newReceiptRow.Id;
+            _receiptDataset.ReceiptTable.Add(_newReceiptRow);
+            itemDataGrid.Enabled = false;
+            addItemBtn.Enabled = false;
+            stockCombo.SelectedItem = null;
+            _receiptDataset.ReceiptTable[0].Date = DateTime.Now;
             InitializeItemDataGirdView();
             FormSetUp();
+            InitializeStockCombo();
+            BindData();
         }
 
         public AddReceiptForm(int id) : base(id)
         {
             InitializeComponent();
-        }
-
-        public AddReceiptForm(ReceiptDataset receiptDataset, int stockId) :this()
-        {
-            //InitializeComponent();
-            _receiptDataset = receiptDataset;
-
-            //InitializeItemDataGirdView();
-            //InitializeStockCombo();
-
-            //var receiptRow = _receiptDataset.ReceiptTable[0];
+            var serviceFactory = new ServiceFactory();
+            _itemService = serviceFactory.Resolve<IItemService>();
+            _receiptService = serviceFactory.Resolve<IReceiptService>();
+            _stockService = serviceFactory.Resolve<IStockService>();
+            _receiptDataset = _receiptService.GetById(id);
+            InitializeItemDataGirdView();
+            FormSetUp();
+            InitializeStockCombo();
             _receiptId = _receiptDataset.ReceiptTable[0].Id;
-            receiptNumberTxt.Text = _receiptDataset.ReceiptTable[0].Number.ToString();
-            receiptDatePicker.Value = _receiptDataset.ReceiptTable[0].Date;
-            itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
-            var stockRow = _stockTable.FirstOrDefault(x => x.Id == stockId);
-            var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
-            stockCombo.SelectedIndex = stockRowIndex;
-
-            //itemDataGrid.Columns["Id"].Visible = false;
-            //itemDataGrid.Columns["ReceiptId"].Visible = false;
+            BindData();
         }
-
-        //public override void SetInputId(int inputId)
-        //{
-        //    _receiptDataset = _receiptService.GetById(inputId);
-        //    _receiptId = _receiptDataset.ReceiptTable[0].Id;
-        //    receiptNumberTxt.Text = _receiptDataset.ReceiptTable[0].Number.ToString();
-        //    receiptDatePicker.Value = _receiptDataset.ReceiptTable[0].Date;
-        //    itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
-        //    var stockRow = _stockTable.FirstOrDefault(x => x.Id == _receiptDataset.ReceiptTable[0].StockId);
-        //    var stockRowIndex = _stockTable.Rows.IndexOf(stockRow);
-        //    stockCombo.SelectedIndex = stockRowIndex;
-        //}
 
         #endregion
 
         #region Initialization Methods
 
+        private void BindData()
+        {
+            Binding binding = new Binding("Text", _receiptDataset.ReceiptTable[0], "Number", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            binding.Format += (sender, e) =>
+            {
+                if (e.Value != null && e.Value != DBNull.Value && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue.ToString();
+                }
+            };
+
+            binding.Parse += (sender, e) =>
+            {
+                if (e.Value != null && int.TryParse(e.Value.ToString(), out int intValue))
+                {
+                    e.Value = intValue;
+                }
+                else
+                {
+                    e.Value = 0;
+                }
+            };
+
+            receiptNumberTxt.DataBindings.Add(binding);
+
+            Binding bindingDate = new Binding("Value", _receiptDataset.ReceiptTable[0], "Date", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            bindingDate.Format += (sender, e) =>
+            {
+                if (e.Value == null || e.Value == DBNull.Value)
+                {
+                    e.Value = DateTime.Now;
+                }
+            };
+
+            receiptDatePicker.DataBindings.Add(bindingDate);
+        }
+
         private void InitializeStockCombo()
         {
+            stockCombo.SelectedIndexChanged -= stockCombo_SelectedIndexChanged;
             _stockTable = _stockService.GetAll().StockTable;
 
             var stockDictionary = _stockTable.ToDictionary(row => row.Id, row => $"{row.Code} - {row.Name}");
-            stockCombo.DataSource = new BindingSource(stockDictionary, null);
+            BindingSource stockBinding = new BindingSource(stockDictionary, null);
+
+            stockCombo.DataSource = stockBinding;
             stockCombo.DisplayMember = "Value";
             stockCombo.ValueMember = "Key";
-            stockCombo.SelectedItem = null;
+
+            int initialStockId = _receiptDataset.ReceiptTable[0].StockId;
+            stockCombo.SelectedValue = initialStockId;
+
+            stockCombo.DataBindings.Add("SelectedValue", _receiptDataset.ReceiptTable[0], "StockId", true, DataSourceUpdateMode.OnPropertyChanged);
+            stockCombo.SelectedIndexChanged += stockCombo_SelectedIndexChanged;
         }
 
         private void InitializeItemDataGirdView()
@@ -143,27 +169,16 @@ namespace WarehouseTest
 
         private void FormSetUp()
         {
-            itemDataGrid.Enabled = false;
-            addItemBtn.Enabled = false;
-            stockCombo.SelectedItem = null;
-            receiptDatePicker.Value = DateTime.Now;
-
-            _receiptDataset = new ReceiptDataset();
             itemDataGrid.DataSource = _receiptDataset.ReceiptItemsTable;
 
             itemDataGrid.Columns["ReceiptId"].Visible = false;
             itemDataGrid.Columns["Id"].Visible = false;
-            _newReceiptRow = _receiptDataset.ReceiptTable.GetNewRow();
-            _receiptId = _newReceiptRow.Id;
-            _receiptDataset.ReceiptTable.Add(_newReceiptRow);
+
         }
         #endregion
 
         private void AddReceiptForm_Load(object sender, EventArgs e)
         {
-            //refreshBtn.Enabled = false;
-            //addBtn.Enabled = false;
-            //MaximizeBox = false;
         }
 
         public override void addBtn_Click(object sender, EventArgs e)
@@ -211,37 +226,10 @@ namespace WarehouseTest
 
         public override void SaveBtn_Click(object sender, EventArgs e)
         {
-            _validUiInput = true;
             try
             {
-                var selectedItem = stockCombo.SelectedItem;
-                if (ValidateStockSelection(_receiptDataset, selectedItem))
-                {
-                    _receiptDataset.ReceiptTable[0].StockId = ((KeyValuePair<int, string>)selectedItem).Key;
-                }
-                else
-                {
-                    _validUiInput = false;
-                }
-                _receiptDataset.ReceiptTable[0].Date = receiptDatePicker.Value;
-
-                var receiptNumberValid = int.TryParse(receiptNumberTxt.Text, out int receiptNumber);
-                if (receiptNumberValid && receiptNumber > 0)
-                {
-                    _receiptDataset.ReceiptTable[0].Number = receiptNumber;
-                }
-                else
-                {
-                    ReceiptNumberIsNotValid();
-                    _validUiInput = false;
-                }
-
-                if (_validUiInput)
-                {
-                    _receiptService.Save(_receiptDataset);
-                    MessageBox.Show("ذخیره با موفقیت صورت گردید");
-                }
-
+                _receiptService.Save(_receiptDataset);
+                MessageBox.Show("ذخیره با موفقیت صورت گردید");
             }
             catch (Exception ex)
             {
@@ -271,44 +259,6 @@ namespace WarehouseTest
                 _receiptDataset.ReceiptItemsTable[e.RowIndex].Quantity = 0;
                 e.Cancel = true;
             }
-        }
-
-        private void ReceiptNumberIsNotValid()
-        {
-            MessageBox.Show("مقدار شماره سند ورود ناصحیح می باشد");
-            receiptNumberTxt.Text = "0";
-        }
-
-        private bool ValidateStockSelection(ReceiptDataset receiptDataset, object selectedItem)
-        {
-            if (selectedItem == null)
-            {
-                MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
-                return false;
-            }
-
-            //if (!(selectedItem is DataRowView rowView))
-            //{
-            //    MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
-            //    return false;
-            //}
-
-            //DataRow row = rowView.Row;
-
-            //if (row == null)
-            //{
-            //    MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
-            //    return false;
-            //}
-
-            //if (!row.Table.Columns.Contains("Id"))
-            //{
-            //    MessageBox.Show(ErrorMessage.InValidFieldValue("انبار"));
-            //    return false;
-            //}
-
-            //receiptDataset.ReceiptTable[0].StockId = row.Field<int>("Id");
-            return true;
         }
 
         private void deleteItemBtn_Click(object sender, EventArgs e)

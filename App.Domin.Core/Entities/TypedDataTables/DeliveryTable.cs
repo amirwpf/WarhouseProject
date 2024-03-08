@@ -46,7 +46,7 @@ namespace Core.Entites
 
         public int StockId
         {
-            get { return (int)this["StockId"]; }
+            get { if (this["StockId"] != DBNull.Value) return (int)this["StockId"]; else return 0; }
             set { this["StockId"] = value; }
         }
         [DisplayName("تاریخ")]
