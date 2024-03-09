@@ -35,6 +35,7 @@ namespace WarehouseTest
         private ItemTable _itemTable;
         private ReceiptRow _newReceiptRow;
         private int _receiptId;
+        private bool _validDate;
         #endregion
 
 
@@ -106,7 +107,7 @@ namespace WarehouseTest
 
             receiptNumberTxt.DataBindings.Add(binding);
 
-            Binding bindingDate = new Binding("Value", _receiptDataset.ReceiptTable[0], "Date", true, DataSourceUpdateMode.OnPropertyChanged);
+            Binding bindingDate = new Binding("Date", _receiptDataset.ReceiptTable[0], "Date", true, DataSourceUpdateMode.OnPropertyChanged);
 
             bindingDate.Format += (sender, e) =>
             {
@@ -116,7 +117,7 @@ namespace WarehouseTest
                 }
             };
 
-            receiptDatePicker.DataBindings.Add(bindingDate);
+            persianDate.DataBindings.Add(bindingDate);
         }
 
         private void InitializeStockCombo()
@@ -174,6 +175,7 @@ namespace WarehouseTest
             itemDataGrid.Columns["ReceiptId"].Visible = false;
             itemDataGrid.Columns["Id"].Visible = false;
 
+            _validDate = true;
         }
         #endregion
 
@@ -226,17 +228,34 @@ namespace WarehouseTest
 
         public override void SaveBtn_Click(object sender, EventArgs e)
         {
-            try
+            ValidateDate(persianDate);
+            if (_validDate)
             {
-                _receiptService.Save(_receiptDataset);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                try
+                {
+                    _receiptService.Save(_receiptDataset);
+                    MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
+
+        private void ValidateDate(PersianDateTextBox persianDate)
+        {
+            if (!persianDate.ValidDate)
+            {
+                MessageBox.Show(ErrorMessage.InValidFieldValue("تاریخ"));
+                _validDate = false;
+            }
+            else
+            {
+                _validDate = true;
+            }
+        }
 
 
         private void stockCombo_SelectedIndexChanged(object sender, EventArgs e)

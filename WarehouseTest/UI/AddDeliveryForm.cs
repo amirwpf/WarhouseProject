@@ -34,6 +34,7 @@ namespace WarehouseTest.UI
         private ItemTable _itemTable;
         private DeliveryRow _newDeliveryRow;
         private int _deliveryId;
+        private bool _validDate;
 
         #endregion
 
@@ -58,10 +59,6 @@ namespace WarehouseTest.UI
             FormSetUp();
             InitializeStockCombo();
             BindData();
-
-            PersianDateTextBox persianDateTextBox = new PersianDateTextBox();
-            persianDateTextBox.Location = new System.Drawing.Point(12, 110);
-            this.Controls.Add(persianDateTextBox);
         }
 
         public AddDeliveryForm(int id) : base(id)
@@ -109,7 +106,7 @@ namespace WarehouseTest.UI
 
             deliveryNumberTxt.DataBindings.Add(binding);
 
-            Binding bindingDate = new Binding("Value", _deliveryDataset.DeliveryTable[0], "Date", true, DataSourceUpdateMode.OnPropertyChanged);
+            Binding bindingDate = new Binding("Date", _deliveryDataset.DeliveryTable[0], "Date", true, DataSourceUpdateMode.OnPropertyChanged);
 
             bindingDate.Format += (sender, e) =>
             {
@@ -119,7 +116,7 @@ namespace WarehouseTest.UI
                 }
             };
 
-            deliveryDatePicker.DataBindings.Add(bindingDate);
+            persianDate.DataBindings.Add(bindingDate);
         }
 
         private void InitializeStockCombo()
@@ -176,6 +173,8 @@ namespace WarehouseTest.UI
 
             itemDataGrid.Columns["DeliveryId"].Visible = false;
             itemDataGrid.Columns["Id"].Visible = false;
+
+            _validDate = true;
         }
 
         #endregion
@@ -193,15 +192,32 @@ namespace WarehouseTest.UI
 
         public override void SaveBtn_Click(object sender, EventArgs e)
         {
-            try
+            ValidateDate(persianDate);
+            if(_validDate)
             {
-                _deliveryService.Save(_deliveryDataset);
-                MessageBox.Show("ذخیره با موفقیت صورت گردید");
+                try
+                {
+                    _deliveryService.Save(_deliveryDataset);
+                    MessageBox.Show("ذخیره با موفقیت صورت گردید");
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
+        }
+
+        private void ValidateDate(PersianDateTextBox persianDate)
+        {
+            if(!persianDate.ValidDate)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ErrorMessage.InValidFieldValue("تاریخ"));
+                _validDate = false;
+            }
+            else
+            {
+                _validDate = true;
             }
         }
 

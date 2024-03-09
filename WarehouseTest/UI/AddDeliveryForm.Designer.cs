@@ -33,10 +33,10 @@
             this.deliveryDateLbl = new System.Windows.Forms.Label();
             this.deliveryNumberLbl = new System.Windows.Forms.Label();
             this.stockLbl = new System.Windows.Forms.Label();
-            this.deliveryDatePicker = new System.Windows.Forms.DateTimePicker();
             this.stockCombo = new System.Windows.Forms.ComboBox();
             this.deleteItemBtn = new System.Windows.Forms.Button();
             this.deliveryNumberTxt = new NumericTextBox();
+            this.persianDate = new PersianDateTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -123,18 +123,6 @@
             this.stockLbl.TabIndex = 19;
             this.stockLbl.Text = "انبار";
             // 
-            // deliveryDatePicker
-            // 
-            this.deliveryDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deliveryDatePicker.Location = new System.Drawing.Point(100, 125);
-            this.deliveryDatePicker.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.deliveryDatePicker.Name = "deliveryDatePicker";
-            this.deliveryDatePicker.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.deliveryDatePicker.RightToLeftLayout = true;
-            this.deliveryDatePicker.Size = new System.Drawing.Size(505, 20);
-            this.deliveryDatePicker.TabIndex = 17;
-            // 
             // stockCombo
             // 
             this.stockCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -174,11 +162,23 @@
             this.deliveryNumberTxt.Size = new System.Drawing.Size(505, 20);
             this.deliveryNumberTxt.TabIndex = 25;
             // 
+            // persianDate
+            // 
+            this.persianDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.persianDate.Date = new System.DateTime(2024, 3, 9, 10, 50, 43, 68);
+            this.persianDate.Location = new System.Drawing.Point(99, 128);
+            this.persianDate.Name = "persianDate";
+            this.persianDate.Size = new System.Drawing.Size(505, 20);
+            this.persianDate.TabIndex = 26;
+            this.persianDate.Text = "____/__/__";
+            // 
             // AddDeliveryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
+            this.Controls.Add(this.persianDate);
             this.Controls.Add(this.deliveryNumberTxt);
             this.Controls.Add(this.deleteItemBtn);
             this.Controls.Add(this.addItemBtn);
@@ -186,7 +186,6 @@
             this.Controls.Add(this.deliveryDateLbl);
             this.Controls.Add(this.deliveryNumberLbl);
             this.Controls.Add(this.stockLbl);
-            this.Controls.Add(this.deliveryDatePicker);
             this.Controls.Add(this.stockCombo);
             this.Location = new System.Drawing.Point(600, 300);
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -198,7 +197,6 @@
             this.Load += new System.EventHandler(this.AddDeliveryForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.stockCombo, 0);
-            this.Controls.SetChildIndex(this.deliveryDatePicker, 0);
             this.Controls.SetChildIndex(this.stockLbl, 0);
             this.Controls.SetChildIndex(this.deliveryNumberLbl, 0);
             this.Controls.SetChildIndex(this.deliveryDateLbl, 0);
@@ -206,6 +204,7 @@
             this.Controls.SetChildIndex(this.addItemBtn, 0);
             this.Controls.SetChildIndex(this.deleteItemBtn, 0);
             this.Controls.SetChildIndex(this.deliveryNumberTxt, 0);
+            this.Controls.SetChildIndex(this.persianDate, 0);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).EndInit();
             this.ResumeLayout(false);
@@ -220,9 +219,9 @@
         private System.Windows.Forms.Label deliveryDateLbl;
         private System.Windows.Forms.Label deliveryNumberLbl;
         private System.Windows.Forms.Label stockLbl;
-        private System.Windows.Forms.DateTimePicker deliveryDatePicker;
         private System.Windows.Forms.ComboBox stockCombo;
         public System.Windows.Forms.Button deleteItemBtn;
         private NumericTextBox deliveryNumberTxt;
+        private PersianDateTextBox persianDate;
     }
 }

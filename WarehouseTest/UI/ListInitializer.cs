@@ -44,16 +44,28 @@ namespace WarehouseTest.UI.models
                     FormTitle = "انبار",
                     Order=2
                 },
+                new MenuListType()
+                {
+                    Form = GetNewReportFormFunc,
+                    FormTitle = "گزارش تعداد کالای انبار",
+                    Order=10
+                },
             };
 
 
             return menuLists;
         }
 
+        public BaseListForm GetNewReportFormFunc()
+        {
+            var form = new StockItemQuantityReportForm();
+            return form;
+        }
+
         public BaseListForm GetNewStockFormFunc()
         {
             var form = new BaseListFormGeneric<StockDataSet, StockTable, StockRow, IStockService>();
-            form.NewForm += ()=>new AddStockForm();
+            form.NewForm += () => new AddStockForm();
             form.EditForm += id => new AddStockForm(id);
             return form;
         }

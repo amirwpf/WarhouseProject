@@ -33,10 +33,10 @@
             this.receiptDateLbl = new System.Windows.Forms.Label();
             this.receiptNumberLbl = new System.Windows.Forms.Label();
             this.stockLbl = new System.Windows.Forms.Label();
-            this.receiptDatePicker = new System.Windows.Forms.DateTimePicker();
             this.stockCombo = new System.Windows.Forms.ComboBox();
             this.deleteItemBtn = new System.Windows.Forms.Button();
             this.receiptNumberTxt = new NumericTextBox();
+            this.persianDate = new PersianDateTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -106,17 +106,6 @@
             this.stockLbl.TabIndex = 27;
             this.stockLbl.Text = "انبار";
             // 
-            // receiptDatePicker
-            // 
-            this.receiptDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.receiptDatePicker.Location = new System.Drawing.Point(100, 125);
-            this.receiptDatePicker.Name = "receiptDatePicker";
-            this.receiptDatePicker.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.receiptDatePicker.RightToLeftLayout = true;
-            this.receiptDatePicker.Size = new System.Drawing.Size(505, 20);
-            this.receiptDatePicker.TabIndex = 25;
-            // 
             // stockCombo
             // 
             this.stockCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -155,11 +144,22 @@
             this.receiptNumberTxt.Size = new System.Drawing.Size(505, 20);
             this.receiptNumberTxt.TabIndex = 33;
             // 
+            // persianDate
+            // 
+            this.persianDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.persianDate.Date = new System.DateTime(2024, 3, 9, 10, 51, 28, 395);
+            this.persianDate.Location = new System.Drawing.Point(100, 128);
+            this.persianDate.Name = "persianDate";
+            this.persianDate.Size = new System.Drawing.Size(505, 20);
+            this.persianDate.TabIndex = 34;
+            // 
             // AddReceiptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 387);
+            this.Controls.Add(this.persianDate);
             this.Controls.Add(this.receiptNumberTxt);
             this.Controls.Add(this.deleteItemBtn);
             this.Controls.Add(this.addItemBtn);
@@ -167,7 +167,6 @@
             this.Controls.Add(this.receiptDateLbl);
             this.Controls.Add(this.receiptNumberLbl);
             this.Controls.Add(this.stockLbl);
-            this.Controls.Add(this.receiptDatePicker);
             this.Controls.Add(this.stockCombo);
             this.Location = new System.Drawing.Point(600, 300);
             this.Name = "AddReceiptForm";
@@ -178,7 +177,6 @@
             this.Load += new System.EventHandler(this.AddReceiptForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.Controls.SetChildIndex(this.stockCombo, 0);
-            this.Controls.SetChildIndex(this.receiptDatePicker, 0);
             this.Controls.SetChildIndex(this.stockLbl, 0);
             this.Controls.SetChildIndex(this.receiptNumberLbl, 0);
             this.Controls.SetChildIndex(this.receiptDateLbl, 0);
@@ -186,6 +184,7 @@
             this.Controls.SetChildIndex(this.addItemBtn, 0);
             this.Controls.SetChildIndex(this.deleteItemBtn, 0);
             this.Controls.SetChildIndex(this.receiptNumberTxt, 0);
+            this.Controls.SetChildIndex(this.persianDate, 0);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.itemDataGrid)).EndInit();
             this.ResumeLayout(false);
@@ -200,10 +199,10 @@
         private System.Windows.Forms.Label receiptDateLbl;
         private System.Windows.Forms.Label receiptNumberLbl;
         private System.Windows.Forms.Label stockLbl;
-        private System.Windows.Forms.DateTimePicker receiptDatePicker;
         private System.Windows.Forms.ComboBox stockCombo;
         public System.Windows.Forms.Button deleteItemBtn;
         private NumericTextBox receiptNumberTxt;
+        private PersianDateTextBox persianDate;
     }
 }
 
