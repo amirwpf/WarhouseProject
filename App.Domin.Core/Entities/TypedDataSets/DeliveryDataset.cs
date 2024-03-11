@@ -1,6 +1,7 @@
 ﻿using App.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace Core.Entites
 {
 
 
-    public class DeliveryDataset : MasterDetailDataset<DeliveryTable, DeliveryItemsTable, DeliveryRow, DeliveryItemsRow>
+    public class DeliveryDataset : MasterDetailDataSet
     {
         public DeliveryDataset() : base()
         {
@@ -24,16 +25,10 @@ namespace Core.Entites
         public DeliveryTable DeliveryTable { get; set; }
         public DeliveryItemsTable DeliveryItemsTable { get; set; }
 
+        public override string ForeignKeyColumnName { get => "DeliveryId"; }
 
-        public override DeliveryTable MasterTable
-        {
-            get => DeliveryTable;
-            set => DeliveryTable = value;
-        }
-        public override DeliveryItemsTable DetailTable
-        {
-            get => DeliveryItemsTable;
-            set => DeliveryItemsTable = value;
-        }
+        public override BaseDataTable DetailTable => DeliveryItemsTable;
+
+        public override BaseDataTable MasterTable => DeliveryTable;
     }
 }

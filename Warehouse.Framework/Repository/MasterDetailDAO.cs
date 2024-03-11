@@ -6,46 +6,39 @@ using System.Reflection;
 
 namespace App.Framework
 {
-    public abstract class MasterDetailDAO<TDataSet, TMaster, TDetail, TRowMaster, TRowDetail>
-    where TDataSet : MasterDetailDataset<TMaster, TDetail, TRowMaster, TRowDetail>, new()
-    where TMaster : MasterDataTable<TRowMaster>, new()
-    where TRowMaster : IdDataRow
-    where TDetail : DetailDataTable<TRowDetail>, new()
-    where TRowDetail : IdDataRow
+    public abstract class MasterDetailDAO<TDataSet>
+    where TDataSet : MasterDetailDataSet, new()
     {
-        protected readonly GenericRepository<TMaster, TRowMaster> masterRepository;
-        protected readonly GenericRepository<TDetail, TRowDetail> detailRepository;
+        protected readonly Repository _repository;
 
-        public MasterDetailDAO(GenericRepository<TMaster, TRowMaster> masterRepository, GenericRepository<TDetail, TRowDetail> detailRepository)
+        public MasterDetailDAO()
         {
-            this.masterRepository = masterRepository;
-            this.detailRepository = detailRepository;
+            _repository = new Repository();
         }
 
         public TDataSet GetMasterAll()
         {
             TDataSet ds = new TDataSet();
-            ds.MasterTable = masterRepository.GetAll();
-            ds.DetailTable = detailRepository.GetAll();
+             _repository.FetchAll(ds.MasterTable);
             return ds;
         }
 
         public TDataSet GetAll()
         {
             TDataSet ds = new TDataSet();
-            ds.MasterTable = masterRepository.GetAll();
-            ds.DetailTable = detailRepository.GetAll();
+            _repository.FetchAll(ds.MasterTable);
+            _repository.FetchAll(ds.DetailTable);
             return ds;
         }
 
         public TDataSet GetMasterDetailByMasterId(int masterId)
         {
-            TDataSet dataSet = new TDataSet();
+            TDataSet ds = new TDataSet();
 
-            dataSet.MasterTable = masterRepository.GetById(masterId);
-            dataSet.DetailTable = GetDetailByMasterId(masterId);
+            _repository.FetchById(masterId ,ds.MasterTable);
+            GetDetailByMasterId(masterId,ds);
 
-            return dataSet;
+            return ds;
         }
 
         public void SaveMasterDetail(TDataSet dataSet)
@@ -58,8 +51,9 @@ namespace App.Framework
                 {
                     try
                     {
-                        masterRepository.Save(dataSet.MasterTable);
-                        detailRepository.Save(dataSet.DetailTable);
+
+                        _repository.Save(dataSet.MasterTable);
+                        _repository.Save(dataSet.DetailTable);
 
                         transaction.Commit();
                     }
@@ -74,38 +68,21 @@ namespace App.Framework
 
         public void DeleteMasterDetailByMasterId(int masterId)
         {
-            //ClearDetailByMasterId(masterId);
-            masterRepository.Delete(masterId);
+            TDataSet ds = new TDataSet();
+            _repository.Delete(masterId,ds.MasterTable);
         }
 
 
 
-        private TDetail GetDetailByMasterId(int masterId)
+        private void GetDetailByMasterId(int masterId, TDataSet dataSet)
         {
-            TDetail dataTable = new TDetail();
-            var tableName = dataTable.TableName;
-            var tableForeignKeyColumnName = dataTable.ForeignKeyColumnName;
+            var tableName = dataSet.DetailTable.TableName;
+            var tableForeignKeyColumnName = dataSet.ForeignKeyColumnName;
 
             string query = $"SELECT * FROM {tableName} WHERE {tableForeignKeyColumnName} = @Id";
             SqlParameter[] parameters = { new SqlParameter("@Id", masterId) };
 
-            detailRepository.ExecuteQuery(query, parameters, dataTable);
-
-            return dataTable;
-        }
-
-        private TDetail ClearDetailByMasterId(int masterId)
-        {
-            TDetail dataTable = new TDetail();
-            var tableName = dataTable.TableName;
-            var tableForeignKeyColumnName = dataTable.ForeignKeyColumnName;
-
-            string query = $"DELETE FROM {tableName} WHERE {tableForeignKeyColumnName} = @Id";
-            SqlParameter[] parameters = { new SqlParameter("@Id", masterId) };
-
-            detailRepository.ExecuteQuery(query, parameters, dataTable);
-
-            return dataTable;
+            _repository.ExecuteQuery(query, parameters, dataSet.DetailTable);
         }
     }
 

@@ -47,20 +47,12 @@ namespace App.Framework.UI
         {
             this.tabPag.Dispose();
 
-            //if (!tabCtrl.HasChildren)
-            //{
-            //    tabCtrl.Visible = false;
-            //}
         }
 
         private void BaseForm_Activated(object sender, EventArgs e)
         {
             tabCtrl.SelectedTab = tabPag;
 
-            //if (!tabCtrl.Visible)
-            //{
-            //    tabCtrl.Visible = true;
-            //}
         }
     }
 }

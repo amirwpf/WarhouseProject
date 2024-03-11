@@ -7,10 +7,10 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class StockTable : MasterDataTable<StockRow>
+    public class StockTable : MasterTypedDataTable<StockRow>
     {
-        public override string TableName { get; set; } = "stock";
-        public override string ViewName { get; set; } = "stock";
+        public override string TableName { get=> "stock"; }
+        public override string ViewName { get=> "stock"; } 
 
         public StockTable()
         {

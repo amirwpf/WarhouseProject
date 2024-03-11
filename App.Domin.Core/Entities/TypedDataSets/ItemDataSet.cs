@@ -1,8 +1,9 @@
-﻿using App.Framework;
+﻿using System.Data;
+using App.Framework;
 
 namespace Core.Entites
 {
-    public class ItemDataSet : BaseDataSet<ItemTable, ItemRow>
+    public class ItemDataSet : BaseDataSet
     {
         public ItemDataSet()
         {
@@ -11,10 +12,6 @@ namespace Core.Entites
 
         public ItemTable ItemTable { get; set; }
 
-        public override ItemTable MasterTable
-        {
-            get => ItemTable;
-            set => ItemTable = value;
-        }
+        public override BaseDataTable MasterTable { get => ItemTable;}
     }
 }

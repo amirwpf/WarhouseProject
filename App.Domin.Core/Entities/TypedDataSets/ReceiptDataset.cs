@@ -1,9 +1,10 @@
-﻿using App.Framework;
+﻿using System.Data;
+using App.Framework;
 using Core.Entites;
 
 namespace Core.Entites
 {
-    public class ReceiptDataset : MasterDetailDataset<ReceiptTable, ReceiptItemsTable, ReceiptRow, ReceiptItemsRow>
+    public class ReceiptDataset : MasterDetailDataSet
     {
         public ReceiptDataset() : base()
         {
@@ -18,16 +19,10 @@ namespace Core.Entites
         public ReceiptTable ReceiptTable { get; set; }
         public ReceiptItemsTable ReceiptItemsTable { get; set; }
 
+        public override BaseDataTable DetailTable => ReceiptItemsTable;
 
-        public override ReceiptTable MasterTable
-        {
-            get => ReceiptTable;
-            set => ReceiptTable = value;
-        }
-        public override ReceiptItemsTable DetailTable
-        {
-            get => ReceiptItemsTable;
-            set => ReceiptItemsTable = value;
-        }
+        public override BaseDataTable MasterTable => ReceiptTable;
+
+        public override string ForeignKeyColumnName { get => "ReceiptId"; }
     }
 }

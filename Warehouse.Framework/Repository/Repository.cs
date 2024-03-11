@@ -6,16 +6,14 @@ using System.Reflection;
 
 namespace App.Framework
 {
-    public class GenericRepository<T, Trow> where T : BaseTypedDataTable<Trow>, new()
-                                                           where Trow : IdDataRow
+    public class Repository
     {
-        public T GetAll()
+        public void FetchAll(BaseDataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
                 connection.Open();
 
-                T dataTable = new T();
                 string tableName = dataTable.ViewName;
 
                 if (!string.IsNullOrEmpty(tableName))
@@ -27,7 +25,6 @@ namespace App.Framework
                         using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query, connection))
                         {
                             dataAdapter.Fill(dataTable);
-                            return dataTable;
                         }
                     }
                     else
@@ -42,13 +39,12 @@ namespace App.Framework
             }
         }
 
-        public T GetById(int id)
+        public void FetchById(int id,BaseDataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
                 connection.Open();
 
-                T dataTable = new T();
                 string tableName = dataTable.ViewName;
 
                 if (!string.IsNullOrEmpty(tableName))
@@ -59,7 +55,6 @@ namespace App.Framework
                     {
                         dataAdapter.SelectCommand.Parameters.AddWithValue("@Id", id);
                         dataAdapter.Fill(dataTable);
-                        return dataTable;
                     }
                 }
                 else
@@ -70,7 +65,7 @@ namespace App.Framework
         }
 
 
-        public void Save(T dataTable)
+        public void Save(BaseDataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
@@ -93,15 +88,13 @@ namespace App.Framework
             }
         }
 
-        public void Delete(int id)
+        public void Delete(int id, BaseDataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
                 connection.Open();
 
-                T dataTable = new T();
                 string tableName = dataTable.TableName;
-
 
                 if (!string.IsNullOrEmpty(tableName))
                 {
@@ -122,7 +115,7 @@ namespace App.Framework
             }
         }
 
-        public void ExecuteQuery(string query, SqlParameter[] parameters, T dataTable)
+        public void ExecuteQuery(string query, SqlParameter[] parameters, DataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
@@ -140,25 +133,7 @@ namespace App.Framework
             }
         }
 
-        public void ExecuteReportQuery(string query, SqlParameter[] parameters, DataTable dataTable)
-        {
-            using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
-            {
-                connection.Open();
-
-                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query, connection))
-                {
-                    if (parameters != null)
-                    {
-                        dataAdapter.SelectCommand.Parameters.AddRange(parameters);
-                    }
-
-                    dataAdapter.Fill(dataTable);
-                }
-            }
-        }
-
-        private SqlDataAdapter CreateDataAdapter(T dataTable, SqlConnection connection, SqlTransaction transaction)
+        private SqlDataAdapter CreateDataAdapter(BaseDataTable dataTable, SqlConnection connection, SqlTransaction transaction)
         {
             SqlDataAdapter dataAdapter = new SqlDataAdapter();
 
@@ -170,7 +145,7 @@ namespace App.Framework
             return dataAdapter;
         }
 
-        private SqlCommand GenerateInsertCommand(T dataTable, SqlConnection connection, SqlTransaction transaction)
+        private SqlCommand GenerateInsertCommand(BaseDataTable dataTable, SqlConnection connection, SqlTransaction transaction)
         {
             SqlCommand insertCommand = new SqlCommand($"INSERT INTO {dataTable.TableName} (", connection, transaction);
 
@@ -206,7 +181,7 @@ namespace App.Framework
             return insertCommand;
         }
 
-        private SqlCommand GenerateUpdateCommand(T dataTable, SqlConnection connection, SqlTransaction transaction)
+        private SqlCommand GenerateUpdateCommand(BaseDataTable dataTable, SqlConnection connection, SqlTransaction transaction)
         {
             SqlCommand updateCommand = new SqlCommand($"UPDATE {dataTable.TableName} SET ", connection, transaction);
 
@@ -235,7 +210,7 @@ namespace App.Framework
             return updateCommand;
         }
 
-        private SqlCommand GenerateDeleteCommand(T dataTable, SqlConnection connection, SqlTransaction transaction)
+        private SqlCommand GenerateDeleteCommand(BaseDataTable dataTable, SqlConnection connection, SqlTransaction transaction)
         {
             SqlCommand deleteCommand = new SqlCommand($"DELETE FROM {dataTable.TableName} WHERE Id = @Id", connection, transaction);
             deleteCommand.Parameters.Add("@Id", SqlDbType.Int, 0, "Id");

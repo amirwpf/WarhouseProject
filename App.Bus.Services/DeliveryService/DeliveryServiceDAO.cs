@@ -8,9 +8,9 @@ using System.Text;
 
 namespace WarehouseTest.Services.DeliveryService
 {
-    public class DeliveryServiceDAO : MasterDetailDAO<DeliveryDataset,DeliveryTable, DeliveryItemsTable, DeliveryRow, DeliveryItemsRow>
+    public class DeliveryServiceDAO : MasterDetailDAO<DeliveryDataset>
     {
-        public DeliveryServiceDAO() : base(new GenericRepository<DeliveryTable, DeliveryRow>(), new GenericRepository<DeliveryItemsTable, DeliveryItemsRow>())
+        public DeliveryServiceDAO() : base()
         {
 
         }
@@ -23,7 +23,7 @@ namespace WarehouseTest.Services.DeliveryService
             string query = $"SELECT * FROM {tableName} WHERE StockId = @Id";
             SqlParameter[] parameters = { new SqlParameter("@Id", StockId) };
 
-            masterRepository.ExecuteQuery(query, parameters, deliveryDataset.DeliveryTable);
+            _repository.ExecuteQuery(query, parameters, deliveryDataset.DeliveryTable);
 
             return deliveryDataset;
         }
@@ -36,7 +36,7 @@ namespace WarehouseTest.Services.DeliveryService
             string query = $"SELECT * FROM {tableName} WHERE ItemId = @Id";
             SqlParameter[] parameters = { new SqlParameter("@Id", itemId) };
 
-            detailRepository.ExecuteQuery(query, parameters, deliveryDataset.DeliveryItemsTable);
+            _repository.ExecuteQuery(query, parameters, deliveryDataset.DeliveryItemsTable);
 
             return deliveryDataset;
         }

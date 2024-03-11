@@ -7,9 +7,9 @@ using System.Text;
 
 namespace WarehouseTest.Services.ItemService
 {
-    class ItemServiceDAO : NonMasterDetailDAO<ItemDataSet,ItemTable,ItemRow>
+    class ItemServiceDAO : NonMasterDetailDAO<ItemDataSet>
     {
-        public ItemServiceDAO():base(new GenericRepository<ItemTable, ItemRow>())
+        public ItemServiceDAO():base()
         {
 
         }

@@ -1,21 +1,17 @@
-﻿using App.Framework;
+﻿using System.Data;
+using App.Framework;
 
 namespace App.Framework
 {
-    public class TableIdDataSet : BaseDataSet<TableIdTable, TableIdRow>
+    public class TableIdDataSet : BaseDataSet
     {
         public TableIdDataSet()
         {
             TableIdTable = new TableIdTable();
         }
-
         public TableIdTable TableIdTable { get; set; }
 
-        public override TableIdTable MasterTable
-        {
-            get => TableIdTable;
-            set => TableIdTable = value;
-        }
+        public override BaseDataTable MasterTable => TableIdTable;
     }
 }
 

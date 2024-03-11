@@ -5,11 +5,11 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class ReceiptItemsTable : DetailDataTable<ReceiptItemsRow>
+    public class ReceiptItemsTable : BaseTypedDataTable<ReceiptItemsRow>
     {
-        public override string ForeignKeyColumnName { get; set; } = "ReceiptId";
-        public override string TableName { get; set; } = "receiptItem";
-        public override string ViewName { get; set; } = "receiptItem";
+
+        public override string TableName { get=> "receiptItem"; }
+        public override string ViewName { get=> "receiptItem"; } 
 
         public ReceiptItemsTable()
         {

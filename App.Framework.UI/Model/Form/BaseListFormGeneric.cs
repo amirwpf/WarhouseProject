@@ -9,10 +9,9 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public class BaseListFormGeneric<TDataSet, TDataTable, TDataRow, TService> : BaseListForm
-        where TDataSet : BaseDataSet<TDataTable, TDataRow>, new()
-        where TDataRow : IdDataRow
-        where TDataTable : MasterDataTable<TDataRow>, new()
+    public class BaseListFormGeneric<TDataSet,TDataRow ,TService> : BaseListForm
+        where TDataSet : BaseDataSet, new()
+        where TDataRow: IdDataRow
         where TService : IEntityService<TDataSet>
     {
         #region public fields
@@ -53,7 +52,7 @@ namespace App.Framework.UI.Model
 
                         if (!deleteIds.Contains(rowIndex) && rowIndex != -1)
                         {
-                            var itemRow = (dataGrid.Rows[rowIndex].DataBoundItem as DataRowView)?.Row as TDataRow;
+                            var itemRow = (dataGrid.Rows[rowIndex].DataBoundItem as DataRowView)?.Row as IdDataRow;
 
                             if (itemRow != null)
                             {

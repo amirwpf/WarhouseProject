@@ -7,10 +7,10 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class DeliveryTable : MasterDataTable<DeliveryRow>
+    public class DeliveryTable : MasterTypedDataTable<DeliveryRow>
     {
-        public override string TableName { get; set; } = "delivery";
-        public override string ViewName { get; set; } = "deliveryStock";
+        public override string TableName { get=> "delivery"; } 
+        public override string ViewName { get=> "deliveryStock"; } 
 
         public DeliveryTable()
         {

@@ -7,11 +7,10 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class ItemTable : MasterDataTable<ItemRow>
+    public class ItemTable : MasterTypedDataTable<ItemRow>
     {
-        public override string TableName { get; set; } = "item";
-        public override string ViewName { get; set; } = "item";
-
+        public override string TableName { get=> "item"; } 
+        public override string ViewName { get=> "item"; } 
         public ItemTable()
         {
             Columns.Add(new DataColumn("Id", typeof(int)));

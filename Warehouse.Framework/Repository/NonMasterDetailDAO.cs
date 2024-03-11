@@ -4,45 +4,38 @@ using System.Data.SqlClient;
 
 namespace App.Framework
 {
-    public abstract class NonMasterDetailDAO<TDataSet, TMaster, TMasterRow>
-    where TDataSet : BaseDataSet<TMaster, TMasterRow>, new()
-    where TMaster : MasterDataTable<TMasterRow>, new()
-    where TMasterRow : IdDataRow
+    public abstract class NonMasterDetailDAO<TDataSet> where TDataSet:BaseDataSet,new()
     {
-        protected readonly GenericRepository<TMaster, TMasterRow> repository;
+        protected readonly Repository _repository;
 
-        public NonMasterDetailDAO(GenericRepository<TMaster, TMasterRow> repository)
+        public NonMasterDetailDAO()
         {
-            this.repository = repository;
+            _repository = new Repository();
         }
 
         public TDataSet GetAll()
         {
             TDataSet ds = new TDataSet();
-            ds.MasterTable = repository.GetAll();
+            _repository.FetchAll(ds.MasterTable);
             return ds;
         }
 
         public TDataSet GetById(int id)
         {
             TDataSet ds = new TDataSet();
-            ds.MasterTable = repository.GetById(id);
+            _repository.FetchById(id, ds.MasterTable);
             return ds;
         }
 
         public void Save(TDataSet dataSet)
         {
-            repository.Save(dataSet.MasterTable);
-        }
-
-        protected void ExecuteQuery(string query, SqlParameter[] parameters, DataTable dataTable)
-        {
-            repository.ExecuteReportQuery(query, parameters, dataTable);
+            _repository.Save(dataSet.MasterTable);
         }
 
         public void Delete(int id)
         {
-            repository.Delete(id);
+            TDataSet ds = new TDataSet();
+            _repository.Delete(id, ds.MasterTable);
         }
     }
 }

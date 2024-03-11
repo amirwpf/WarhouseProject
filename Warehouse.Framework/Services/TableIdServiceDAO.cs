@@ -2,9 +2,9 @@
 
 namespace App.Framework
 {
-    class TableIdServiceDAO : NonMasterDetailDAO<TableIdDataSet, TableIdTable, TableIdRow>
+    class TableIdServiceDAO : NonMasterDetailDAO<TableIdDataSet>
     {
-        public TableIdServiceDAO() : base(new GenericRepository<TableIdTable, TableIdRow>())
+        public TableIdServiceDAO() : base()
         {
 
         }
@@ -16,7 +16,7 @@ namespace App.Framework
             string query = $"SELECT * FROM {databaseTableName} WHERE [TableName] = @Name";
             SqlParameter[] parameters = { new SqlParameter("@Name", tableName) };
 
-            repository.ExecuteQuery(query, parameters, tableIdDataSet.TableIdTable);
+            _repository.ExecuteQuery(query, parameters, tableIdDataSet.TableIdTable);
 
             return tableIdDataSet;
         }

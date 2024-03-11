@@ -20,7 +20,6 @@ namespace WarehouseTest.Services.StockService
         public StockService()
         {
             _stockServiceDAO = new StockServiceDAO();
-            var stockDataSet = new StockDataSet();
             ServiceFactory serviceFactory = new ServiceFactory();
             _receiptService = serviceFactory.Resolve<IReceiptService>();
             _deliveryService = serviceFactory.Resolve<IDeliveryService>();

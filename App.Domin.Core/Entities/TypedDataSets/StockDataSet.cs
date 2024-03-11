@@ -1,9 +1,10 @@
 ﻿
+using System.Data;
 using App.Framework;
 
 namespace Core.Entites
 {
-    public class StockDataSet : BaseDataSet<StockTable, StockRow>
+    public class StockDataSet : BaseDataSet
     {
         public StockDataSet()
         {
@@ -12,10 +13,6 @@ namespace Core.Entites
 
         public StockTable StockTable { get; set; }
 
-        public override StockTable MasterTable
-        {
-            get => StockTable;
-            set => StockTable = value;
-        }
+        public override BaseDataTable MasterTable => StockTable;
     }
 }

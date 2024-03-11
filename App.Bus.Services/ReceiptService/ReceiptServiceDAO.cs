@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 
 namespace WarehouseTest.Services.ReceiptService
 {
-    public class ReceiptServiceDAO : MasterDetailDAO<ReceiptDataset, ReceiptTable, ReceiptItemsTable, ReceiptRow, ReceiptItemsRow>
+    public class ReceiptServiceDAO : MasterDetailDAO<ReceiptDataset>
     {
-        public ReceiptServiceDAO() : base(new GenericRepository<ReceiptTable, ReceiptRow>(), new GenericRepository<ReceiptItemsTable, ReceiptItemsRow>())
+        public ReceiptServiceDAO() : base()
         {
 
         }
@@ -19,7 +19,7 @@ namespace WarehouseTest.Services.ReceiptService
             string query = $"SELECT * FROM {tableName} WHERE StockId = @Id";
             SqlParameter[] parameters = { new SqlParameter("@Id", StockId) };
 
-            masterRepository.ExecuteQuery(query, parameters, receiptdataSet.ReceiptTable);
+            _repository.ExecuteQuery(query, parameters, receiptdataSet.ReceiptTable);
 
             return receiptdataSet;
         }
@@ -32,7 +32,7 @@ namespace WarehouseTest.Services.ReceiptService
             string query = $"SELECT * FROM {tableName} WHERE ItemId = @Id";
             SqlParameter[] parameters = { new SqlParameter("@Id", itemId) };
 
-            detailRepository.ExecuteQuery(query, parameters, receiptdataSet.ReceiptItemsTable);
+            _repository.ExecuteQuery(query, parameters, receiptdataSet.ReceiptItemsTable);
 
             return receiptdataSet;
         }

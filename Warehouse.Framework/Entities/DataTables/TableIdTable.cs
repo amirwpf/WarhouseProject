@@ -5,10 +5,10 @@ using System.Data;
 
 namespace App.Framework
 {
-    public class TableIdTable : MasterDataTable<TableIdRow>
+    public class TableIdTable : MasterTypedDataTable<TableIdRow>
     {
-        public override string TableName { get; set; } = "tableIds";
-        public override string ViewName { get; set; } = "tableIds";
+        public override string TableName { get; } = "tableIds";
+        public override string ViewName { get; } = "tableIds";
 
         public TableIdTable()
         {

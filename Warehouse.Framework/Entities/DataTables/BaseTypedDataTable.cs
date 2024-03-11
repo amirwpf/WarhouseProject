@@ -7,11 +7,10 @@ using System.Data;
 
 namespace App.Framework
 {
-    public abstract class BaseTypedDataTable<T> : DataTable, IEnumerable<T> where T : IdDataRow
+    public abstract class BaseTypedDataTable<T> : BaseDataTable, IEnumerable<T> where T : IdDataRow
     {
         private readonly ITableIdService _tableIdService;
-        public virtual string TableName { get; set; } = "";
-        public virtual string ViewName { get; set; } = "";
+
 
         public BaseTypedDataTable()
         {

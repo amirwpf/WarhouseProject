@@ -1,17 +1,10 @@
-﻿using App.Framework.Entities.DataRows;
-using System;
+﻿using System;
 using System.Data;
 
 namespace App.Framework
 {
-    public abstract class BaseDataSet<TMaster, TMasterRow> : DataSet
-    where TMaster : MasterDataTable<TMasterRow>, new()
-    where TMasterRow : IdDataRow
+    public abstract class BaseDataSet : DataSet
     {
-        public BaseDataSet()
-        {
-            //MasterTable = Activator.CreateInstance<TMaster>();
-        }
-        public abstract TMaster MasterTable { get; set; }
+        public abstract BaseDataTable MasterTable { get;}
     }
 }

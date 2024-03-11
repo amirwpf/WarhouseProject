@@ -64,7 +64,7 @@ namespace WarehouseTest.UI.models
 
         public BaseListForm GetNewStockFormFunc()
         {
-            var form = new BaseListFormGeneric<StockDataSet, StockTable, StockRow, IStockService>();
+            var form = new BaseListFormGeneric<StockDataSet, StockRow, IStockService>();
             form.NewForm += () => new AddStockForm();
             form.EditForm += id => new AddStockForm(id);
             return form;
@@ -72,7 +72,7 @@ namespace WarehouseTest.UI.models
 
         public BaseListForm GetNewItemFormFunc()
         {
-            var form = new BaseListFormGeneric<ItemDataSet, ItemTable, ItemRow, IItemService>();
+            var form = new BaseListFormGeneric<ItemDataSet, ItemRow, IItemService>();
             form.NewForm += () => new AddItemForm();
             form.EditForm += id => new AddItemForm(id);
             return form;
@@ -80,7 +80,7 @@ namespace WarehouseTest.UI.models
 
         public BaseListForm GetNewReceiptFormFunc()
         {
-            var form = new BaseListFormGeneric<ReceiptDataset, ReceiptTable, ReceiptRow, IReceiptService>();
+            var form = new BaseListFormGeneric<ReceiptDataset, ReceiptRow, IReceiptService>();
             form.NewForm += () => new AddReceiptForm();
             form.EditForm += id => new AddReceiptForm(id);
             return form;
@@ -89,7 +89,7 @@ namespace WarehouseTest.UI.models
 
         public BaseListForm GetNewDeliveryFormFunc()
         {
-            var form = new BaseListFormGeneric<DeliveryDataset, DeliveryTable, DeliveryRow, IDeliveryService>();
+            var form = new BaseListFormGeneric<DeliveryDataset, DeliveryRow, IDeliveryService>();
             form.NewForm += () => new AddDeliveryForm();
             form.EditForm += id => new AddDeliveryForm(id);
             return form;

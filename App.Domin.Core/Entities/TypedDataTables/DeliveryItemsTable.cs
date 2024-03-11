@@ -5,11 +5,11 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class DeliveryItemsTable : DetailDataTable<DeliveryItemsRow>
+    public class DeliveryItemsTable : BaseTypedDataTable<DeliveryItemsRow>
     {
-        public override string ForeignKeyColumnName { get; set; } = "DeliveryId";
-        public override string TableName { get; set; } = "deliveryItems";
-        public override string ViewName { get; set; } = "deliveryItems";
+
+        public override string TableName { get=> "deliveryItems";  }
+        public override string ViewName { get=> "deliveryItems";  } 
 
         public DeliveryItemsTable()
         {

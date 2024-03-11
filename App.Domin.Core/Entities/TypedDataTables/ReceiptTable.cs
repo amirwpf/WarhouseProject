@@ -7,10 +7,10 @@ using System.Data;
 
 namespace Core.Entites
 {
-    public class ReceiptTable : MasterDataTable<ReceiptRow>
+    public class ReceiptTable : MasterTypedDataTable<ReceiptRow>
     {
-        public override string TableName { get; set; } = "receipt";
-        public override string ViewName { get; set; } = "receiptStock";
+        public override string TableName { get=> "receipt"; } 
+        public override string ViewName { get => "receiptStock"; }
 
         public ReceiptTable()
         {
