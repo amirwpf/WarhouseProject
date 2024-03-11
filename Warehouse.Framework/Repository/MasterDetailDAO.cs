@@ -7,7 +7,7 @@ using System.Reflection;
 namespace App.Framework
 {
     public abstract class MasterDetailDAO<TDataSet>
-    where TDataSet : MasterDetailDataSet, new()
+        where TDataSet : MasterDetailDataSet, new()
     {
         protected readonly Repository _repository;
 
@@ -19,7 +19,7 @@ namespace App.Framework
         public TDataSet GetMasterAll()
         {
             TDataSet ds = new TDataSet();
-             _repository.FetchAll(ds.MasterTable);
+            _repository.FetchAll(ds.MasterTable);
             return ds;
         }
 
@@ -35,8 +35,8 @@ namespace App.Framework
         {
             TDataSet ds = new TDataSet();
 
-            _repository.FetchById(masterId ,ds.MasterTable);
-            GetDetailByMasterId(masterId,ds);
+            _repository.FetchById(masterId, ds.MasterTable);
+            GetDetailByMasterId(masterId, ds);
 
             return ds;
         }
@@ -51,6 +51,21 @@ namespace App.Framework
                 {
                     try
                     {
+
+                        if (dataSet.MasterTable.Rows.Count > 0)
+                        {
+                            int originalVersion = GetVersionFromDatabase((int)dataSet.MasterTable.Rows[0]["Id"], dataSet.MasterTable);
+                            int currentVersion = (int)dataSet.MasterTable.Rows[0]["Version"];
+
+                            if (currentVersion != originalVersion)
+                            {
+                                throw new InvalidOperationException(ErrorMessage.DataHasBeenChangedByOtherTransaction());
+                            }
+                            else
+                            {
+                                dataSet.MasterTable.Rows[0]["Version"] = currentVersion + 1;
+                            }
+                        }
 
                         _repository.Save(dataSet.MasterTable);
                         _repository.Save(dataSet.DetailTable);
@@ -69,10 +84,8 @@ namespace App.Framework
         public void DeleteMasterDetailByMasterId(int masterId)
         {
             TDataSet ds = new TDataSet();
-            _repository.Delete(masterId,ds.MasterTable);
+            _repository.Delete(masterId, ds.MasterTable);
         }
-
-
 
         private void GetDetailByMasterId(int masterId, TDataSet dataSet)
         {
@@ -84,6 +97,15 @@ namespace App.Framework
 
             _repository.ExecuteQuery(query, parameters, dataSet.DetailTable);
         }
-    }
 
+        public int GetVersionFromDatabase(int id, BaseDataTable dataTable)
+        {
+            var tableName = dataTable.ViewName;
+            string query = $"SELECT Version FROM {tableName} WHERE Id = @Id";
+            SqlParameter[] parameters = { new SqlParameter("@Id", id) };
+            var newDataTable = (BaseDataTable)Activator.CreateInstance(dataTable.GetType());
+            _repository.ExecuteQuery(query, parameters, newDataTable);
+            return (int)newDataTable.Rows[0]["Version"];
+        }
+    }
 }

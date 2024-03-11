@@ -115,6 +115,42 @@ namespace App.Framework
             }
         }
 
+        //public DateTime GetCreatedAtFromDatabase(int id, BaseDataTable dataTable)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
+        //    {
+        //        connection.Open();
+
+        //        string tableName = dataTable.ViewName;
+
+        //        if (!string.IsNullOrEmpty(tableName))
+        //        {
+        //            string query = $"SELECT CreatedAt FROM {tableName} WHERE Id = @Id";
+
+        //            using (SqlCommand command = new SqlCommand(query, connection))
+        //            {
+        //                command.Parameters.AddWithValue("@Id", id);
+
+        //                using (SqlDataReader reader = command.ExecuteReader())
+        //                {
+        //                    if (reader.Read())
+        //                    {
+        //                        return reader.GetDateTime(0);
+        //                    }
+        //                    else
+        //                    {
+        //                        throw new InvalidOperationException($"Record with Id {id} not found in the database.");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new ArgumentNullException("Table name is null or empty.");
+        //        }
+        //    }
+        //}
+
         public void ExecuteQuery(string query, SqlParameter[] parameters, DataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))

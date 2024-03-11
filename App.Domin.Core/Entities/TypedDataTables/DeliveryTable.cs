@@ -20,6 +20,8 @@ namespace Core.Entites
             Columns.Add(new DataColumn("Date", typeof(DateTime)));
             Columns.Add(new DataColumn("StockCode", typeof(int)));
             Columns.Add(new DataColumn("StockName", typeof(string)));
+            Columns.Add(new DataColumn("CreatedAt", typeof(DateTime)));
+            Columns.Add(new DataColumn("Version", typeof(int)));
 
             Columns["StockName"].Caption = "Unserializable";
             Columns["StockCode"].Caption = "Unserializable";
@@ -66,6 +68,18 @@ namespace Core.Entites
         {
             get { return (string)this["StockName"]; }
             set { this["StockName"] = value; }
+        }
+
+        public DateTime CreatedAt
+        {
+            get { return (DateTime)this["CreatedAt"]; }
+            set { this["CreatedAt"] = value; }
+        }
+
+        public int Version
+        {
+            get { return (int)this["Version"]; }
+            set { this["Version"] = value; }
         }
     }
 }

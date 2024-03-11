@@ -33,5 +33,10 @@ namespace App.Framework
             return $"- مقدار {fieldName} تکراری می باشد  \n";
         }
 
+        public static string DataHasBeenChangedByOtherTransaction()
+        {
+            return "اطلاعات مورد نظر تغییر داده شده است. لطفا مجدد صفحه را بارگذاری کنید ";
+        }
+
     }
 }
