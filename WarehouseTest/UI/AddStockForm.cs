@@ -17,8 +17,8 @@ using WarehouseTest.Services.StockService;
 
 namespace WarehouseTest.UI
 {
-    [ExtentionMenu(CategoryName = "Warehouse",  MenuName = "انبار جدید", Order =3)]
-    public partial class AddStockForm : EntityBaseForm , IMenuExtension
+    [ExtentionMenu(CategoryName = "Warehouse", MenuName = "انبار جدید", Order = 3)]
+    public partial class AddStockForm : EntityBaseForm, IMenuExtension
     {
         private readonly IStockService _stockService;
         StockDataSet _stockDataSet;
@@ -61,7 +61,7 @@ namespace WarehouseTest.UI
             _inputId = 0;
         }
 
-        public AddStockForm(int id):base(id)
+        public AddStockForm(int id) : base(id)
         {
             InitializeComponent();
             var serviceFactory = new ServiceFactory();
@@ -110,21 +110,6 @@ namespace WarehouseTest.UI
                 bool dataIsValid = ValidateData(stockNameTx.Text, stockCodeTxt.Text, out int validCode);
                 if (dataIsValid)
                 {
-                    //ItemDataSet itemDataSet;
-                    //if (_id == 0)
-                    //{
-                    //    _stockDataSet = new StockDataSet();
-                    //    var newRow = _stockDataSet.StockTable.GetNewRow();
-                    //    _stockDataSet.StockTable.Add(newRow);
-                    //    _stockDataSet.StockTable[0].Code = validCode;
-                    //    _stockDataSet.StockTable[0].Name = stockNameTx.Text;
-                    //}
-                    //else
-                    //{
-                    //    _stockDataSet = _stockService.GetById(_id);
-                    //    _stockDataSet.StockTable[0].Code = validCode;
-                    //    _stockDataSet.StockTable[0].Name = stockNameTx.Text;
-                    //}
                     _stockService.Save(_stockDataSet);
                     MessageBox.Show("انبار با موفقیت ذخیره گردید");
                 }

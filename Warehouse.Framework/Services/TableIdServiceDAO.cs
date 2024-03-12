@@ -2,7 +2,7 @@
 
 namespace App.Framework
 {
-    class TableIdServiceDAO : NonMasterDetailDAO<TableIdDataSet>
+    class TableIdServiceDAO : BaseDAO<TableIdDataSet>
     {
         public TableIdServiceDAO() : base()
         {

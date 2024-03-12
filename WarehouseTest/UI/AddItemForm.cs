@@ -28,32 +28,11 @@ namespace WarehouseTest.forms
             _itemDataset = new ItemDataSet();
             var newRow = _itemDataset.ItemTable.GetNewRow();
             _itemDataset.ItemTable.Add(newRow);
-            itemNameTx.DataBindings.Add("Text", _itemDataset.ItemTable[0], "Name");
-            Binding binding = new Binding("Text", _itemDataset.ItemTable[0], "Code", true, DataSourceUpdateMode.OnPropertyChanged);
-
-            binding.Format += (sender, e) =>
-            {
-                if (e.Value != null && e.Value != DBNull.Value && int.TryParse(e.Value.ToString(), out int intValue))
-                {
-                    e.Value = intValue.ToString();
-                }
-            };
-
-            binding.Parse += (sender, e) =>
-            {
-                if (e.Value != null && int.TryParse(e.Value.ToString(), out int intValue))
-                {
-                    e.Value = intValue;
-                }
-                else
-                {
-                    e.Value = 0;
-                }
-            };
-
-            itemCodeTxt.DataBindings.Add(binding);
+            BindData();
             _inputId = 0;
         }
+
+
 
         public AddItemForm(int id) : base(id)
         {
@@ -62,6 +41,13 @@ namespace WarehouseTest.forms
             var serviceFactory = new ServiceFactory();
             _itemService = serviceFactory.Resolve<IItemService>();
             _itemDataset = _itemService.GetById(id);
+            BindData();
+            _inputId = id;
+        }
+
+
+        private void BindData()
+        {
             itemNameTx.DataBindings.Add("Text", _itemDataset.ItemTable[0], "Name");
             Binding binding = new Binding("Text", _itemDataset.ItemTable[0], "Code", true, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -86,7 +72,6 @@ namespace WarehouseTest.forms
             };
 
             itemCodeTxt.DataBindings.Add(binding);
-            _inputId = id;
         }
 
         private void AddItemForm_Load(object sender, EventArgs e)

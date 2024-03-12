@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace WarehouseTest.Services.StockService
 {
-    class StockServiceDAO : NonMasterDetailDAO<StockDataSet>
+    class StockServiceDAO : BaseDAO<StockDataSet>
     {
         public StockServiceDAO() : base()
         {

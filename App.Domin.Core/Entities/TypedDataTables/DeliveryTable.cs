@@ -20,7 +20,6 @@ namespace Core.Entites
             Columns.Add(new DataColumn("Date", typeof(DateTime)));
             Columns.Add(new DataColumn("StockCode", typeof(int)));
             Columns.Add(new DataColumn("StockName", typeof(string)));
-            Columns.Add(new DataColumn("CreatedAt", typeof(DateTime)));
             Columns.Add(new DataColumn("Version", typeof(int)));
 
             Columns["StockName"].Caption = "Unserializable";
@@ -28,7 +27,7 @@ namespace Core.Entites
         }
     }
 
-    public class DeliveryRow : IdDataRow
+    public class DeliveryRow : IdDataRow, IVersionDataRow
     {
         public DeliveryRow(DataRowBuilder builder) : base(builder)
         {
@@ -69,16 +68,9 @@ namespace Core.Entites
             get { return (string)this["StockName"]; }
             set { this["StockName"] = value; }
         }
-
-        public DateTime CreatedAt
-        {
-            get { return (DateTime)this["CreatedAt"]; }
-            set { this["CreatedAt"] = value; }
-        }
-
         public int Version
         {
-            get { return (int)this["Version"]; }
+            get { if (this["Version"] != DBNull.Value) return (int)this["Version"]; else return 0; }
             set { this["Version"] = value; }
         }
     }

@@ -68,6 +68,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entities\DataTables\IDetailDataTable.cs" />
+    <Compile Include="Entities\DataTables\IVersionDataRow.cs" />
     <Compile Include="Entities\DataTables\MasterTypedDataTable.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -80,7 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\MasterDetailDAO.cs" />
-    <Compile Include="Repository\NonMasterDetailDAO.cs" />
+    <Compile Include="Repository\BaseDAO.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Services\ITableIdService.cs" />
     <Compile Include="Services\TableIdService.cs" />

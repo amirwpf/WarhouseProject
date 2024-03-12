@@ -7,7 +7,7 @@ using System.Text;
 
 namespace WarehouseTest.Services.ItemService
 {
-    class ItemServiceDAO : NonMasterDetailDAO<ItemDataSet>
+    class ItemServiceDAO : BaseDAO<ItemDataSet>
     {
         public ItemServiceDAO():base()
         {

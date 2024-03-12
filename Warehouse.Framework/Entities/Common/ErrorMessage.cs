@@ -38,5 +38,10 @@ namespace App.Framework
             return "اطلاعات مورد نظر تغییر داده شده است. لطفا مجدد صفحه را بارگذاری کنید ";
         }
 
+        public static string DataHasNotFound()
+        {
+            return "اطلاعات مورد نظر یافت نشد. لطفا مجدد صفحه را بارگذاری کنید ";
+        }
+
     }
 }

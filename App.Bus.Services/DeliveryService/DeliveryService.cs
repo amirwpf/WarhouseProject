@@ -21,7 +21,7 @@ namespace WarehouseTest.Services.DeliveryService
         }
         public DeliveryDataset GetById(int id)
         {
-            return deliveryServiceDAO.GetMasterDetailByMasterId(id);
+            return deliveryServiceDAO.GetMasterDetailById(id);
         }
 
         public DeliveryDataset GetByStockId(int stockId)
@@ -36,24 +36,24 @@ namespace WarehouseTest.Services.DeliveryService
 
         public DeliveryDataset GetAll()
         {
-            return deliveryServiceDAO.GetMasterAll();
+            return deliveryServiceDAO.GetAll();
         }
 
         public void Save(DeliveryDataset deliveryDataset)
         {
             ValidateData(deliveryDataset);
 
-            deliveryServiceDAO.SaveMasterDetail(deliveryDataset);
+            deliveryServiceDAO.Save(deliveryDataset);
         }
 
         public void DeleteById(int deliveryId)
         {
-            deliveryServiceDAO.DeleteMasterDetailByMasterId(deliveryId);
+            deliveryServiceDAO.Delete(deliveryId);
         }
 
         private bool ValidateReceiptNumber(int id, int deliveryNumber)
         {
-            var deliveryTable = deliveryServiceDAO.GetMasterAll().DeliveryTable;
+            var deliveryTable = deliveryServiceDAO.GetAll().DeliveryTable;
             foreach (var delivery in deliveryTable)
             {
                 if (delivery.Number == deliveryNumber && delivery.Id != id)

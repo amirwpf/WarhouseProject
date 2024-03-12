@@ -7,8 +7,8 @@ namespace App.Framework
 {
     public class TableIdTable : MasterTypedDataTable<TableIdRow>
     {
-        public override string TableName { get; } = "tableIds";
-        public override string ViewName { get; } = "tableIds";
+        public override string TableName { get=> "tableIds"; }
+        public override string ViewName { get=> "tableIds"; }
 
         public TableIdTable()
         {

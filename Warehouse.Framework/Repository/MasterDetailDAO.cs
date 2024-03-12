@@ -6,42 +6,27 @@ using System.Reflection;
 
 namespace App.Framework
 {
-    public abstract class MasterDetailDAO<TDataSet>
+    public abstract class MasterDetailDAO<TDataSet> : BaseDAO<TDataSet>
         where TDataSet : MasterDetailDataSet, new()
     {
-        protected readonly Repository _repository;
-
-        public MasterDetailDAO()
+        #region ctor
+        public MasterDetailDAO():base()
         {
-            _repository = new Repository();
         }
+        #endregion
 
-        public TDataSet GetMasterAll()
+        #region CRUD
+
+        public TDataSet GetMasterDetailById(int masterId)
         {
             TDataSet ds = new TDataSet();
-            _repository.FetchAll(ds.MasterTable);
-            return ds;
-        }
-
-        public TDataSet GetAll()
-        {
-            TDataSet ds = new TDataSet();
-            _repository.FetchAll(ds.MasterTable);
-            _repository.FetchAll(ds.DetailTable);
-            return ds;
-        }
-
-        public TDataSet GetMasterDetailByMasterId(int masterId)
-        {
-            TDataSet ds = new TDataSet();
-
             _repository.FetchById(masterId, ds.MasterTable);
             GetDetailByMasterId(masterId, ds);
 
             return ds;
         }
 
-        public void SaveMasterDetail(TDataSet dataSet)
+        public override void Save(TDataSet dataSet)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
             {
@@ -54,17 +39,7 @@ namespace App.Framework
 
                         if (dataSet.MasterTable.Rows.Count > 0)
                         {
-                            int originalVersion = GetVersionFromDatabase((int)dataSet.MasterTable.Rows[0]["Id"], dataSet.MasterTable);
-                            int currentVersion = (int)dataSet.MasterTable.Rows[0]["Version"];
-
-                            if (currentVersion != originalVersion)
-                            {
-                                throw new InvalidOperationException(ErrorMessage.DataHasBeenChangedByOtherTransaction());
-                            }
-                            else
-                            {
-                                dataSet.MasterTable.Rows[0]["Version"] = currentVersion + 1;
-                            }
+                            CheckVersion(dataSet);
                         }
 
                         _repository.Save(dataSet.MasterTable);
@@ -80,13 +55,9 @@ namespace App.Framework
                 }
             }
         }
+        #endregion
 
-        public void DeleteMasterDetailByMasterId(int masterId)
-        {
-            TDataSet ds = new TDataSet();
-            _repository.Delete(masterId, ds.MasterTable);
-        }
-
+        #region other methods
         private void GetDetailByMasterId(int masterId, TDataSet dataSet)
         {
             var tableName = dataSet.DetailTable.TableName;
@@ -97,15 +68,6 @@ namespace App.Framework
 
             _repository.ExecuteQuery(query, parameters, dataSet.DetailTable);
         }
-
-        public int GetVersionFromDatabase(int id, BaseDataTable dataTable)
-        {
-            var tableName = dataTable.ViewName;
-            string query = $"SELECT Version FROM {tableName} WHERE Id = @Id";
-            SqlParameter[] parameters = { new SqlParameter("@Id", id) };
-            var newDataTable = (BaseDataTable)Activator.CreateInstance(dataTable.GetType());
-            _repository.ExecuteQuery(query, parameters, newDataTable);
-            return (int)newDataTable.Rows[0]["Version"];
-        }
+        #endregion
     }
 }

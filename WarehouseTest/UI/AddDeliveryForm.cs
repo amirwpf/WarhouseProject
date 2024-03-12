@@ -203,7 +203,10 @@ namespace WarehouseTest.UI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    if (ex.Message == "There is no row at position 0.")
+                        MessageBox.Show(ErrorMessage.DataHasNotFound());
+                    else
+                        MessageBox.Show(ex.Message);
                 }
             }
         }

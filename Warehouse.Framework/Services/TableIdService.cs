@@ -13,7 +13,6 @@ namespace App.Framework
         {
             TableIdDataSet tableIdDataSet = new TableIdDataSet();
             int idNumber = 0;
-            //var id = (int)DbTablesEnum;
 
             tableIdDataSet = tableIdServiceDAO.GetByTableName(tableName);
             if(tableIdDataSet != null)

@@ -17,11 +17,10 @@ namespace Core.Entites
             Columns.Add(new DataColumn("Id", typeof(int)));
             Columns.Add(new DataColumn("Code", typeof(int)));
             Columns.Add(new DataColumn("Name", typeof(string)));
-            Columns.Add(new DataColumn("CreatedAt", typeof(DateTime)));
             Columns.Add(new DataColumn("Version", typeof(int)));
         }
     }
-    public class StockRow : IdDataRow
+    public class StockRow : IdDataRow, IVersionDataRow
     {
         public StockRow(DataRowBuilder builder) : base(builder)
         {
@@ -45,16 +44,9 @@ namespace Core.Entites
             get { if (this["Name"] != DBNull.Value) return (string)this["Name"]; else return ""; }
             set { this["Name"] = value; }
         }
-
-        public DateTime CreatedAt
-        {
-            get { return (DateTime)this["CreatedAt"]; }
-            set { this["CreatedAt"] = value; }
-        }
-
         public int Version
         {
-            get { return (int)this["Version"]; }
+            get { if (this["Version"] != DBNull.Value) return (int)this["Version"]; else return 0; }
             set { this["Version"] = value; }
         }
     }

@@ -21,7 +21,7 @@ namespace WarehouseTest.Services.ReceiptService
 
         public ReceiptDataset GetById(int id)
         {
-            var res = receiptServiceDAO.GetMasterDetailByMasterId(id);
+            var res = receiptServiceDAO.GetMasterDetailById(id);
             return res;
         }
 
@@ -39,24 +39,24 @@ namespace WarehouseTest.Services.ReceiptService
 
         public ReceiptDataset GetAll()
         {
-            return receiptServiceDAO.GetMasterAll();
+            return receiptServiceDAO.GetAll();
         }
 
         public void Save(ReceiptDataset receiptDataset)
         {
             ValidateData(receiptDataset);
 
-            receiptServiceDAO.SaveMasterDetail(receiptDataset);
+            receiptServiceDAO.Save(receiptDataset);
         }
 
         public void DeleteById(int ReceiptId)
         {
-            receiptServiceDAO.DeleteMasterDetailByMasterId(ReceiptId);
+            receiptServiceDAO.Delete(ReceiptId);
         }
 
         private bool ValidateReceiptNumber(int id ,int receiptNumber)
         {
-            var receiptTable = receiptServiceDAO.GetMasterAll().ReceiptTable;
+            var receiptTable = receiptServiceDAO.GetAll().ReceiptTable;
             foreach (var receipt in receiptTable)
             {
                 if (receipt.Number == receiptNumber && receipt.Id!=id)
