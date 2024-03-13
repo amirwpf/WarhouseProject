@@ -20,6 +20,15 @@ namespace App.Framework.UI.Model
 
         private void InitializeToolTips()
         {
+
+            ToolTip deleteBtnTT = new ToolTip();
+            deleteBtnTT.SetToolTip(deleteBtn, "حذف");
+
+            ToolTip saveBtnTT = new ToolTip();
+            saveBtnTT.SetToolTip(refreshBtn, "نوسازی");
+
+            ToolTip addBtnTT = new ToolTip();
+            addBtnTT.SetToolTip(addBtn, "جدید");
         }
 
         public virtual void deleteBtn_Click(object sender, EventArgs e)

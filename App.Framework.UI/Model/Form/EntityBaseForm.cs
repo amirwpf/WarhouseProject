@@ -15,6 +15,7 @@ namespace App.Framework.UI.Model
         public EntityBaseForm()
         {
             InitializeComponent();
+            InitializeToolTips();
         }
 
         public EntityBaseForm(int id) : this()
