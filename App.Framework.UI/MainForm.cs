@@ -16,7 +16,6 @@ namespace App.Framework.UI
 {
     public partial class MainForm : Form
     {
-        private List<IMenuExtension> extensions;
         private Dictionary<string, List<Type>> categorizedExtensions;
         private Dictionary<string, List<MenuListType>> categorizedListExtensions;
         ExtentionMenuAttribute attribute;
@@ -25,10 +24,7 @@ namespace App.Framework.UI
         {
             InitializeComponent();
             InitializePersianCulture();
-
             addPanel.AutoScroll = true;
-
-            extensions = new List<IMenuExtension>();
 
             MessageBoxManager.OK = "بله";
             MessageBoxManager.Yes = "بله";
@@ -64,7 +60,6 @@ namespace App.Framework.UI
                         {
                             try
                             {
-                                //var attributes = (ExtentionMenuAttribute)type.GetCustomAttributes(typeof(ExtentionMenuAttribute), true).ToList();
                                 attribute = (ExtentionMenuAttribute)type.GetCustomAttributes(typeof(ExtentionMenuAttribute), true).LastOrDefault();
                                 if (attribute != null)
                                 {
@@ -123,21 +118,7 @@ namespace App.Framework.UI
                 try
                 {
                     var resForm = (BaseForm)Activator.CreateInstance(extensionType);
-                    resForm.MdiParent = this;
-
-                    resForm.TabCtrl = mainTabControl;
-
-                    TabPage tp = new TabPage();
-                    tp.Parent = mainTabControl;
-                    tp.Text = resForm.Text;
-                    tp.Show();
-
-                    resForm.TabPag = tp;
-                    tp.Controls.Add(resForm);
-
-                    resForm.Show();
-
-                    mainTabControl.SelectedTab = tp;
+                    MainFormManager.AddFormToMainForm(resForm);
                 }
                 catch (Exception ex)
                 {
@@ -274,22 +255,7 @@ namespace App.Framework.UI
                 {
                     var resForm =extensionType();
                     resForm.Text = label.Text;
-
-                    resForm.MdiParent = this;
-
-                    resForm.TabCtrl = mainTabControl;
-
-                    TabPage tp = new TabPage();
-                    tp.Parent = mainTabControl;
-                    tp.Text = resForm.Text;
-                    tp.Show();
-
-                    resForm.TabPag = tp;
-                    tp.Controls.Add(resForm);
-
-                    resForm.Show();
-
-                    mainTabControl.SelectedTab = tp;
+                    MainFormManager.AddFormToMainForm(resForm);
                 }
                 catch (Exception ex)
                 {
@@ -321,7 +287,6 @@ namespace App.Framework.UI
         {
             if (sender is Button button)
             {
-                //button.BorderStyle = BorderStyle.FixedSingle;
                 button.BackColor = System.Drawing.Color.LightCyan;
             }
         }
@@ -330,7 +295,6 @@ namespace App.Framework.UI
         {
             if (sender is Button button)
             {
-                //button.BorderStyle = BorderStyle.FixedSingle;
                 button.BackColor = System.Drawing.SystemColors.Control;
             }
         }
