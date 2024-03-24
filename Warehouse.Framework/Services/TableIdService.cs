@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Linq;
+
 namespace App.Framework
 {
     public class TableIdService : ITableIdService
@@ -15,10 +18,14 @@ namespace App.Framework
             int idNumber = 0;
 
             tableIdDataSet = tableIdServiceDAO.GetByTableName(tableName);
-            if(tableIdDataSet != null)
+            if (tableIdDataSet.TableIdTable.Count() > 0)
             {
                 idNumber = tableIdDataSet.TableIdTable[0].IdNumber;
                 tableIdDataSet.TableIdTable[0].IdNumber += 1;
+            }
+            else
+            {
+                throw new Exception();
             }
             tableIdServiceDAO.Save(tableIdDataSet);
 

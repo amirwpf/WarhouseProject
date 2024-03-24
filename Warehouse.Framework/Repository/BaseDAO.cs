@@ -15,7 +15,7 @@ namespace App.Framework
 
         public BaseDAO()
         {
-            _repository = new Repository();
+            _repository = Repository.GetRepository();
         }
         #endregion
 

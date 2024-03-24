@@ -6,8 +6,33 @@ using System.Reflection;
 
 namespace App.Framework
 {
-    public class Repository
+    public class Repository:IDisposable
     {
+        private static Repository _repository;
+
+        public static Repository GetRepository()
+        {
+            if (_repository == null) _repository = new Repository();
+
+            return _repository;
+        }
+
+        private readonly SqlConnection _connection;
+
+        private Repository()
+        {
+            _connection = new SqlConnection(StaticFields.connectionString);
+            _connection.Open();
+        }
+
+        public void Dispose()
+        {
+            if (_connection != null && _connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+                _connection.Dispose();
+            }
+        }
         public void FetchAll(BaseDataTable dataTable)
         {
             using (SqlConnection connection = new SqlConnection(StaticFields.connectionString))
