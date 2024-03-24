@@ -39,7 +39,7 @@ namespace App.Framework
 
                         if (dataSet.MasterTable.Rows.Count > 0)
                         {
-                            CheckVersion(dataSet);
+                            CheckVersion(dataSet, (IdDataRow)dataSet.MasterTable.Rows[0]);
                         }
 
                         _repository.Save(dataSet.MasterTable);

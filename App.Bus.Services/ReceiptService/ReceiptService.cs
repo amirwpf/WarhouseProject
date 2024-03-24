@@ -6,57 +6,59 @@ using Core.Entites;
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Domin.Core;
 using App.Framework;
+using App.Framework.Entities.DataRows;
 
 namespace WarehouseTest.Services.ReceiptService
 {
     public class ReceiptService : IReceiptService
     {
-        private readonly ReceiptServiceDAO receiptServiceDAO;
+        private readonly ReceiptServiceDAO _receiptServiceDAO;
 
         public ReceiptService()
         {
-            receiptServiceDAO = new ReceiptServiceDAO();
+            _receiptServiceDAO = new ReceiptServiceDAO();
             
         }
 
         public ReceiptDataset GetById(int id)
         {
-            var res = receiptServiceDAO.GetMasterDetailById(id);
+            var res = _receiptServiceDAO.GetMasterDetailById(id);
             return res;
         }
 
         public ReceiptDataset GetByStockId(int stockId)
         {
-            var res = receiptServiceDAO.GetByStockId(stockId);
+            var res = _receiptServiceDAO.GetByStockId(stockId);
             return res;
         }
 
         public ReceiptDataset GetByItemId(int itemId)
         {
-            var res = receiptServiceDAO.GetByItemId(itemId);
+            var res = _receiptServiceDAO.GetByItemId(itemId);
             return res;
         }
 
         public ReceiptDataset GetAll()
         {
-            return receiptServiceDAO.GetAll();
+            return _receiptServiceDAO.GetAll();
         }
 
         public void Save(ReceiptDataset receiptDataset)
         {
-            ValidateData(receiptDataset);
+            if(receiptDataset.ReceiptTable[0].RowState!=DataRowState.Deleted)
+                ValidateData(receiptDataset);
 
-            receiptServiceDAO.Save(receiptDataset);
+            _receiptServiceDAO.Save(receiptDataset);
         }
 
         public void DeleteById(int ReceiptId)
         {
-            receiptServiceDAO.Delete(ReceiptId);
+            _receiptServiceDAO.Delete(ReceiptId);
         }
 
         private bool ValidateReceiptNumber(int id ,int receiptNumber)
         {
-            var receiptTable = receiptServiceDAO.GetAll().ReceiptTable;
+            var receiptTable = _receiptServiceDAO.GetAll().ReceiptTable;
             foreach (var receipt in receiptTable)
             {
                 if (receipt.Number == receiptNumber && receipt.Id!=id)
@@ -98,5 +100,9 @@ namespace WarehouseTest.Services.ReceiptService
             }
         }
 
+        public void DeleteWithcheckVersion(ReceiptDataset dataSet, IdDataRow row)
+        {
+            _receiptServiceDAO.DeleteWithcheckVersion(dataSet, row);
+        }
     }
 }

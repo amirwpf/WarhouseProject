@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Common\DbTablesEnum.cs" />
     <Compile Include="Entities\Common\ErrorMessage.cs" />
     <Compile Include="Entities\Common\StaticFields.cs" />
     <Compile Include="Entities\DataRows\IdDataRow.cs" />

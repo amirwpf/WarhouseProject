@@ -95,7 +95,6 @@ namespace WarehouseTest.UI
         }
         private void AddStockForm_Load(object sender, EventArgs e)
         {
-            deleteBtn.Enabled = false;
         }
 
         public override void addBtn_Click(object sender, EventArgs e)
@@ -112,12 +111,38 @@ namespace WarehouseTest.UI
                 {
                     _stockService.Save(_stockDataSet);
                     MessageBox.Show("انبار با موفقیت ذخیره گردید");
+                    _inputId = _stockDataSet.StockTable[0].Id;
                 }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        public override void deleteBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = ShowConfirmationMessageBox("سند خروج حذف گردد؟");
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _stockDataSet.StockTable[0].Delete();
+                    if (_stockDataSet.StockTable.Rows.Count > 0)
+                    {
+                        _stockService.DeleteWithcheckVersion(_stockDataSet, _stockDataSet.StockTable[0]);
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -153,6 +178,18 @@ namespace WarehouseTest.UI
         private void itemCodeLbl_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private DialogResult ShowConfirmationMessageBox(string message)
+        {
+            return MessageBox.Show(
+                message,
+                "تایید حذف",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2
+            );
         }
     }
 }

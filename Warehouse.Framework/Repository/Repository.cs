@@ -98,22 +98,38 @@ namespace App.Framework
 
                 if (!string.IsNullOrEmpty(tableName))
                 {
-                    string query = $"DELETE FROM {tableName} WHERE Id = @Id";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlDataAdapter dataAdapter = CreateDataAdapter(dataTable, connection, null))
                     {
-                        command.Parameters.AddWithValue("@Id", id);
-                        command.ExecuteNonQuery();
+                        DataRow rowToDelete = null;
+                        foreach (IdDataRow row in dataTable.Rows)
+                        {
+                            if (Convert.ToInt32(row.ID) == id)
+                            {
+                                rowToDelete = row;
+                                break;
+                            }
+                        }
+
+                        if (rowToDelete != null)
+                        {
+                            rowToDelete.Delete();
+                            dataAdapter.Update(new DataRow[] { rowToDelete });
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException(ErrorMessage.DataHasNotFound());
+                        }
                     }
                 }
                 else
                 {
                     throw new ArgumentNullException("Table name is null or empty.");
                 }
-
-
             }
         }
+
+
+
 
         public void ExecuteQuery(string query, SqlParameter[] parameters, DataTable dataTable)
         {

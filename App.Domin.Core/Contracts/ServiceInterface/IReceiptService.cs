@@ -10,8 +10,6 @@ namespace App.Domin.Core.Contracts.ServiceInterface
 {
     public interface IReceiptService : IEntityService<ReceiptDataset>
     {
-        void Save(ReceiptDataset receiptDataset);
-
         ReceiptDataset GetByStockId(int stockId);
         ReceiptDataset GetByItemId(int itemId);
     }

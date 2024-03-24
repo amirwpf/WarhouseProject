@@ -193,8 +193,23 @@ namespace WarehouseTest
             DialogResult result = ShowConfirmationMessageBox("سند ورورد حذف گردد؟");
             if (result == DialogResult.Yes)
             {
-                _receiptService.DeleteById(_receiptId);
-                this.Close();
+                try
+                {
+                    _receiptDataset.ReceiptTable[0].Delete();
+                    if (_receiptDataset.ReceiptTable.Rows.Count > 0)
+                    {
+                        _receiptService.DeleteWithcheckVersion(_receiptDataset, _receiptDataset.ReceiptTable[0]);
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 

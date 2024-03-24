@@ -1,6 +1,7 @@
 ﻿using App.Domin.Core;
 using App.Domin.Core.Contracts.ServiceInterface;
 using App.Framework;
+using App.Framework.Entities.DataRows;
 using Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -13,47 +14,48 @@ namespace WarehouseTest.Services.DeliveryService
 {
     public class DeliveryService : IDeliveryService
     {
-        private readonly DeliveryServiceDAO deliveryServiceDAO;
+        private readonly DeliveryServiceDAO _deliveryServiceDAO;
 
         public DeliveryService()
         {
-            deliveryServiceDAO = new DeliveryServiceDAO();
+            _deliveryServiceDAO = new DeliveryServiceDAO();
         }
         public DeliveryDataset GetById(int id)
         {
-            return deliveryServiceDAO.GetMasterDetailById(id);
+            return _deliveryServiceDAO.GetMasterDetailById(id);
         }
 
         public DeliveryDataset GetByStockId(int stockId)
         {
-            return deliveryServiceDAO.GetByStockId(stockId);
+            return _deliveryServiceDAO.GetByStockId(stockId);
         }
 
         public DeliveryDataset GetByItemId(int itemId)
         {
-            return deliveryServiceDAO.GetByItemId(itemId);
+            return _deliveryServiceDAO.GetByItemId(itemId);
         }
 
         public DeliveryDataset GetAll()
         {
-            return deliveryServiceDAO.GetAll();
+            return _deliveryServiceDAO.GetAll();
         }
 
         public void Save(DeliveryDataset deliveryDataset)
         {
-            ValidateData(deliveryDataset);
+            if (deliveryDataset.DeliveryTable[0].RowState != DataRowState.Deleted)
+                ValidateData(deliveryDataset);
 
-            deliveryServiceDAO.Save(deliveryDataset);
+            _deliveryServiceDAO.Save(deliveryDataset);
         }
 
         public void DeleteById(int deliveryId)
         {
-            deliveryServiceDAO.Delete(deliveryId);
+            _deliveryServiceDAO.Delete(deliveryId);
         }
 
         private bool ValidateReceiptNumber(int id, int deliveryNumber)
         {
-            var deliveryTable = deliveryServiceDAO.GetAll().DeliveryTable;
+            var deliveryTable = _deliveryServiceDAO.GetAll().DeliveryTable;
             foreach (var delivery in deliveryTable)
             {
                 if (delivery.Number == deliveryNumber && delivery.Id != id)
@@ -95,5 +97,9 @@ namespace WarehouseTest.Services.DeliveryService
             }
         }
 
+        public void DeleteWithcheckVersion(DeliveryDataset dataSet, IdDataRow row)
+        {
+            _deliveryServiceDAO.DeleteWithcheckVersion(dataSet, row);
+        }
     }
 }

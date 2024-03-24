@@ -43,5 +43,10 @@ namespace App.Framework
             return "اطلاعات مورد نظر یافت نشد. لطفا مجدد صفحه را بارگذاری کنید ";
         }
 
+        public static string DataHasNotSavedYet()
+        {
+            return "آیتم مورد نظر ابتدا باید ذخیره گردد";
+        }
+
     }
 }

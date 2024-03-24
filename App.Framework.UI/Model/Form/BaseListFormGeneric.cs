@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace App.Framework.UI.Model
 {
-    public class BaseListFormGeneric<TDataSet,TDataRow ,TService> : BaseListForm
+    public class BaseListFormGeneric<TDataSet, TDataRow, TService> : BaseListForm
         where TDataSet : BaseDataSet, new()
-        where TDataRow: IdDataRow
+        where TDataRow : IdDataRow
         where TService : IEntityService<TDataSet>
     {
         #region public fields
@@ -44,40 +44,28 @@ namespace App.Framework.UI.Model
 
                 if (result == DialogResult.Yes)
                 {
-                    HashSet<int> deleteIds = new HashSet<int>();
-
-                    foreach (DataGridViewCell cell in selectedCells)
+                    try
                     {
-                        int rowIndex = cell.RowIndex;
-
-                        if (!deleteIds.Contains(rowIndex) && rowIndex != -1)
+                        //HashSet<int> deletedIndexes = new HashSet<int>();
+                        foreach (DataGridViewCell cell in selectedCells)
                         {
+                            var rowIndex = cell.RowIndex;
                             var itemRow = (dataGrid.Rows[rowIndex].DataBoundItem as DataRowView)?.Row as IdDataRow;
 
-                            if (itemRow != null)
+                            if (itemRow != null && itemRow is IVersionDataRow versionDataRow)
                             {
-                                var id = itemRow.ID;
-                                deleteIds.Add(id);
+                                itemRow.Delete();
+                                //deletedIndexes.Add(rowIndex);
+                                _baseService.DeleteWithcheckVersion(_dataSet,itemRow);
                             }
                         }
                     }
-
-                    foreach (var id in deleteIds)
+                    catch (Exception ex)
                     {
-                        try
-                        {
-                            _baseService.DeleteById(id);
-
-                            //MessageBox.Show("آیتم‌ها با موفقیت حذف گردیدند");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "خطا");
-                        }
+                        MessageBox.Show(ex.Message, "خطا");
                     }
+                    RefreshDataGrid();
                 }
-
-                RefreshDataGrid();
             }
         }
 
@@ -85,7 +73,7 @@ namespace App.Framework.UI.Model
         {
             try
             {
-                if (EditForm!=null)
+                if (EditForm != null)
                 {
                     DataRowView selectedRow = (DataRowView)dataGrid.Rows[e.RowIndex].DataBoundItem;
 
@@ -97,7 +85,7 @@ namespace App.Framework.UI.Model
                     }
                 }
             }
-            catch(Exception ex) { }
+            catch (Exception ex) { }
         }
 
         private DialogResult ShowConfirmationMessageBox(string message)
@@ -128,7 +116,7 @@ namespace App.Framework.UI.Model
 
         protected override void addBtn_Click(object sender, EventArgs e)
         {
-            if(NewForm!=null)
+            if (NewForm != null)
                 MainFormManager.AddFormToMainForm(NewForm());
         }
 

@@ -1,7 +1,9 @@
 ﻿using App.Framework.Entities.DataRows;
 using System;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace App.Framework
 {
@@ -35,9 +37,9 @@ namespace App.Framework
 
         public virtual void Save(TDataSet dataSet)
         {
-            if (dataSet.MasterTable.Rows.Count > 0)
+            if (dataSet.MasterTable.Rows.Count > 0 /*&& dataSet.MasterTable.Rows[0].RowState!=DataRowState.Deleted*/)
             {
-                CheckVersion(dataSet);
+                CheckVersion(dataSet,(IdDataRow)dataSet.MasterTable.Rows[0]);
             }
 
             _repository.Save(dataSet.MasterTable);
@@ -49,23 +51,49 @@ namespace App.Framework
             _repository.Delete(id, ds.MasterTable);
         }
 
+        public virtual void DeleteWithcheckVersion(TDataSet ds, IdDataRow row)
+        {
+            if (ds.MasterTable.Rows.Count > 0)
+            {
+                CheckVersion(ds,row);
+            }
+
+            _repository.Save(ds.MasterTable);
+        }
         #endregion
 
 
         #region other methods
-        protected void CheckVersion(TDataSet dataSet)
+        protected void CheckVersion(TDataSet dataSet, IdDataRow row)
         {
-            if (!(dataSet.MasterTable.Rows[0] is IVersionDataRow versionDataRow))
+            int originalIdVersion = 0;
+
+            if(row.RowState==DataRowState.Deleted)
             {
-                return;
+                originalIdVersion = (int)(row.GetOriginalPropertyValue(nameof(row.ID)));
             }
+            else
+                originalIdVersion = GetRowId(dataSet.MasterTable.Rows[0]);
 
-            int id = GetRowId(dataSet.MasterTable.Rows[0]);
-            int originalVersion = GetOriginalVersion(id, dataSet.MasterTable);
-            int currentVersion = versionDataRow.Version;
+            if (row is IVersionDataRow versionDataRow)
+            {
+                int originalVersionVersion = 0;
+                if (row.RowState == DataRowState.Deleted)
+                    originalVersionVersion = (int)(row.GetOriginalPropertyValue(nameof(versionDataRow.Version)));
+                else
+                    originalVersionVersion = versionDataRow.Version;
 
-            ValidateVersions(originalVersion, currentVersion);
-            UpdateVersion(versionDataRow, currentVersion);
+
+                int originalVersion = GetOriginalVersion(originalIdVersion, dataSet.MasterTable);
+                int currentVersion = originalVersionVersion;
+
+                ValidateVersions(originalVersion, currentVersion);
+                if(row.RowState!=DataRowState.Deleted)
+                    UpdateVersion(versionDataRow, currentVersion);
+            }
+            else return;
+
+
         }
 
         private int GetRowId(DataRow row)

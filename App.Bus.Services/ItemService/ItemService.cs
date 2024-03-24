@@ -8,6 +8,8 @@ using App.Domin.Core.Contracts.ServiceInterface;
 using App.Domin.Core;
 using WarehouseTest.Services.ReceiptService;
 using App.Framework;
+using System.Data;
+using App.Framework.Entities.DataRows;
 
 namespace WarehouseTest.Services.ItemService
 {
@@ -37,43 +39,69 @@ namespace WarehouseTest.Services.ItemService
             return _itemServiceDAO.GetAll();
         }
 
+
         public void Save(ItemDataSet itemDataSet)
         {
-            var codeInt = ValidateData(itemDataSet.ItemTable[0].Id, itemDataSet.ItemTable[0].Name, itemDataSet.ItemTable[0].Code.ToString());
+            if (itemDataSet.ItemTable.Rows.Count > 0)
+            {
+                ItemRow row = itemDataSet.ItemTable[0];
+                if (row.RowState != DataRowState.Deleted)
+                {
+                    var codeInt = ValidateData(row.Id, row.Name, row.Code.ToString());
+                }
+            }
 
             _itemServiceDAO.Save(itemDataSet);
         }
-
         public void DeleteById(int itemId)
+        {
+            CheckForItemUsage(itemId);
+            _itemServiceDAO.Delete(itemId);
+        }
+
+        public void DeleteWithcheckVersion(ItemDataSet itemDataSet, IdDataRow itemRow)
+        {
+            var originalIdVersion = 0;
+            if (itemRow!=null)
+                originalIdVersion = (int)(itemRow.GetOriginalPropertyValue(nameof(itemRow.ID)));
+
+            CheckForItemUsage(originalIdVersion);
+            _itemServiceDAO.DeleteWithcheckVersion(itemDataSet, itemRow);
+        }
+
+        private void CheckForItemUsage(int itemId)
         {
             var itemRecList = _receiptService.GetByItemId(itemId).ReceiptItemsTable;
             var itemDelList = _deliveryService.GetByItemId(itemId).DeliveryItemsTable;
             var errorMsg = new StringBuilder();
-            var item = _itemServiceDAO.GetById(itemId).ItemTable[0];
+            var item = _itemServiceDAO.GetById(itemId).ItemTable.FirstOrDefault();
 
-            foreach (var itemRow in itemRecList)
+            if (item != null)
             {
-                errorMsg.Append( $"کالا { item.Name} در ورود کد { _receiptService.GetById(itemRow.ReceiptId).ReceiptTable[0].Number} استفاده شده است \n ");
-            }
+                foreach (var itemRow in itemRecList)
+                {
+                    errorMsg.Append($"کالا { item.Name} در ورود کد { _receiptService.GetById(itemRow.ReceiptId).ReceiptTable[0].Number} استفاده شده است \n ");
+                }
 
-            foreach (var itemRow in itemDelList)
-            {
-                errorMsg.Append($"کالا { item.Name} در خروج کد { _deliveryService.GetById(itemRow.DeliveryId).DeliveryTable[0].Number} استفاده شده است \n ");
-            }
+                foreach (var itemRow in itemDelList)
+                {
+                    errorMsg.Append($"کالا { item.Name} در خروج کد { _deliveryService.GetById(itemRow.DeliveryId).DeliveryTable[0].Number} استفاده شده است \n ");
+                }
 
-            if(itemRecList.Count()>0 || itemDelList.Count()>0)
-            {
-                throw new Exception(errorMsg.ToString());
+                if (itemRecList.Count() > 0 || itemDelList.Count() > 0)
+                {
+                    throw new Exception(errorMsg.ToString());
+                }
             }
-            _itemServiceDAO.Delete(itemId);
         }
 
-
-        public int ValidateData(int id, string name, string code)
+        public int ValidateData(int itemId, string name, string code)
         {
+            CheckForItemUsage(itemId);
+
             var errorsMessageString = new StringBuilder();
-            ValidateName(name , id, errorsMessageString);
-            var codeInt = ValidateCode(id, code, errorsMessageString);
+            ValidateName(name, itemId, errorsMessageString);
+            var codeInt = ValidateCode(itemId, code, errorsMessageString);
 
             if (errorsMessageString.Length > 0)
             {
@@ -113,7 +141,7 @@ namespace WarehouseTest.Services.ItemService
             }
         }
 
-        public int ValidateCode(int id, string code , StringBuilder errorsMessageString)
+        public int ValidateCode(int id, string code, StringBuilder errorsMessageString)
         {
             int codeInt = 0;
             if (string.IsNullOrEmpty(code))

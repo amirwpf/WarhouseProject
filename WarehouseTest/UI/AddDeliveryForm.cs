@@ -193,7 +193,7 @@ namespace WarehouseTest.UI
         public override void SaveBtn_Click(object sender, EventArgs e)
         {
             ValidateDate(persianDate);
-            if(_validDate)
+            if (_validDate)
             {
                 try
                 {
@@ -213,7 +213,7 @@ namespace WarehouseTest.UI
 
         private void ValidateDate(PersianDateTextBox persianDate)
         {
-            if(!persianDate.ValidDate)
+            if (!persianDate.ValidDate)
             {
                 MessageBox.Show(ErrorMessage.InValidFieldValue("تاریخ"));
                 _validDate = false;
@@ -229,8 +229,24 @@ namespace WarehouseTest.UI
             DialogResult result = ShowConfirmationMessageBox("سند خروج حذف گردد؟");
             if (result == DialogResult.Yes)
             {
-                _deliveryService.DeleteById(_deliveryId);
-                this.Close();
+                try
+                {
+                    _deliveryDataset.DeliveryTable[0].Delete();
+                    if (_deliveryDataset.DeliveryTable.Rows.Count > 0)
+                    {
+                        _deliveryService.DeleteWithcheckVersion(_deliveryDataset, _deliveryDataset.DeliveryTable[0]);
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 

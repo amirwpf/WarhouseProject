@@ -5,6 +5,7 @@ using App.Framework.UI;
 using App.Framework.UI.Model;
 using Core.Entites;
 using System;
+using System.Data;
 using System.Windows.Forms;
 using Warehouse.Framework.UI;
 using WarehouseTest.Services.ItemService;
@@ -76,7 +77,31 @@ namespace WarehouseTest.forms
 
         private void AddItemForm_Load(object sender, EventArgs e)
         {
-            deleteBtn.Enabled = false;
+        }
+
+        public override void deleteBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = ShowConfirmationMessageBox("سند خروج حذف گردد؟");
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _itemDataset.ItemTable[0].Delete();
+                    if (_itemDataset.ItemTable.Rows.Count > 0)
+                    {
+                        _itemService.DeleteWithcheckVersion(_itemDataset, _itemDataset.ItemTable[0]);
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         public override void addBtn_Click(object sender, EventArgs e)
@@ -88,15 +113,27 @@ namespace WarehouseTest.forms
         {
             try
             {
-
                 _itemService.Save(_itemDataset);
                 MessageBox.Show("کالا با موفقیت ذخیره گردید");
-
+                _inputId = _itemDataset.ItemTable[0].Id;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+
+        private DialogResult ShowConfirmationMessageBox(string message)
+        {
+            return MessageBox.Show(
+                message,
+                "تایید حذف",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2
+            );
         }
     }
 }

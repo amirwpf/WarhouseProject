@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Framework.Entities.DataRows;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace App.Framework
         TDataSet GetById(int id);
         TDataSet GetAll();
         void DeleteById(int id);
+        void DeleteWithcheckVersion(TDataSet dataSet, IdDataRow itemRow);
+        void Save(TDataSet dataSet);
     }
 }
