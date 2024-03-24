@@ -65,9 +65,7 @@ namespace WarehouseTest.UI
 
         private void StockItemQuantityReportForm_Load(object sender, EventArgs e)
         {
-            //saveBtn.Enabled = false;
             deleteBtn.Enabled = false;
-            //refreshBtn.Enabled = false;
             addBtn.Enabled = false;
         }
 

@@ -46,8 +46,6 @@ namespace WarehouseTest.Services.StockService
                     var codeInt = ValidateData(row.Id, row.Name, row.Code.ToString());
                 }
             }
-
-            //var codeInt = ValidateData(stockDataSet.StockTable[0].Id, stockDataSet.StockTable[0].Name, stockDataSet.StockTable[0].Code.ToString());
             _stockServiceDAO.Save(stockDataSet);
         }
 
