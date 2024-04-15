@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Castle.Core.Interceptor;
 
 namespace App.Framework
@@ -7,19 +8,19 @@ namespace App.Framework
     {
         public void Intercept(IInvocation invocation)
         {
-            Console.WriteLine($"Before target call {invocation.Method.Name}");
+            Debug.WriteLine($"Before target call {invocation.Method.Name}");
             try
             {
                 invocation.Proceed();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Target exception {ex.Message}");
+                Debug.WriteLine($"Target exception {ex.Message}");
                 throw;
             }
             finally
             {
-                Console.WriteLine($"After target call {invocation.Method.Name}");
+                Debug.WriteLine($"After target call {invocation.Method.Name}");
             }
         }
     }
